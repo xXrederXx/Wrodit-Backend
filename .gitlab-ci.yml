@@ -1,0 +1,77 @@
+stages:
+  - format
+  - test
+  - build
+  - deploy_stageing
+  - deploy_prod
+
+variables:
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+# 1. Code formatting check
+format:
+  stage: format
+  image: gradle:jdk21
+  script:
+    - ./gradlew spotlessCheck
+  only:
+    - merge_requests
+    - main
+
+# 2. Unit tests
+unit_test:
+  stage: test
+  image: gradle:jdk21
+  script:
+    - ./gradlew test
+  artifacts:
+    reports:
+      junit: build/test-results/test/*.xml
+    paths:
+      - build/test-results/test
+      - build/reports/tests
+  only:
+    - merge_requests
+    - main
+
+# 3. Build Spring Boot JAR
+build_jar:
+  stage: build
+  image: gradle:jdk21
+  script:
+    - ./gradlew clean bootJar
+  artifacts:
+    paths:
+      - build/libs/*.jar
+  only:
+    - merge_requests
+    - main
+
+
+# 4. Notify Coolify webhook for redeploy
+coolify_deploy_stageing:
+  stage: deploy_stageing
+  image: curlimages/curl:latest
+  variables:
+    AUTH_HEADER: "Authorization: Bearer $COOLIFY_TOK"
+  script:
+    - curl -X GET "$COOLIFY_STAGING_URL" -H "$AUTH_HEADER"
+  only:
+    - main
+
+# 4. Notify Coolify webhook for redeploy
+coolify_deploy_prod:
+  stage: deploy_prod
+  image: curlimages/curl:latest
+  variables:
+    AUTH_HEADER: "Authorization: Bearer $COOLIFY_TOK"
+  script:
+    - curl -X GET "$COOLIFY_PROD_URL" -H "$AUTH_HEADER"
+  only:
+    - production
