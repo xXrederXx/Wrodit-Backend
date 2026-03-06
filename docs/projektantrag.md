@@ -28,12 +28,13 @@ Wrodit soll Menschen miteinander verbinden, die sich für gleiche Themen interes
 12. Als User möchte ich meine Posts löschen können, falls ich aus Versehen etwas poste.
 13. Als User möchte ich meinen Account löschen können, damit ich von der Plattform verschwinden kann.
 14. Als User möchte ich den Content des Posts in Markdown formatieren können, damit ich den Text stylen kann.
-15. Als User möchte ich in der Detailansicht von einem Post die Kommentare unter dem Post sehen, damit ich sie leicht finden kann.
-16. Als User möchte ich , dass Posts nach schädlichen oder bösen Inhalten gescannt werden und bei erkannten Inhalten blockiert werden, damit die Plattform freundlich bleibt.
-17. Als User möchte ich meine Inhalte bearbeiten können, damit ich Fehler korrigieren kann.
-18. (Optional) Als User möchte ich beim Erstellen eines Threads ein Banner und ein Icon hochladen können, damit der Thread erkennbar ist.
-19. (Optional) Als User möchte ich ein Profilbild hochladen können, damit ich meine Persönlichkeit zeigen kann.
-20. (Optional) Als User möchte ich nach bestimmten Sachen mit einem Feld suchen können, damit ich etwas Bestimmtes finden kann.
+15. Als User möchte ich dass die Posts in schön formatierten Markdown angezeigt werden, damit ich nicht nur neutralen text sehe.
+16. Als User möchte ich in der Detailansicht von einem Post die Kommentare unter dem Post sehen, damit ich sie leicht finden kann.
+17. Als User möchte ich , dass Posts nach schädlichen oder bösen Inhalten gescannt werden und bei erkannten Inhalten blockiert werden, damit die Plattform freundlich bleibt.
+18. Als User möchte ich meine Inhalte bearbeiten können, damit ich Fehler korrigieren kann.
+19. (Optional) Als User möchte ich beim Erstellen eines Threads ein Banner und ein Icon hochladen können, damit der Thread erkennbar ist.
+20. (Optional) Als User möchte ich ein Profilbild hochladen können, damit ich meine Persönlichkeit zeigen kann.
+21. (Optional) Als User möchte ich nach bestimmten Sachen mit einem Feld suchen können, damit ich etwas Bestimmtes finden kann.
 
 ## Sitemap
 
