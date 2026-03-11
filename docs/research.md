@@ -1,0 +1,18 @@
+# Research
+
+## Gitlab-ci.yml
+
+Ich habe versucht das ci mit ChatGPT zu generieren. Ich habe mich daran stark orientiert.
+
+[PROMPT](./prompts/GitLab%20CI%20for%20Java%202026-03-11-08-28-36.md)
+
+Anschliessend habe ich auch noch versucht die Pipline zu beschleunignen. Ich habe es praktisch 1 zu 1 übernommen.
+
+[PROMPT](./prompts/Optimizing%20Pipeline%20Speed%202026-03-11-08-54-09.md)
+
+
+## Entity und Repository Generation
+
+Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot Entities zu verwandeln. Dazu habe ich `mysql ddl to java spring boot entity` gesucht. Ich habe anschliesend den ersten link gewählt. 
+
+[Bootify](https://bootify.io/)
