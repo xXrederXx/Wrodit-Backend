@@ -2,6 +2,61 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,intellij+all,java,git
 .gradle/
 tmp/
+
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Ignore Gradle cache but keep wrapper
+**/.gradle
+**/build
+
+# =========================
+# Java
+# =========================
+*.class
+*.log
+*.tmp
+
+# =========================
+# IntelliJ
+# =========================
+.idea/
+*.iml
+out/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Test reports
+# =========================
+build/test-results/
+build/reports/
+
+# =========================
+# Generated sources
+# =========================
+build/generated/
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false

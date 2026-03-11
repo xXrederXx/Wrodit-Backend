@@ -1,0 +1,7 @@
+.git
+.gitlab
+.gradle
+build
+node_modules
+.idea
+docs
