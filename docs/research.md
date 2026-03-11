@@ -16,3 +16,11 @@ Anschliessend habe ich auch noch versucht die Pipline zu beschleunignen. Ich hab
 Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot Entities zu verwandeln. Dazu habe ich `mysql ddl to java spring boot entity` gesucht. Ich habe anschliesend den ersten link gewählt. 
 
 [Bootify](https://bootify.io/)
+
+## Global Exeption Handeler
+
+[javadzone](https://javadzone.com/spring-boot-exception-handling-best-practices/)
+
+## Fix Generic in ErrorResponseBuilder
+
+[PROMPT](./prompts/Generic%20Type%20Shadowing%20Error%202026-03-11-14-52-31.md)
