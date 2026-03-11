@@ -1,7 +1,6 @@
 stages:
   - format
   - test
-  - build
   - deploy_stageing
   - deploy_prod
 
@@ -35,21 +34,6 @@ unit_test:
       junit: build/test-results/test/*.xml
     paths:
       - build
-  only:
-    - merge_requests
-    - main
-
-build_jar:
-  stage: build
-  image: gradle:8.6-jdk21-alpine
-  needs: ["unit_test"]
-  dependencies:
-    - unit_test
-  script:
-    - ./gradlew --build-cache --parallel bootJar
-  artifacts:
-    paths:
-      - build/libs/*.jar
   only:
     - merge_requests
     - main
