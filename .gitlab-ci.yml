@@ -9,50 +9,50 @@ variables:
   GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
 
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
+  key: gradle-cache
+  policy: pull-push
   paths:
     - .gradle/wrapper
     - .gradle/caches
 
-# 1. Code formatting check
 format:
   stage: format
-  image: gradle:jdk21
+  image: gradle:8.6-jdk21-alpine
   script:
-    - ./gradlew spotlessCheck
+    - ./gradlew --build-cache --parallel spotlessCheck
   only:
     - merge_requests
     - main
 
-# 2. Unit tests
 unit_test:
   stage: test
-  image: gradle:jdk21
+  image: gradle:8.6-jdk21-alpine
+  needs: ["format"]
   script:
-    - ./gradlew test
+    - ./gradlew --build-cache --parallel test
   artifacts:
     reports:
       junit: build/test-results/test/*.xml
     paths:
-      - build/test-results/test
-      - build/reports/tests
+      - build
   only:
     - merge_requests
     - main
 
-# 3. Build Spring Boot JAR
 build_jar:
   stage: build
-  image: gradle:jdk21
+  image: gradle:8.6-jdk21-alpine
+  needs: ["unit_test"]
+  dependencies:
+    - unit_test
   script:
-    - ./gradlew clean bootJar
+    - ./gradlew --build-cache --parallel bootJar
   artifacts:
     paths:
       - build/libs/*.jar
   only:
     - merge_requests
     - main
-
 
 # 4. Notify Coolify webhook for redeploy
 coolify_deploy_stageing:
