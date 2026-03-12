@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +27,14 @@ public class GlobalExceptionHandler {
     return new ErrorResponseBuilder<String>()
         .withBody("An unexpected error occurred")
         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+        .buildResponse();
+  }
+
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public ResponseEntity<?> handleAuthDeniedExceptions(Exception ex) {
+    return new ErrorResponseBuilder<String>()
+        .withBody("Unautherized")
+        .withStatus(HttpStatus.UNAUTHORIZED)
         .buildResponse();
   }
 
