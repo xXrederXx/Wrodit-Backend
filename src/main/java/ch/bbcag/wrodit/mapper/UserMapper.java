@@ -8,10 +8,9 @@ public class UserMapper {
   private UserMapper() { // hide ctor
   }
 
-  public static User fromDto(UserRequestDTO dto)
-  {
+  public static User fromDto(UserRequestDTO dto) {
     User user = new User();
-    user.setUsername(dto.name());
+    user.setUsername(dto.username());
     user.setPasswordHash(dto.password());
     return user;
   }
