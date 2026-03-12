@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,intellij+all,java,git
 .gradle/
 tmp/
-
+bin/
 # =========================
 # Gradle
 # =========================
