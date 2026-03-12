@@ -18,12 +18,11 @@ public class UserService {
   }
 
   public void throwIfUnauthorized(Integer id, String password) {
-    String encoded = passwordEncoder.encode(password);
     User user = repo.findById(id).orElseThrow(EntityNotFoundException::new);
-    if (user.getPasswordHash().equals(encoded)) {
+    if (passwordEncoder.matches(password, user.getPasswordHash())) {
       return;
     }
-    throw new AuthorizationDeniedException("Not Authorized");
+    throw new AuthorizationDeniedException("Not Authorized ");
   }
 
   public User findById(int id) {
