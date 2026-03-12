@@ -3,7 +3,6 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,13 +25,21 @@ public class UserService {
     throw new AuthorizationDeniedException("Not Authorized ");
   }
 
+  public boolean checkAuthorization(String username, String password) {
+    try {
+      User user = findByUsername(username);
+      return passwordEncoder.matches(password, user.getPasswordHash());
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
   public User findById(int id) {
     return repo.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 
-  public User findByUsername(String username)
-  {
-    throw new NotImplementedException("");
+  public User findByUsername(String username) {
+    return repo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
   }
 
   public User insert(User user) {
