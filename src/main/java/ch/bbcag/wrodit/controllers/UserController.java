@@ -45,13 +45,21 @@ public class UserController {
             responseCode = "200",
             description = "Person found",
             content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Person was not found", content = @Content)
+        @ApiResponse(
+            responseCode = "404",
+            description = "Person was not found",
+            content = @Content),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized, wrong id or WI-Auth-Passwd",
+            content = @Content)
       })
   public ResponseEntity<?> getUserWholeById(
-      @Parameter(description = "Id of the user to get") @PathVariable Integer id,
-      @RequestHeader(name = "WI-Auth-ID") Integer authID,
-      @RequestHeader(name = "WI-Auth-Passwd") String authPassword) {
-    service.throwIfUnauthorized(authID, authPassword);
+      @Parameter(description = "Id of the user to get, must be you") @PathVariable Integer id,
+      @Parameter(description = "The password for the account information you are trying to get")
+          @RequestHeader(name = "WI-Auth-Passwd")
+          String authPassword) {
+    service.throwIfUnauthorized(id, authPassword);
     return ResponseEntity.ok(UserMapper.toDto(service.findById(id), true));
   }
 }
