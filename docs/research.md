@@ -24,3 +24,7 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Fix Generic in ErrorResponseBuilder
 
 [PROMPT](./prompts/Generic%20Type%20Shadowing%20Error%202026-03-11-14-52-31.md)
+
+## Spring Boot Fast Reload
+
+[Spring](https://docs.spring.io/spring-boot/reference/using/devtools.html)
