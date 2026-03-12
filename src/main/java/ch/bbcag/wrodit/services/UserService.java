@@ -25,8 +25,21 @@ public class UserService {
     throw new AuthorizationDeniedException("Not Authorized ");
   }
 
+  public boolean checkAuthorization(String username, String password) {
+    try {
+      User user = findByUsername(username);
+      return passwordEncoder.matches(password, user.getPasswordHash());
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
   public User findById(int id) {
     return repo.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
+
+  public User findByUsername(String username) {
+    return repo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
   }
 
   public User insert(User user) {
