@@ -17,7 +17,7 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public void isAuthorized(Integer id, String password) {
+  public void throwIfUnauthorized(Integer id, String password) {
     String encoded = passwordEncoder.encode(password);
     User user = repo.findById(id).orElseThrow(EntityNotFoundException::new);
     if (user.getPasswordHash().equals(encoded)) {
