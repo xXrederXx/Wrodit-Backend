@@ -3,6 +3,7 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class UserService {
 
   public User findById(int id) {
     return repo.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
+
+  public User findByUsername(String username)
+  {
+    throw new NotImplementedException("");
   }
 
   public User insert(User user) {
