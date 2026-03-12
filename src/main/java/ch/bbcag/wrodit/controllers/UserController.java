@@ -1,6 +1,5 @@
 package ch.bbcag.wrodit.controllers;
 
-import ch.bbcag.wrodit.dto.request.AuthRequestDTO;
 import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
 import ch.bbcag.wrodit.mapper.UserMapper;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +58,20 @@ public class UserController {
   }
 
   @PostMapping("/validate")
-  public ResponseEntity<?> postValidateUser(@Valid @RequestBody UserRequestDTO dto) {
-    throw new NotImplementedException("Not implementet gang");
+  @Operation(summary = "Check if username and password match")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "If the data was correct",
+            content = @Content(schema = @Schema(implementation = Boolean.class))),
+      })
+  public ResponseEntity<?> postValidateUser(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The userdata you want to validate")
+          @Valid
+          @RequestBody
+          UserRequestDTO dto) {
+    return ResponseEntity.ok(service.checkAuthorization(dto.username(), dto.password()));
   }
 }
