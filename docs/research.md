@@ -28,3 +28,7 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Spring Boot Fast Reload
 
 [Spring](https://docs.spring.io/spring-boot/reference/using/devtools.html)
+
+## Vite Enviroment Vars Loading
+
+[Vite](https://vite.dev/guide/env-and-mode)
