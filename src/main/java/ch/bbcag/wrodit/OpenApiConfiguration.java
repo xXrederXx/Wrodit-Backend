@@ -7,8 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "The Wrodit API Backend built @ Bbc", version = "1.0.0"),
-        security = @SecurityRequirement(name = SecurityConstants.AUTHORIZATION_HEADER_NAME)
-)
-public class OpenApiConfiguration {
-}
+@OpenAPIDefinition(
+    info = @Info(title = "The Wrodit API Backend built @ Bbc", version = "1.0.0"),
+    security = @SecurityRequirement(name = SecurityConstants.AUTHORIZATION_HEADER_NAME))
+public class OpenApiConfiguration {}

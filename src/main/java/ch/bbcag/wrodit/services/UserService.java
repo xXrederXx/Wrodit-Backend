@@ -3,42 +3,39 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository repo;
-    private final PasswordEncoder passwordEncoder;
+  private final UserRepository repo;
+  private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repo, PasswordEncoder passwordEncoder) {
-        this.repo = repo;
-        this.passwordEncoder = passwordEncoder;
-    }
+  public UserService(UserRepository repo, PasswordEncoder passwordEncoder) {
+    this.repo = repo;
+    this.passwordEncoder = passwordEncoder;
+  }
 
-    public void isAuthorized(Integer id, String password)
-    {
-        String encoded = passwordEncoder.encode(password);
-        User user = repo.findById(id).orElseThrow(EntityNotFoundException::new);
-        if (user.getPasswordHash().equals(encoded))
-        {
-            return;
-        }
-        throw new AuthorizationDeniedException("Not Authorized");
+  public void isAuthorized(Integer id, String password) {
+    String encoded = passwordEncoder.encode(password);
+    User user = repo.findById(id).orElseThrow(EntityNotFoundException::new);
+    if (user.getPasswordHash().equals(encoded)) {
+      return;
     }
+    throw new AuthorizationDeniedException("Not Authorized");
+  }
 
-    public User findById(int id)
-    {
-        return repo.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
-    public User insert(User user)
-    {
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
-        return repo.save(user);
-    }
-    public void deleteById(int id){
-        repo.deleteById(id);
-    }
+  public User findById(int id) {
+    return repo.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
+
+  public User insert(User user) {
+    user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+    return repo.save(user);
+  }
+
+  public void deleteById(int id) {
+    repo.deleteById(id);
+  }
 }

@@ -20,28 +20,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(AuthController.PATH)
 public class AuthController {
-    public static final String PATH = "/auth";
-    private final UserService service;
+  public static final String PATH = "/auth";
+  private final UserService service;
 
-    public AuthController(UserService service) {
-        this.service = service;
-    }
+  public AuthController(UserService service) {
+    this.service = service;
+  }
 
-
-    @PostMapping("/signup")
-    @Operation(summary = "Create a new user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User was created successfully",
-                    content = @Content(schema = @Schema(implementation = AuthResponseDTO.class))),
-            @ApiResponse(responseCode = "409", description = "User could not be created, username already in use",
-                    content = @Content)
-    })
-    public ResponseEntity<?> signUp(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to register")
-            @Valid @RequestBody  AuthRequestDTO dto)
-    {
-        User auth = AuthMapper.fromDTO(dto);
-        User savedAuth = service.insert(auth);
-        return ResponseEntity.status(201).body(AuthMapper.toDTO(savedAuth));
-    }
+  @PostMapping("/signup")
+  @Operation(summary = "Create a new user")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "User was created successfully",
+            content = @Content(schema = @Schema(implementation = AuthResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "409",
+            description = "User could not be created, username already in use",
+            content = @Content)
+      })
+  public ResponseEntity<?> signUp(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to register")
+          @Valid
+          @RequestBody
+          AuthRequestDTO dto) {
+    User auth = AuthMapper.fromDTO(dto);
+    User savedAuth = service.insert(auth);
+    return ResponseEntity.status(201).body(AuthMapper.toDTO(savedAuth));
+  }
 }
