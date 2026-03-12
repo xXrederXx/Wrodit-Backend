@@ -1,5 +1,7 @@
 package ch.bbcag.wrodit.controllers;
 
+import ch.bbcag.wrodit.dto.request.AuthRequestDTO;
+import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
 import ch.bbcag.wrodit.mapper.UserMapper;
 import ch.bbcag.wrodit.services.UserService;
@@ -9,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,5 +57,10 @@ public class UserController {
       @RequestHeader(name = "WI-Auth-Passwd") String authPassword) {
     service.throwIfUnauthorized(authID, authPassword);
     return ResponseEntity.ok(UserMapper.toDto(service.findById(id), true));
+  }
+
+  @PostMapping("/validate")
+  public ResponseEntity<?> postValidateUser(@Valid @RequestBody UserRequestDTO dto) {
+    throw new NotImplementedException("Not implementet gang");
   }
 }
