@@ -10,19 +10,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ThreadService {
-    private final ThreadRepository repo;
+  private final ThreadRepository repo;
 
-    public ThreadService(ThreadRepository repo) {
-        this.repo = repo;
-    }
+  public ThreadService(ThreadRepository repo) {
+    this.repo = repo;
+  }
 
-    public Thread findById(Integer id)
-    {
-        return repo.findById(id).orElseThrow(EntityNotFoundException::new);
-    }
+  public Thread findById(Integer id) {
+    return repo.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
 
-    public Page<Thread> pageinatedThrads(Integer pageNumber, Integer pageSize, Sort sort)
-    {
-        return repo.findAll(PageRequest.of(pageNumber, pageSize, sort));
-    }
+  public Page<Thread> paginatedThreads(Integer pageNumber, Integer pageSize, Sort sort) {
+    return repo.findAll(PageRequest.of(pageNumber, pageSize, sort));
+  }
 }
