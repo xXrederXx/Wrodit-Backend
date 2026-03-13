@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -60,6 +62,16 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+    logger.error("An error occurred: {}", ex.getMessage(), ex);
+    Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
+    Matcher matcher = pattern.matcher(ex.getMessage());
+    if (matcher.find()) {
+      return new ErrorResponseBuilder<String>()
+          .withBody("Duplicate Entry: " + matcher.group(1))
+          .withStatus(HttpStatus.CONFLICT)
+          .buildResponse();
+    }
+
     return new ErrorResponseBuilder<String>()
         .withBody("Data integrity violation")
         .withStatus(HttpStatus.CONFLICT)
