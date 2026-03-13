@@ -21,10 +21,8 @@ public class UserMapper {
         user.getId(), user.getUsername(), includeEmail ? user.getEmail() : "");
   }
 
-  public static UserValidateResponseDTO toValidateDTO(User user)
-  {
-    if(user == null)
-    {
+  public static UserValidateResponseDTO toValidateDTO(User user) {
+    if (user == null) {
       return new UserValidateResponseDTO(null, false);
     }
     return new UserValidateResponseDTO(user.getId(), true);

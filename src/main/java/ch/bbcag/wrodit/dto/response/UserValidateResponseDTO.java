@@ -1,4 +1,3 @@
 package ch.bbcag.wrodit.dto.response;
 
-public record UserValidateResponseDTO(Integer id, boolean valid) {
-}
+public record UserValidateResponseDTO(Integer id, boolean valid) {}
