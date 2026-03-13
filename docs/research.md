@@ -32,3 +32,12 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Vite Enviroment Vars Loading
 
 [Vite](https://vite.dev/guide/env-and-mode)
+
+## Frontend CI Optimization
+
+[PROMPT](./prompts/Speeding%20up%20npm%20ci%202026-03-13-07-27-47.md)
+
+## HTTP Headers
+
+[Baeldung](https://www.baeldung.com/spring-rest-http-headers)
+[Stack Overflow](https://stackoverflow.com/questions/3561381/custom-http-headers-naming-conventions)
