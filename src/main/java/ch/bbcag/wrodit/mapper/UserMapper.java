@@ -4,7 +4,6 @@ import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
 import ch.bbcag.wrodit.dto.response.UserValidateResponseDTO;
 import ch.bbcag.wrodit.entitys.User;
-
 import java.util.Optional;
 
 public class UserMapper {
@@ -24,6 +23,7 @@ public class UserMapper {
   }
 
   public static UserValidateResponseDTO toValidateDTO(Optional<User> user) {
-      return user.map(value -> new UserValidateResponseDTO(value.getId(), true)).orElseGet(() -> new UserValidateResponseDTO(null, false));
+    return user.map(value -> new UserValidateResponseDTO(value.getId(), true))
+        .orElseGet(() -> new UserValidateResponseDTO(null, false));
   }
 }

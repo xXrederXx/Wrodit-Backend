@@ -5,7 +5,6 @@ import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Optional;
-
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,9 @@ public class UserService {
   public Optional<User> checkAuthorization(String username, String password) {
     try {
       User user = findByUsername(username);
-      return passwordEncoder.matches(password, user.getPasswordHash()) ? Optional.of(user) : Optional.empty();
+      return passwordEncoder.matches(password, user.getPasswordHash())
+          ? Optional.of(user)
+          : Optional.empty();
     } catch (Exception e) {
       return Optional.empty();
     }

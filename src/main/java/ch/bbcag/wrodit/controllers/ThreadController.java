@@ -61,25 +61,25 @@ public class ThreadController {
   @GetMapping("/userfeed")
   @Operation(summary = "Get all threads a user is subscribed to")
   @ApiResponses(
-          value = {
-                  @ApiResponse(
-                          responseCode = "200",
-                          description = "Page generated",
-                          content = @Content(schema = @Schema(implementation = Page.class))),
-                  @ApiResponse(
-                          responseCode = "409",
-                          description = "The user was unauthorized",
-                          content = @Content
-                  )
-          })
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Page generated",
+            content = @Content(schema = @Schema(implementation = Page.class))),
+        @ApiResponse(
+            responseCode = "409",
+            description = "The user was unauthorized",
+            content = @Content)
+      })
   public ResponseEntity<?> getUserfeed(
-          @RequestParam(required = false, defaultValue = "0") Integer page,
-          @RequestParam(required = false, defaultValue = "20") Integer pageSize,
-          @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
-          @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd
-  ) {
+      @RequestParam(required = false, defaultValue = "0") Integer page,
+      @RequestParam(required = false, defaultValue = "20") Integer pageSize,
+      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
+      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     User user = userService.throwIfUnauthorized(authId, authPasswd);
     return ResponseEntity.ok(
-            service.paginatedThreadsByUser(user, page, pageSize, Sort.unsorted()).map(ThreadMapper::toDTO));
+        service
+            .paginatedThreadsByUser(user, page, pageSize, Sort.unsorted())
+            .map(ThreadMapper::toDTO));
   }
 }
