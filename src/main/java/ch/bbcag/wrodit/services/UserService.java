@@ -4,6 +4,7 @@ import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,20 +19,22 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public void throwIfUnauthorized(Integer id, String password) {
-    User user = repo.findById(id).orElseThrow(EntityNotFoundException::new);
+  public User throwIfUnauthorized(Integer id, String password) {
+    User user = findById(id);
     if (passwordEncoder.matches(password, user.getPasswordHash())) {
-      return;
+      return user;
     }
-    throw new AuthorizationDeniedException("Not Authorized ");
+    throw new AuthorizationDeniedException("Not Authorized");
   }
 
-  public User checkAuthorization(String username, String password) {
+  public Optional<User> checkAuthorization(String username, String password) {
     try {
       User user = findByUsername(username);
-      return passwordEncoder.matches(password, user.getPasswordHash()) ? user : null;
+      return passwordEncoder.matches(password, user.getPasswordHash())
+          ? Optional.of(user)
+          : Optional.empty();
     } catch (Exception e) {
-      return null;
+      return Optional.empty();
     }
   }
 
