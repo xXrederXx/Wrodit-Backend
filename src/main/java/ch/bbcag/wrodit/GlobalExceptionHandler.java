@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -68,9 +67,9 @@ public class GlobalExceptionHandler {
     Matcher matcher = pattern.matcher(ex.getMessage());
     if (matcher.find()) {
       return new ErrorResponseBuilder<String>()
-              .withBody("Duplicate Entry: " + matcher.group(1))
-              .withStatus(HttpStatus.CONFLICT)
-              .buildResponse();
+          .withBody("Duplicate Entry: " + matcher.group(1))
+          .withStatus(HttpStatus.CONFLICT)
+          .buildResponse();
     }
 
     return new ErrorResponseBuilder<String>()
