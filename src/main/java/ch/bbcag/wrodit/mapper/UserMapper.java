@@ -2,6 +2,7 @@ package ch.bbcag.wrodit.mapper;
 
 import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
+import ch.bbcag.wrodit.dto.response.UserValidateResponseDTO;
 import ch.bbcag.wrodit.entitys.User;
 
 public class UserMapper {
@@ -15,8 +16,17 @@ public class UserMapper {
     return user;
   }
 
-  public static UserResponseDTO toDto(User user, boolean includeEmail) {
+  public static UserResponseDTO toUserDto(User user, boolean includeEmail) {
     return new UserResponseDTO(
         user.getId(), user.getUsername(), includeEmail ? user.getEmail() : "");
+  }
+
+  public static UserValidateResponseDTO toValidateDTO(User user)
+  {
+    if(user == null)
+    {
+      return new UserValidateResponseDTO(null, false);
+    }
+    return new UserValidateResponseDTO(user.getId(), true);
   }
 }
