@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
   @Pattern(regexp = ".*\\W.*", message = "Password must contain a symbol")
 })
 public @interface Password {
-    String message() default "Invalid password";
+  String message() default "Invalid password";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<?>[] payload() default {};
+  Class<?>[] payload() default {};
 }

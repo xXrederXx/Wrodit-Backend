@@ -16,9 +16,9 @@ import java.lang.annotation.Target;
 @NotBlank(message = "Username must not be empty")
 @Size(max = 50, message = "Username length must be not more than 50")
 public @interface Username {
-    String message() default "Invalid username";
+  String message() default "Invalid username";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<?>[] payload() default {};
+  Class<?>[] payload() default {};
 }
