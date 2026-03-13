@@ -41,3 +41,7 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 
 [Baeldung](https://www.baeldung.com/spring-rest-http-headers)
 [Stack Overflow](https://stackoverflow.com/questions/3561381/custom-http-headers-naming-conventions)
+
+## Java Annotation Merging
+
+[JavaThinking](https://www.javathinking.com/blog/merge-multiple-annotations-with-parameters/#2-how-custom-annotations-work-in-java)
