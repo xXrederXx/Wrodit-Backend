@@ -26,12 +26,12 @@ public class UserService {
     throw new AuthorizationDeniedException("Not Authorized ");
   }
 
-  public boolean checkAuthorization(String username, String password) {
+  public User checkAuthorization(String username, String password) {
     try {
       User user = findByUsername(username);
-      return passwordEncoder.matches(password, user.getPasswordHash());
+      return passwordEncoder.matches(password, user.getPasswordHash()) ? user : null;
     } catch (Exception e) {
-      return false;
+      return null;
     }
   }
 
