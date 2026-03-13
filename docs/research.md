@@ -45,3 +45,7 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Java Annotation Merging
 
 [JavaThinking](https://www.javathinking.com/blog/merge-multiple-annotations-with-parameters/#2-how-custom-annotations-work-in-java)
+
+## Pagination
+
+[Reflectoring](https://reflectoring.io/spring-boot-paging/)
