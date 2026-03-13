@@ -7,6 +7,8 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+
 @Service
 public class UserService {
   private final UserRepository repo;
@@ -44,6 +46,7 @@ public class UserService {
 
   public User insert(User user) {
     user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+    user.setCreatedAt(OffsetDateTime.now());
     return repo.save(user);
   }
 
