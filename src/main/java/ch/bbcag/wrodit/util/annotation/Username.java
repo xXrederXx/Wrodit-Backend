@@ -1,4 +1,4 @@
-package ch.bbcag.wrodit.security.annotation;
+package ch.bbcag.wrodit.util.annotation;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
