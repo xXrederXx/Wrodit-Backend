@@ -5,6 +5,8 @@ import ch.bbcag.wrodit.dto.response.UserResponseDTO;
 import ch.bbcag.wrodit.dto.response.UserValidateResponseDTO;
 import ch.bbcag.wrodit.entitys.User;
 
+import java.util.Optional;
+
 public class UserMapper {
   private UserMapper() { // hide ctor
   }
@@ -21,10 +23,7 @@ public class UserMapper {
         user.getId(), user.getUsername(), includeEmail ? user.getEmail() : "");
   }
 
-  public static UserValidateResponseDTO toValidateDTO(User user) {
-    if (user == null) {
-      return new UserValidateResponseDTO(null, false);
-    }
-    return new UserValidateResponseDTO(user.getId(), true);
+  public static UserValidateResponseDTO toValidateDTO(Optional<User> user) {
+      return user.map(value -> new UserValidateResponseDTO(value.getId(), true)).orElseGet(() -> new UserValidateResponseDTO(null, false));
   }
 }
