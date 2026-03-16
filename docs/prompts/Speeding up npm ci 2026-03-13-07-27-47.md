@@ -28,14 +28,14 @@ Your pipeline works, but there are a few things that are **slowing it down unnec
 
 Right now you have:
 
-```
-YAMLcache:  paths:    - node_modules/
+```YAML
+cache:  paths:    - node_modules/
 ```
 
 and:
 
-```
-YAMLinstall:  script:    - npm ci
+```YAML
+install:  script:    - npm ci
 ```
 
 This combination is **not ideal**.
@@ -51,14 +51,14 @@ Why:
 
 Cache the **npm cache**, not `node_modules`.
 
-```
-YAMLcache:  paths:    - .npm/
+```YAML
+cache:  paths:    - .npm/
 ```
 
 and install with:
 
-```
-YAMLnpm ci --cache .npm --prefer-offline
+```YAML
+npm ci --cache .npm --prefer-offline
 ```
 
 This is **much faster**.
@@ -87,20 +87,20 @@ Better: use **artifacts** from install.
 
 Example:
 
-```
-YAMLinstall:  stage: install  script:    - npm ci --cache .npm --prefer-offline  artifacts:    paths:      - node_modules
+```YAML
+install:  stage: install  script:    - npm ci --cache .npm --prefer-offline  artifacts:    paths:      - node_modules
 ```
 
 Then:
 
-```
-YAMLlint:  stage: lint  dependencies:    - install  script:    - npm run lint
+```YAML
+lint:  stage: lint  dependencies:    - install  script:    - npm run lint
 ```
 
 and:
 
-```
-YAMLbuild:  stage: build  dependencies:    - install  script:    - npm run buildStage
+```YAML
+build:  stage: build  dependencies:    - install  script:    - npm run buildStage
 ```
 
 This avoids reinstalling.
@@ -141,8 +141,8 @@ Then the **build stage is correct**, and Coolify should deploy the `dist` folder
 
 If Coolify builds everything, the **fastest pipeline** would be:
 
-```
-YAMLimage: node:20stages:  - lint  - deploy_staging  - deploy_prodcache:  paths:    - .npm/lint:  stage: lint  script:    - npm ci --cache .npm --prefer-offline    - npm run lintcoolify_deploy_staging:  stage: deploy_staging  image: curlimages/curl:latest  script:    - curl -X GET "$COOLIFY_STAGING_URL" -H "Authorization: Bearer $COOLIFY_TOK"  only:    - maincoolify_deploy_prod:  stage: deploy_prod  image: curlimages/curl:latest  script:    - curl -X GET "$COOLIFY_PRODUCTION_URL" -H "Authorization: Bearer $COOLIFY_TOK"  only:    - production
+```YAML
+image: node:20stages:  - lint  - deploy_staging  - deploy_prodcache:  paths:    - .npm/lint:  stage: lint  script:    - npm ci --cache .npm --prefer-offline    - npm run lintcoolify_deploy_staging:  stage: deploy_staging  image: curlimages/curl:latest  script:    - curl -X GET "$COOLIFY_STAGING_URL" -H "Authorization: Bearer $COOLIFY_TOK"  only:    - maincoolify_deploy_prod:  stage: deploy_prod  image: curlimages/curl:latest  script:    - curl -X GET "$COOLIFY_PRODUCTION_URL" -H "Authorization: Bearer $COOLIFY_TOK"  only:    - production
 ```
 
 That pipeline runs in **~20–30 seconds**.
@@ -153,8 +153,8 @@ That pipeline runs in **~20–30 seconds**.
 
 Add:
 
-```
-YAMLdefault:  interruptible: true
+```YAML
+default:  interruptible: true
 ```
 
 Then if you push multiple commits quickly:

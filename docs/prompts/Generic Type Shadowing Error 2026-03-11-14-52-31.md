@@ -16,8 +16,8 @@ Ah! I see exactly what’s causing your error. The issue is **shadowing of the g
 
 ### The code you have:
 
-```
-Javapublic class ErrorResponseBuilder<TBody> {    private TBody body;    public static <TBody> ErrorResponseBuilder<TBody> create() {        return new ErrorResponseBuilder<>();    }    public <TBody> ErrorResponseBuilder<TBody> withBody(TBody body) {        this.body = body; // ERROR HERE        return this;    }}
+```Java
+public class ErrorResponseBuilder<TBody> {    private TBody body;    public static <TBody> ErrorResponseBuilder<TBody> create() {        return new ErrorResponseBuilder<>();    }    public <TBody> ErrorResponseBuilder<TBody> withBody(TBody body) {        this.body = body; // ERROR HERE        return this;    }}
 ```
 
 ---
@@ -25,12 +25,12 @@ Javapublic class ErrorResponseBuilder<TBody> {    private TBody body;    public 
 ### What’s wrong
 
 1. The class itself **already has a generic type `TBody`**: So `this.body` is of type `TBody`.
-```
-Javapublic class ErrorResponseBuilder<TBody> { ... }
+```Java
+public class ErrorResponseBuilder<TBody> { ... }
 ```
 2. But in your `withBody` method, you **redeclare the generic type** `TBody` locally: This **shadows** the class-level `TBody`. Now, inside the method: The compiler sees them as potentially **different types**, so `this.body = body` gives an error.
-```
-Javapublic <TBody> ErrorResponseBuilder<TBody> withBody(TBody body)
+```Java
+public <TBody> ErrorResponseBuilder<TBody> withBody(TBody body)
 ```
 - `this.body` is the class-level `TBody`.
 - `body` parameter is the method-level `TBody`.
@@ -41,16 +41,16 @@ Javapublic <TBody> ErrorResponseBuilder<TBody> withBody(TBody body)
 
 You just need to **use the class-level generic type**, don’t redeclare it in the method:
 
-```
-Javapublic ErrorResponseBuilder<TBody> withBody(TBody body) {    this.body = body;    return this;}
+```Java
+public ErrorResponseBuilder<TBody> withBody(TBody body) {    this.body = body;    return this;}
 ```
 
 ---
 
 ### Fixed class
 
-```
-Javapackage ch.bbcag.wrodit.util;import org.springframework.http.HttpStatus;import java.time.LocalDateTime;public class ErrorResponseBuilder<TBody> {    private LocalDateTime timestamp;    private TBody body;    private HttpStatus status;    public static <TBody> ErrorResponseBuilder<TBody> create() {        return new ErrorResponseBuilder<>();    }    public ErrorResponseBuilder<TBody> withBody(TBody body) {        this.body = body;        return this;    }    // You can add more builder methods, e.g., withStatus, withTimestamp    public ErrorResponseBuilder<TBody> withStatus(HttpStatus status) {        this.status = status;        return this;    }    public ErrorResponseBuilder<TBody> withTimestamp(LocalDateTime timestamp) {        this.timestamp = timestamp;        return this;    }}
+```Java
+package ch.bbcag.wrodit.util;import org.springframework.http.HttpStatus;import java.time.LocalDateTime;public class ErrorResponseBuilder<TBody> {    private LocalDateTime timestamp;    private TBody body;    private HttpStatus status;    public static <TBody> ErrorResponseBuilder<TBody> create() {        return new ErrorResponseBuilder<>();    }    public ErrorResponseBuilder<TBody> withBody(TBody body) {        this.body = body;        return this;    }    // You can add more builder methods, e.g., withStatus, withTimestamp    public ErrorResponseBuilder<TBody> withStatus(HttpStatus status) {        this.status = status;        return this;    }    public ErrorResponseBuilder<TBody> withTimestamp(LocalDateTime timestamp) {        this.timestamp = timestamp;        return this;    }}
 ```
 
 ✅ Now `withBody` correctly uses the **class-level generic**, and the compiler is happy.
