@@ -1,6 +1,7 @@
 package ch.bbcag.wrodit;
 
 import ch.bbcag.wrodit.util.ErrorResponseBuilder;
+import ch.bbcag.wrodit.util.FailedValidationException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,5 +82,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
     return new ResponseEntity<>("Access Denied: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(FailedValidationException.class)
+  public ResponseEntity<?> hanldleValidationExeption(FailedValidationException ex) {
+    return ResponseEntity.badRequest().body(ex.getErrors());
   }
 }
