@@ -51,3 +51,4 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Pagination
 
 [Reflectoring](https://reflectoring.io/spring-boot-paging/)
+[PROMPT](./prompts/Swagger%20Page_Thread_%20Schema.md)
