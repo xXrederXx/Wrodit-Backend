@@ -49,3 +49,7 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Pagination
 
 [Reflectoring](https://reflectoring.io/spring-boot-paging/)
+
+## Sum of array
+
+[Stack Overflow](https://stackoverflow.com/questions/4550662/how-do-you-find-the-sum-of-all-the-numbers-in-an-array-in-java#comment104459249_4550662)
