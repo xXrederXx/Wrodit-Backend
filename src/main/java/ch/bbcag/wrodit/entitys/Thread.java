@@ -38,6 +38,12 @@ public class Thread {
   @OneToMany(mappedBy = "threads")
   private Set<Post> threadsPosts = new HashSet<>();
 
+  public Thread(Integer id) {
+    this.id = id;
+  }
+
+  public Thread() {}
+
   public Integer getId() {
     return id;
   }
