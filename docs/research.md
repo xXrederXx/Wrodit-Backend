@@ -52,3 +52,13 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 
 [Reflectoring](https://reflectoring.io/spring-boot-paging/)
 [PROMPT](./prompts/Swagger%20Page_Thread_%20Schema.md)
+
+## Sorting And Filtering API Requests
+
+[PROMPT](./prompts/Sorting%20and%20Filtering%20API.md)
+
+## Patch Response
+
+[Stack Overflow](https://stackoverflow.com/questions/54666244/what-should-response-of-rest-full-api-for-patch-http-method#:~:text=According%20to%20RFC%205789%20a%20successful%20response%20can,used%20for%20optimistic%20locking%20on%20the%20resources%20state%29.)
+
+[Stack Overflow](https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete)
