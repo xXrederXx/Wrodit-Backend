@@ -1,5 +1,7 @@
 package ch.bbcag.wrodit.controllers;
 
+import ch.bbcag.wrodit.dto.request.ThreadRequestDTO;
+import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
 import ch.bbcag.wrodit.entitys.User;
@@ -12,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,5 +78,27 @@ public class ThreadController {
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     User user = userService.throwIfUnauthorized(authId, authPasswd);
     return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(user, page)));
+  }
+
+  @PostMapping("/")
+  @Operation(summary = "Create a thread")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Thread was created",
+            content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "409",
+            description = "The user was unauthorized",
+            content = @Content)
+      })
+  public ResponseEntity<?> postThread(
+      @Valid @RequestBody ThreadRequestDTO dto,
+      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
+      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
+    userService.throwIfUnauthorized(authId, authPasswd);
+    ThreadResponseDTO responseDTO = ThreadMapper.toDTO(service.save(ThreadMapper.fromDto(dto)));
+    return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);
   }
 }

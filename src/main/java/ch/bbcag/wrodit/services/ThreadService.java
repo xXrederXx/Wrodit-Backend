@@ -4,6 +4,7 @@ import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.OffsetDateTime;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,5 +28,10 @@ public class ThreadService {
 
   public Page<Thread> paginatedThreadsByUser(User user, Pageable page) {
     return repo.findAllByUsersThreadUsersContaining(Set.of(user), page);
+  }
+
+  public Thread save(Thread thread) {
+    thread.setCreatedAt(OffsetDateTime.now());
+    return repo.save(thread);
   }
 }
