@@ -15,11 +15,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import java.net.URI;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping(ThreadController.PATH)
@@ -90,16 +89,16 @@ public class ThreadController {
   @PostMapping("/")
   @Operation(summary = "Create a thread")
   @ApiResponses(
-          value = {
-                  @ApiResponse(
-                          responseCode = "200",
-                          description = "Thread was created",
-                          content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
-                  @ApiResponse(
-                          responseCode = "409",
-                          description = "The user was unauthorized",
-                          content = @Content)
-          })
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Thread was created",
+            content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "409",
+            description = "The user was unauthorized",
+            content = @Content)
+      })
   public ResponseEntity<?> postThread(
       @Valid @RequestBody ThreadRequestDTO dto,
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
