@@ -50,13 +50,13 @@ public class ThreadController {
         @ApiResponse(
             responseCode = "200",
             description = "Page generated",
-            content = @Content(schema = @Schema(implementation = Page.class))),
+            content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class))),
       })
   public ResponseEntity<?> getAllThreads(
       @RequestParam(required = false, defaultValue = "0") Integer page,
       @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
     return ResponseEntity.ok(
-        service.paginatedThreads(page, pageSize, Sort.unsorted()).map(ThreadMapper::toDTO));
+        ThreadMapper.toPageDto(service.paginatedThreads(page, pageSize, Sort.unsorted())));
   }
 
   @GetMapping("/userfeed")
