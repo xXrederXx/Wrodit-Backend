@@ -4,6 +4,7 @@ import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.OffsetDateTime;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,5 +31,10 @@ public class ThreadService {
       User user, Integer pageNumber, Integer pageSize, Sort sort) {
     return repo.findAllByUsersThreadUsersContaining(
         Set.of(user), PageRequest.of(pageNumber, pageSize, sort));
+  }
+
+  public Thread save(Thread thread) {
+    thread.setCreatedAt(OffsetDateTime.now());
+    return repo.save(thread);
   }
 }
