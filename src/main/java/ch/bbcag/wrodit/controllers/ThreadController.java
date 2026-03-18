@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,11 +56,8 @@ public class ThreadController {
             description = "Page generated",
             content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class))),
       })
-  public ResponseEntity<?> getAllThreads(
-      @RequestParam(required = false, defaultValue = "0") Integer page,
-      @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
-    return ResponseEntity.ok(
-        ThreadMapper.toPageDto(service.paginatedThreads(page, pageSize, Sort.unsorted())));
+  public ResponseEntity<?> getAllThreads(Pageable page) {
+    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreads(page)));
   }
 
   @GetMapping("/userfeed")
@@ -75,15 +73,12 @@ public class ThreadController {
             description = "The user was unauthorized",
             content = @Content)
       })
-  public ResponseEntity<?> getUserfeed(
-      @RequestParam(required = false, defaultValue = "0") Integer page,
-      @RequestParam(required = false, defaultValue = "20") Integer pageSize,
+  public ResponseEntity<?> getUserThreads(
+      Pageable page,
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     User user = userService.throwIfUnauthorized(authId, authPasswd);
-    return ResponseEntity.ok(
-        ThreadMapper.toPageDto(
-            service.paginatedThreadsByUser(user, page, pageSize, Sort.unsorted())));
+    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(user, page)));
   }
 
   @PostMapping("/")
