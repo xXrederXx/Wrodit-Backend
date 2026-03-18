@@ -1,5 +1,6 @@
 package ch.bbcag.wrodit.controllers;
 
+import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.mapper.ThreadMapper;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,13 +49,13 @@ public class ThreadController {
         @ApiResponse(
             responseCode = "200",
             description = "Page generated",
-            content = @Content(schema = @Schema(implementation = Page.class))),
+            content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class))),
       })
   public ResponseEntity<?> getAllThreads(
       @RequestParam(required = false, defaultValue = "0") Integer page,
       @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
     return ResponseEntity.ok(
-        service.paginatedThreads(page, pageSize, Sort.unsorted()).map(ThreadMapper::toDTO));
+        ThreadMapper.toPageDto(service.paginatedThreads(page, pageSize, Sort.unsorted())));
   }
 
   @GetMapping("/userfeed")
@@ -65,7 +65,7 @@ public class ThreadController {
         @ApiResponse(
             responseCode = "200",
             description = "Page generated",
-            content = @Content(schema = @Schema(implementation = Page.class))),
+            content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class))),
         @ApiResponse(
             responseCode = "409",
             description = "The user was unauthorized",
@@ -78,8 +78,7 @@ public class ThreadController {
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     User user = userService.throwIfUnauthorized(authId, authPasswd);
     return ResponseEntity.ok(
-        service
-            .paginatedThreadsByUser(user, page, pageSize, Sort.unsorted())
-            .map(ThreadMapper::toDTO));
+        ThreadMapper.toPageDto(
+            service.paginatedThreadsByUser(user, page, pageSize, Sort.unsorted())));
   }
 }
