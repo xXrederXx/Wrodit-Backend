@@ -36,7 +36,7 @@ public class SecurityConfig {
 
   @Bean
   public JwtDecoder jwtDecoder() {
-    return NimbusJwtDecoder.withSecretKey(SecurityConstants.SECRET_KEY_SPEC).build();
+    return NimbusJwtDecoder.withSecretKey(KeySpecGenerator.getSecretKeySpec()).build();
   }
 
   @Bean
