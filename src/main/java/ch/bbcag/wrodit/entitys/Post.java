@@ -48,8 +48,7 @@ public class Post {
     this.id = id;
   }
 
-  public Post() {
-  }
+  public Post() {}
 
   public Integer getId() {
     return id;

@@ -49,8 +49,7 @@ public class Comment {
     this.id = id;
   }
 
-  public Comment() {
-  }
+  public Comment() {}
 
   public Integer getId() {
     return id;
