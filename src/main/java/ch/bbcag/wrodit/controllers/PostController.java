@@ -103,7 +103,7 @@ public class PostController {
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     userService.throwIfUnauthorized(authId, authPasswd);
-    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id)));
+    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, authId)));
   }
 
   @DeleteMapping("/{id}")

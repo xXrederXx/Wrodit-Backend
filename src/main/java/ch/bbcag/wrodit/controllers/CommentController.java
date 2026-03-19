@@ -104,7 +104,7 @@ public class CommentController {
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     userService.throwIfUnauthorized(authId, authPasswd);
     return ResponseEntity.ok(
-        CommentMapper.toDto(commentService.update(CommentMapper.fromDto(dto), id)));
+        CommentMapper.toDto(commentService.update(CommentMapper.fromDto(dto), id, authId)));
   }
 
   @DeleteMapping("/{id}")

@@ -55,8 +55,13 @@ public class CommentService {
     return commentRepository.save(comment);
   }
 
-  public Comment update(Comment comment, Integer id) {
-    Comment existing = this.getCommentById(id);
+  public Comment update(Comment comment, Integer commentId, Integer authId) {
+    Comment existing = this.getCommentById(commentId);
+
+    if (!existing.getUsers().getId().equals(authId)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
     mergeComment(existing, comment);
     return commentRepository.save(existing);
   }
