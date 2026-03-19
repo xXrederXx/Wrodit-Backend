@@ -46,8 +46,11 @@ public class PostService {
     return repo.save(post);
   }
 
-  public Post update(Post post, Integer id) {
+  public Post update(Post post, Integer id, Integer authId) {
     Post existing = this.getPostById(id);
+    if (!existing.getUsers().getId().equals(authId)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
     mergePost(existing, post);
     return repo.save(existing);
   }
