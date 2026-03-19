@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping(AuthController.PATH)
 public class AuthController {
@@ -47,6 +49,6 @@ public class AuthController {
           AuthRequestDTO dto) {
     User auth = AuthMapper.fromDTO(dto);
     User savedAuth = service.insert(auth);
-    return ResponseEntity.status(201).body(AuthMapper.toDTO(savedAuth));
+    return ResponseEntity.created(URI.create(UserController.PATH + "/" + savedAuth.getId())).body(AuthMapper.toDTO(savedAuth));
   }
 }
