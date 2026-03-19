@@ -3,13 +3,11 @@ package ch.bbcag.wrodit.security;
 import ch.bbcag.wrodit.controllers.AuthController;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.spec.SecretKeySpec;
-import org.springframework.beans.factory.annotation.Value;
 
 public class SecurityConstants {
   private SecurityConstants() {
     // hide ctor
   }
-
 
   public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
@@ -24,7 +22,7 @@ public class SecurityConstants {
   }
 
   public static final SecretKeySpec SECRET_KEY_SPEC =
-          new SecretKeySpec(SECRET.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+      new SecretKeySpec(SECRET.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 
   public static final String ALGORITHM = "HmacSHA256";
 
