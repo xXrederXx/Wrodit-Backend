@@ -44,6 +44,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'com.h2database:h2'
+    // Source: https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer
+    testImplementation 'org.junit-pioneer:junit-pioneer:2.3.0'
 
     // Dev tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -51,4 +53,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    jvmArgs += [
+            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+    ]
 }
