@@ -21,7 +21,6 @@ format:
     - ./gradlew --build-cache --parallel spotlessCheck
   only:
     - merge_requests
-    - main
 
 unit_test:
   stage: test
@@ -36,7 +35,6 @@ unit_test:
       - build
   only:
     - merge_requests
-    - main
 
 # 4. Notify Coolify webhook for redeploy
 coolify_deploy_stageing:
