@@ -11,7 +11,8 @@ import java.util.Date;
 public class JWTGenerator {
   public static String generateJwtToken(Integer userId, String username) {
     try {
-      SignedJWT jwt = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), buildJWTClaimsSet(userId, username));
+      SignedJWT jwt =
+          new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), buildJWTClaimsSet(userId, username));
       jwt.sign(new MACSigner(SecurityConstants.getInstance.getSecretKeySpec()));
       return jwt.serialize();
     } catch (JOSEException e) {
