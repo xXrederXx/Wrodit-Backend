@@ -13,7 +13,7 @@ public class JWTGenerator {
     try {
       SignedJWT jwt =
           new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), buildJWTClaimsSet(userId, username));
-      jwt.sign(new MACSigner(SecurityConstants.getInstance.getSecretKeySpec()));
+      jwt.sign(new MACSigner(SecurityConstants.SECRET_KEY_SPEC));
       return jwt.serialize();
     } catch (JOSEException e) {
       throw new RuntimeException(e);
