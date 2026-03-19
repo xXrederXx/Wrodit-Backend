@@ -4,7 +4,6 @@ import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
 import ch.bbcag.wrodit.dto.response.UserValidateResponseDTO;
 import ch.bbcag.wrodit.mapper.UserMapper;
-import ch.bbcag.wrodit.security.SecurityConstants;
 import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -58,11 +57,7 @@ public class UserController {
             content = @Content)
       })
   public ResponseEntity<?> getUserWholeById(
-      @Parameter(description = "Id of the user to get, must be you") @PathVariable Integer id,
-      @Parameter(description = "The password for the account information you are trying to get")
-          @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD)
-          String authPassword) {
-    service.throwIfUnauthorized(id, authPassword);
+      @Parameter(description = "Id of the user to get, must be you") @PathVariable Integer id) {
     return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), true));
   }
 

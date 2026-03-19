@@ -6,7 +6,6 @@ import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
-import ch.bbcag.wrodit.security.SecurityConstants;
 import ch.bbcag.wrodit.services.PostService;
 import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -74,12 +75,10 @@ public class PostController {
             description = "User could not be created, username already in use",
             content = @Content)
       })
-  public ResponseEntity<?> postPost(
-      @RequestBody PostCreateRequestDTO post,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
-    userService.throwIfUnauthorized(authId, authPasswd);
-    Post responsePost = service.save(PostMapper.fromDto(post), authId);
+  public ResponseEntity<?> postPost(@RequestBody PostCreateRequestDTO post) {
+    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Integer userId = jwt.getClaim("userId");
+    Post responsePost = service.save(PostMapper.fromDto(post), userId);
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
         .body(PostMapper.toDto(responsePost));
   }
@@ -97,13 +96,10 @@ public class PostController {
             description = "The user was unauthorized",
             content = @Content)
       })
-  public ResponseEntity<?> patchPost(
-      @RequestBody PostRequestDTO dto,
-      @PathVariable Integer id,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
-    userService.throwIfUnauthorized(authId, authPasswd);
-    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, authId)));
+  public ResponseEntity<?> patchPost(@RequestBody PostRequestDTO dto, @PathVariable Integer id) {
+    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Integer userId = jwt.getClaim("userId");
+    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId)));
   }
 
   @DeleteMapping("/{id}")
@@ -113,12 +109,10 @@ public class PostController {
         @ApiResponse(responseCode = "204", description = "Tag was deleted successfully"),
         @ApiResponse(responseCode = "404", description = "Tag was not found", content = @Content)
       })
-  public ResponseEntity<?> deletePost(
-      @PathVariable Integer id,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
-    userService.throwIfUnauthorized(authId, authPasswd);
-    service.deletePostById(id, authId);
+  public ResponseEntity<?> deletePost(@PathVariable Integer id) {
+    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Integer userId = jwt.getClaim("userId");
+    service.deletePostById(id, userId);
     return ResponseEntity.noContent().build();
   }
 }

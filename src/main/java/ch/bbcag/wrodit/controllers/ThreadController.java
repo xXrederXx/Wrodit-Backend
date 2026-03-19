@@ -6,7 +6,6 @@ import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.mapper.ThreadMapper;
-import ch.bbcag.wrodit.security.SecurityConstants;
 import ch.bbcag.wrodit.services.ThreadService;
 import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +17,8 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -72,11 +73,10 @@ public class ThreadController {
             description = "The user was unauthorized",
             content = @Content)
       })
-  public ResponseEntity<?> getUserThreads(
-      Pageable page,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
-    User user = userService.throwIfUnauthorized(authId, authPasswd);
+  public ResponseEntity<?> getUserThreads(Pageable page) {
+    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Integer userId = jwt.getClaim("userId");
+    User user = userService.findById(userId);
     return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(user, page)));
   }
 
@@ -93,11 +93,7 @@ public class ThreadController {
             description = "The user was unauthorized",
             content = @Content)
       })
-  public ResponseEntity<?> postThread(
-      @Valid @RequestBody ThreadRequestDTO dto,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
-      @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
-    userService.throwIfUnauthorized(authId, authPasswd);
+  public ResponseEntity<?> postThread(@Valid @RequestBody ThreadRequestDTO dto) {
     ThreadResponseDTO responseDTO = ThreadMapper.toDTO(service.save(ThreadMapper.fromDto(dto)));
     return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);
   }
