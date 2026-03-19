@@ -53,3 +53,29 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 ## Sum of array
 
 [Stack Overflow](https://stackoverflow.com/questions/4550662/how-do-you-find-the-sum-of-all-the-numbers-in-an-array-in-java#comment104459249_4550662)
+
+## Paralel fetching
+
+[PROMPT](./prompts/Parallel%20Fetch%20Anfragen.md)
+
+## Loader Problem
+
+[PROMPT](./prompts/Router%20Loader%20Problem.md)
+
+## Sidebar
+
+[W3s](https://www.w3schools.com/howto/howto_js_curtain_menu.asp)
+
+## React 
+
+- [Profile](https://react-icons.github.io/react-icons/search/#q=profile)
+- [Menu](https://react-icons.github.io/react-icons/search/#q=menu)
+- [Comment](https://react-icons.github.io/react-icons/search/#q=comment)
+
+## MIT License
+
+[MIT](https://opensource.org/license/MIT)
+
+## Input Styling
+
+[PROMPT](./prompts/Inputfeld%20stylen%20CSS_2026-03-12_12-30.md)
