@@ -45,6 +45,12 @@ public class Comment {
   @OneToMany(mappedBy = "comments")
   private Set<CommentVote> commentsCommentVotes = new HashSet<>();
 
+  public Comment(Integer id) {
+    this.id = id;
+  }
+
+  public Comment() {}
+
   public Integer getId() {
     return id;
   }

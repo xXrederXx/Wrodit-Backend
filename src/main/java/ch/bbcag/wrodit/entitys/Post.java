@@ -44,6 +44,12 @@ public class Post {
   @OneToMany(mappedBy = "posts")
   private Set<PostsVote> postsPostsVotes = new HashSet<>();
 
+  public Post(Integer id) {
+    this.id = id;
+  }
+
+  public Post() {}
+
   public Integer getId() {
     return id;
   }
