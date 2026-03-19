@@ -57,11 +57,11 @@ public class PostService {
       List<Predicate> predicates = new ArrayList<>();
 
       if (userId != null) {
-        predicates.add(criteriaBuilder.equal(root.get("user").get("id"), userId));
+        predicates.add(criteriaBuilder.equal(root.get("users").get("id"), userId));
       }
 
       if (threadId != null) {
-        predicates.add(criteriaBuilder.equal(root.get("thread").get("id"), threadId));
+        predicates.add(criteriaBuilder.equal(root.get("threads").get("id"), threadId));
       }
 
       return criteriaBuilder.and(predicates.toArray(predicates.toArray(new Predicate[0])));
