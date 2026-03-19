@@ -76,11 +76,12 @@ public class AuthController {
           @RequestBody
           AuthRequestDTO dto) {
     String username = dto.username();
+    User user = service.findByUsername(username);
     Authentication token = new UsernamePasswordAuthenticationToken(username, dto.password());
 
     if (authenticationManager.authenticate(token).isAuthenticated()) {
       return ResponseEntity.ok(
-          new JWTResponseDTO(JWTGenerator.generateJwtToken(username), username));
+          new JWTResponseDTO(JWTGenerator.generateJwtToken(user.getId(), username), username));
     }
 
     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
