@@ -4,6 +4,7 @@ import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
 import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
+import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import ch.bbcag.wrodit.security.SecurityConstants;
 import ch.bbcag.wrodit.services.PostService;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,12 +62,26 @@ public class PostController {
   }
 
   @PostMapping("/")
+  @Operation(summary = "Create a new post")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Post was created successfully",
+            content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
+        @ApiResponse(
+            responseCode = "409",
+            description = "User could not be created, username already in use",
+            content = @Content)
+      })
   public ResponseEntity<?> postPost(
       @RequestBody PostCreateRequestDTO post,
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_ID) Integer authId,
       @RequestHeader(name = SecurityConstants.AUTH_HEADER_PASSWORD) String authPasswd) {
     userService.throwIfUnauthorized(authId, authPasswd);
-    return ResponseEntity.ok(PostMapper.toDto(service.save(PostMapper.fromDto(post), authId)));
+    Post responsePost = service.save(PostMapper.fromDto(post), authId);
+    return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
+        .body(PostMapper.toDto(responsePost));
   }
 
   @PatchMapping("/{id}")

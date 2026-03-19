@@ -85,7 +85,7 @@ public class ThreadController {
   @ApiResponses(
       value = {
         @ApiResponse(
-            responseCode = "200",
+            responseCode = "201",
             description = "Thread was created",
             content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
         @ApiResponse(

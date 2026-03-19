@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +48,7 @@ public class AuthController {
           AuthRequestDTO dto) {
     User auth = AuthMapper.fromDTO(dto);
     User savedAuth = service.insert(auth);
-    return ResponseEntity.status(201).body(AuthMapper.toDTO(savedAuth));
+    return ResponseEntity.created(URI.create(UserController.PATH + "/" + savedAuth.getId()))
+        .body(AuthMapper.toDTO(savedAuth));
   }
 }
