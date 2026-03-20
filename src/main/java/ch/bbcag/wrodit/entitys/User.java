@@ -53,6 +53,12 @@ public class User {
   @OneToMany(mappedBy = "users")
   private Set<PostsVote> usersPostsVotes = new HashSet<>();
 
+  public User() {}
+
+  public User(Integer id) {
+    this.id = id;
+  }
+
   public Integer getId() {
     return id;
   }
