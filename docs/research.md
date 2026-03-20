@@ -77,6 +77,8 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 
 [PROMPT](./prompts/Maven%20to%20Gradle%20Conversion.md)
 
+[PROMPT](./prompts/Injecting%20JWT%20Secret.md)
+
 ## Sum of array
 
 [Stack Overflow](https://stackoverflow.com/questions/4550662/how-do-you-find-the-sum-of-all-the-numbers-in-an-array-in-java#comment104459249_4550662)
