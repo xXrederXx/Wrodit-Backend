@@ -1,16 +1,14 @@
 package ch.bbcag.wrodit.util;
 
-import java.time.LocalDateTime;
+import static ch.bbcag.wrodit.TestingConstants.MAX_TIME_CHECK_DIFF;
+import static ch.bbcag.wrodit.TestingConstants.TIME_CHECK_OFFSET;
 
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
-import static ch.bbcag.wrodit.TestingConstants.MAX_TIME_CHECK_DIFF;
-import static ch.bbcag.wrodit.TestingConstants.TIME_CHECK_OFFSET;
-
 class ErrorResponseBuilderTest {
-
 
   @Test
   void checkResponse_whenBuildingErrorCorrectly_thenCorrectResponse() {
