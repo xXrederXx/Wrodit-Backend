@@ -1,14 +1,16 @@
 package ch.bbcag.wrodit.util;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
+import static ch.bbcag.wrodit.TestingConstants.MAX_TIME_CHECK_DIFF;
+import static ch.bbcag.wrodit.TestingConstants.TIME_CHECK_OFFSET;
+
 class ErrorResponseBuilderTest {
-  static final long TIME_CHECK_DIFF = 5;
-  static final ZoneOffset TIME_CHECK_OFFSET = ZoneOffset.UTC;
+
 
   @Test
   void checkResponse_whenBuildingErrorCorrectly_thenCorrectResponse() {
@@ -40,7 +42,7 @@ class ErrorResponseBuilderTest {
     Assert.isTrue(
         LocalDateTime.now().toEpochSecond(TIME_CHECK_OFFSET)
                 - response.getBody().timestamp().toEpochSecond(TIME_CHECK_OFFSET)
-            < TIME_CHECK_DIFF,
+            < MAX_TIME_CHECK_DIFF,
         "Timestamp should be automatically set to current time");
   }
 }
