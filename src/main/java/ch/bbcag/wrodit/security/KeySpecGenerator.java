@@ -19,7 +19,7 @@ public class KeySpecGenerator {
     if (secret == null) {
       throw new RuntimeException("JWT secret not set");
     }
-    if(secret.length() < 32){
+    if (secret.length() < 32) {
       throw new RuntimeException("JWT secret too short, current length is only " + secret.length());
     }
     SECRET = secret;
