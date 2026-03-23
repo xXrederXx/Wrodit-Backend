@@ -34,15 +34,16 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(AuthorizationDeniedException.class)
-  public ResponseEntity<?> handleAuthDeniedExceptions(Exception ex) {
+  public ResponseEntity<?> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
     return new ErrorResponseBuilder<String>()
-        .withBody("Unautherized")
+        .withBody("Unauthorized")
         .withStatus(HttpStatus.UNAUTHORIZED)
         .buildResponse();
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<?> handleResourceNotFound(MethodArgumentNotValidException ex) {
+  public ResponseEntity<?> handleMethodArgumentNotValidException(
+      MethodArgumentNotValidException ex) {
     final Map<String, List<String>> errors = new HashMap<>();
     ex.getBindingResult()
         .getAllErrors()
@@ -62,7 +63,8 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+  public ResponseEntity<?> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex) {
     logger.error("An error occurred: {}", ex.getMessage(), ex);
     Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
     Matcher matcher = pattern.matcher(ex.getMessage());
@@ -85,7 +87,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(FailedValidationException.class)
-  public ResponseEntity<?> hanldleValidationExeption(FailedValidationException ex) {
+  public ResponseEntity<?> handleFailedValidationException(FailedValidationException ex) {
     return ResponseEntity.badRequest().body(ex.getErrors());
   }
 }
