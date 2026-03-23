@@ -16,8 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -75,9 +74,9 @@ public class PostController {
             description = "User could not be created, username already in use",
             content = @Content)
       })
-  public ResponseEntity<?> postPost(@RequestBody PostCreateRequestDTO post) {
-    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Integer userId = jwt.getClaim("userId");
+  public ResponseEntity<?> postPost(
+      @RequestBody PostCreateRequestDTO post,
+      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     Post responsePost = service.save(PostMapper.fromDto(post), userId);
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
         .body(PostMapper.toDto(responsePost));
@@ -96,9 +95,11 @@ public class PostController {
             description = "The user was unauthorized",
             content = @Content)
       })
-  public ResponseEntity<?> patchPost(@RequestBody PostRequestDTO dto, @PathVariable Integer id) {
-    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Integer userId = jwt.getClaim("userId");
+  public ResponseEntity<?> patchPost(
+      @RequestBody PostRequestDTO dto,
+      @PathVariable Integer id,
+      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+
     return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId)));
   }
 
@@ -109,9 +110,9 @@ public class PostController {
         @ApiResponse(responseCode = "204", description = "Tag was deleted successfully"),
         @ApiResponse(responseCode = "404", description = "Tag was not found", content = @Content)
       })
-  public ResponseEntity<?> deletePost(@PathVariable Integer id) {
-    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Integer userId = jwt.getClaim("userId");
+  public ResponseEntity<?> deletePost(
+      @PathVariable Integer id,
+      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     service.deletePostById(id, userId);
     return ResponseEntity.noContent().build();
   }
