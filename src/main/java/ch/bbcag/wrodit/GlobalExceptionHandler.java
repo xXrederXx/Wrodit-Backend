@@ -91,6 +91,9 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(FailedValidationException.class)
   public ResponseEntity<?> handleFailedValidationException(FailedValidationException ex) {
-    return new ErrorResponseBuilder<Map<String, List<String>>>().withBody(ex.getErrors()).withStatus(HttpStatus.BAD_REQUEST).buildResponse();
+    return new ErrorResponseBuilder<Map<String, List<String>>>()
+        .withBody(ex.getErrors())
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .buildResponse();
   }
 }
