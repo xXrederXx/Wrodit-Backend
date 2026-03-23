@@ -33,7 +33,7 @@ public class UserService {
       return passwordEncoder.matches(password, user.getPasswordHash())
           ? Optional.of(user)
           : Optional.empty();
-    } catch (Exception e) {
+    } catch (EntityNotFoundException e) {
       return Optional.empty();
     }
   }
