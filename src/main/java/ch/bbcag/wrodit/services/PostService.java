@@ -76,7 +76,7 @@ public class PostService {
 
     if (changing.getTitle() != null) {
       if (StringUtils.isNotBlank(changing.getTitle())) {
-        if (changing.getTitle().length() < 255) {
+        if (changing.getTitle().length() <= 255) {
           existing.setTitle(changing.getTitle());
         } else {
           errors.put("title", List.of("Title cant be longer than 255"));
