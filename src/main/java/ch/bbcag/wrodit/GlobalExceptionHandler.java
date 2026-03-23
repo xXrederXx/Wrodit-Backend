@@ -83,11 +83,17 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>("Access Denied: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    return new ErrorResponseBuilder<String>()
+        .withBody("Access Denied: " + ex.getMessage())
+        .withStatus(HttpStatus.FORBIDDEN)
+        .buildResponse();
   }
 
   @ExceptionHandler(FailedValidationException.class)
   public ResponseEntity<?> handleFailedValidationException(FailedValidationException ex) {
-    return ResponseEntity.badRequest().body(ex.getErrors());
+    return new ErrorResponseBuilder<Map<String, List<String>>>()
+        .withBody(ex.getErrors())
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .buildResponse();
   }
 }
