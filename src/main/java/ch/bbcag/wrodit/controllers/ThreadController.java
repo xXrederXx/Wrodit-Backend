@@ -17,8 +17,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -73,9 +72,9 @@ public class ThreadController {
             description = "The user was unauthorized",
             content = @Content)
       })
-  public ResponseEntity<?> getUserThreads(Pageable page) {
-    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Integer userId = jwt.getClaim("userId");
+  public ResponseEntity<?> getUserThreads(
+      Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+
     User user = userService.findById(userId);
     return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(user, page)));
   }
