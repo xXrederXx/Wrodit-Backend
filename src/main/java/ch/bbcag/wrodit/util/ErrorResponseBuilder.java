@@ -1,10 +1,15 @@
 package ch.bbcag.wrodit.util;
 
 import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ErrorResponseBuilder<T> {
+  private final Logger logger = LoggerFactory.getLogger(ErrorResponseBuilder.class);
+
   private LocalDateTime timestamp;
   private T body;
   private HttpStatus status;
@@ -29,6 +34,16 @@ public class ErrorResponseBuilder<T> {
   }
 
   public ResponseEntity<ErrorResponseDTO<T>> buildResponse() {
+    if(status == null || !status.isError())
+    {
+      throw new RuntimeException("Cant build an Error Response with a Non-Error Status code");
+    }
+
+    if(body == null)
+    {
+      logger.warn("A Response was build without a body. Consider adding one for the client.");
+    }
+
     return new ResponseEntity<>(
         new ErrorResponseDTO<>(body, timestamp == null ? LocalDateTime.now() : timestamp), status);
   }
