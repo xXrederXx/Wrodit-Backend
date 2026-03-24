@@ -84,7 +84,9 @@ public class CommentController {
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     CommentResponseDTO responseDTO =
         CommentMapper.toDto(
-            commentService.save(CommentMapper.fromDto(commentCreateDTO), userId == null ? null : userId.intValue()));
+            commentService.save(
+                CommentMapper.fromDto(commentCreateDTO),
+                userId == null ? null : userId.intValue()));
     return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);
   }
 
@@ -105,7 +107,8 @@ public class CommentController {
 
     return ResponseEntity.ok(
         CommentMapper.toDto(
-            commentService.update(CommentMapper.fromDto(dto), id, userId == null ? null : userId.intValue())));
+            commentService.update(
+                CommentMapper.fromDto(dto), id, userId == null ? null : userId.intValue())));
   }
 
   @DeleteMapping("/{id}")

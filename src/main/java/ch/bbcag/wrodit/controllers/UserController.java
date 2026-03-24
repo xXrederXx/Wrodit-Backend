@@ -54,6 +54,7 @@ public class UserController {
   @Api401Response
   public ResponseEntity<?> getWholeUserById(
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
-    return ResponseEntity.ok(UserMapper.toUserDto(service.findById(userId == null ? null : userId.intValue()), true));
+    return ResponseEntity.ok(
+        UserMapper.toUserDto(service.findById(userId == null ? null : userId.intValue()), true));
   }
 }

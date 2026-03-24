@@ -89,7 +89,8 @@ public class PostController {
           @RequestBody
           PostCreateRequestDTO post,
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
-    Post responsePost = service.save(PostMapper.fromDto(post), userId == null ? null : userId.intValue());
+    Post responsePost =
+        service.save(PostMapper.fromDto(post), userId == null ? null : userId.intValue());
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
         .body(PostMapper.toDto(responsePost));
   }
@@ -110,7 +111,9 @@ public class PostController {
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
     return ResponseEntity.ok(
-        PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId == null ? null : userId.intValue())));
+        PostMapper.toDto(
+            service.update(
+                PostMapper.fromDto(dto), id, userId == null ? null : userId.intValue())));
   }
 
   @DeleteMapping("/{id}")
