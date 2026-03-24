@@ -6,6 +6,7 @@ import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
 import ch.bbcag.wrodit.mapper.CommentMapper;
 import ch.bbcag.wrodit.services.CommentService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,6 +39,7 @@ public class CommentController {
             content = @Content(schema = @Schema(implementation = CommentResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getCommentById(@PathVariable Integer id) {
     return ResponseEntity.ok(CommentMapper.toDto(commentService.getCommentById(id)));
   }
@@ -51,6 +53,7 @@ public class CommentController {
             description = "Page generated",
             content = @Content(schema = @Schema(implementation = CommentPageResponseDTO.class))),
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getPagableComments(
       Pageable page,
       @RequestParam(required = false) Integer post,
@@ -66,12 +69,9 @@ public class CommentController {
         @ApiResponse(
             responseCode = "201",
             description = "Comment was created",
-            content = @Content(schema = @Schema(implementation = CommentResponseDTO.class))),
-        @ApiResponse(
-            responseCode = "409",
-            description = "The user was unauthorized",
-            content = @Content)
+            content = @Content(schema = @Schema(implementation = CommentResponseDTO.class)))
       })
+  @ApiAuthResponses
   public ResponseEntity<?> postComment(
       @Valid @RequestBody CommentCreateDTO commentCreateDTO,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
@@ -87,12 +87,9 @@ public class CommentController {
         @ApiResponse(
             responseCode = "200",
             description = "comment was Updated",
-            content = @Content(schema = @Schema(implementation = CommentResponseDTO.class))),
-        @ApiResponse(
-            responseCode = "409",
-            description = "The user was unauthorized",
-            content = @Content)
+            content = @Content(schema = @Schema(implementation = CommentResponseDTO.class)))
       })
+  @ApiAuthResponses
   public ResponseEntity<?> patchComment(
       @RequestBody CommentRequestDTO dto,
       @PathVariable Integer id,
@@ -112,6 +109,7 @@ public class CommentController {
             description = "Comment was not found",
             content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> deletePost(
       @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {

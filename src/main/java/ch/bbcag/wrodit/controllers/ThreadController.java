@@ -6,6 +6,7 @@ import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
 import ch.bbcag.wrodit.mapper.ThreadMapper;
 import ch.bbcag.wrodit.services.ThreadService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,6 +39,7 @@ public class ThreadController {
             content = @Content(schema = @Schema(implementation = ThreadResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Thread was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getById(@PathVariable Integer id) {
     return ResponseEntity.ok(ThreadMapper.toDTO(service.findById(id)));
   }
@@ -51,6 +53,7 @@ public class ThreadController {
             description = "Page generated",
             content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class))),
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getAllThreads(Pageable page) {
     return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreads(page)));
   }
@@ -68,6 +71,7 @@ public class ThreadController {
             description = "The user was unauthorized",
             content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getUserThreads(
       Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
 
@@ -87,6 +91,7 @@ public class ThreadController {
             description = "The user was unauthorized",
             content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> postThread(@Valid @RequestBody ThreadRequestDTO dto) {
     ThreadResponseDTO responseDTO = ThreadMapper.toDTO(service.save(ThreadMapper.fromDto(dto)));
     return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);

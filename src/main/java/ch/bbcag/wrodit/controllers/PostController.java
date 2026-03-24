@@ -7,6 +7,7 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import ch.bbcag.wrodit.services.PostService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,6 +40,7 @@ public class PostController {
             content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getPostById(@PathVariable Integer id) {
     return ResponseEntity.ok(PostMapper.toDto(service.getPostById(id)));
   }
@@ -52,6 +54,7 @@ public class PostController {
             description = "Page generated",
             content = @Content(schema = @Schema(implementation = PostPageResponseDTO.class))),
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getPaginatedPosts(
       Pageable page,
       @RequestParam(required = false) Integer user,
@@ -72,6 +75,7 @@ public class PostController {
             description = "User could not be created, username already in use",
             content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> postPost(
       @Valid @RequestBody PostCreateRequestDTO post,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
@@ -93,6 +97,7 @@ public class PostController {
             description = "The user was unauthorized",
             content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> patchPost(
       @RequestBody PostRequestDTO dto,
       @PathVariable Integer id,
@@ -108,6 +113,7 @@ public class PostController {
         @ApiResponse(responseCode = "204", description = "Tag was deleted successfully"),
         @ApiResponse(responseCode = "404", description = "Tag was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> deletePost(
       @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
