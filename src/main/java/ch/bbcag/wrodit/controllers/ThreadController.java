@@ -25,11 +25,9 @@ import org.springframework.web.bind.annotation.*;
 public class ThreadController {
   public static final String PATH = "/threads";
   private final ThreadService service;
-  private final UserService userService;
 
-  public ThreadController(ThreadService service, UserService userService) {
+  public ThreadController(ThreadService service) {
     this.service = service;
-    this.userService = userService;
   }
 
   @GetMapping("/{id}")
@@ -75,8 +73,7 @@ public class ThreadController {
   public ResponseEntity<?> getUserThreads(
       Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
 
-    User user = userService.findById(userId);
-    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(user, page)));
+    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(userId, page)));
   }
 
   @PostMapping("/")

@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ThreadRepository extends JpaRepository<Thread, Integer> {
-  Page<Thread> findAllByUsersThreadUsersContaining(Set<User> usersThreadUsers, Pageable pageable);
+public interface ThreadRepository extends JpaRepository<Thread, Integer>, JpaSpecificationExecutor<Thread> {
 }
