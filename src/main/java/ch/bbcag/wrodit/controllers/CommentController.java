@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,7 @@ public class CommentController {
             content = @Content)
       })
   public ResponseEntity<?> postComment(
-      @RequestBody CommentCreateDTO commentCreateDTO,
+      @Valid @RequestBody CommentCreateDTO commentCreateDTO,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     CommentResponseDTO responseDTO =
         CommentMapper.toDto(commentService.save(CommentMapper.fromDto(commentCreateDTO), userId));
