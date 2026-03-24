@@ -1,8 +1,8 @@
 package ch.bbcag.wrodit.services;
 
 import ch.bbcag.wrodit.entitys.Post;
-import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.PostRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
@@ -18,18 +18,20 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PostService {
-  public PostRepository repo;
+  private final PostRepository postRepository;
+  private final UserRepository userRepository;
 
-  public PostService(PostRepository repo) {
-    this.repo = repo;
+  public PostService(PostRepository postRepository, UserRepository userRepository) {
+    this.postRepository = postRepository;
+    this.userRepository = userRepository;
   }
 
   public Post getPostById(Integer id) {
-    return repo.findById(id).orElseThrow(EntityNotFoundException::new);
+    return postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 
   public Page<Post> getPaginatedPosts(Integer userId, Integer threadId, Pageable pagable) {
-    return repo.findAll(buildSpecification(userId, threadId), pagable);
+    return postRepository.findAll(buildSpecification(userId, threadId), pagable);
   }
 
   public void deletePostById(Integer id, Integer userId) {
@@ -37,13 +39,13 @@ public class PostService {
     if (!post.getUsers().getId().equals(userId)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
-    repo.deleteById(id);
+    postRepository.deleteById(id);
   }
 
   public Post save(Post post, Integer authId) {
-    post.setUsers(new User(authId));
+    post.setUsers(userRepository.getReferenceById(authId));
     post.setCreatedAt(OffsetDateTime.now());
-    return repo.save(post);
+    return postRepository.save(post);
   }
 
   public Post update(Post post, Integer id, Integer authId) {
@@ -52,7 +54,7 @@ public class PostService {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
     mergePost(existing, post);
-    return repo.save(existing);
+    return postRepository.save(existing);
   }
 
   private Specification<Post> buildSpecification(Integer userId, Integer threadId) {

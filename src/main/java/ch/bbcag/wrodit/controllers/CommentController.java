@@ -81,9 +81,12 @@ public class CommentController {
           @Valid
           @RequestBody
           CommentCreateDTO commentCreateDTO,
-      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     CommentResponseDTO responseDTO =
-        CommentMapper.toDto(commentService.save(CommentMapper.fromDto(commentCreateDTO), userId));
+        CommentMapper.toDto(
+            commentService.save(
+                CommentMapper.fromDto(commentCreateDTO),
+                userId == null ? null : userId.intValue()));
     return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);
   }
 
@@ -100,10 +103,12 @@ public class CommentController {
           @RequestBody
           CommentRequestDTO dto,
       @Parameter(description = "The commetn id you want to change") @PathVariable Integer id,
-      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
     return ResponseEntity.ok(
-        CommentMapper.toDto(commentService.update(CommentMapper.fromDto(dto), id, userId)));
+        CommentMapper.toDto(
+            commentService.update(
+                CommentMapper.fromDto(dto), id, userId == null ? null : userId.intValue())));
   }
 
   @DeleteMapping("/{id}")
@@ -119,9 +124,9 @@ public class CommentController {
   @ApiAuthResponses
   public ResponseEntity<?> deleteComment(
       @Parameter(description = "The comments id you want to delete") @PathVariable Integer id,
-      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
-    commentService.deletePostById(id, userId);
+    commentService.deletePostById(id, userId == null ? null : userId.intValue());
     return ResponseEntity.noContent().build();
   }
 }
