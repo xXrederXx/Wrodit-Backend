@@ -1,7 +1,7 @@
 package ch.bbcag.wrodit;
 
 import ch.bbcag.wrodit.util.ErrorResponseBuilder;
-import ch.bbcag.wrodit.util.FailedValidationException;
+import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;

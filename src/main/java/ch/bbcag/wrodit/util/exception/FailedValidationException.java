@@ -1,4 +1,4 @@
-package ch.bbcag.wrodit.util;
+package ch.bbcag.wrodit.util.exception;
 
 import java.util.List;
 import java.util.Map;

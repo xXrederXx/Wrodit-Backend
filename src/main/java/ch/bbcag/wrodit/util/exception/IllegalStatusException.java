@@ -1,4 +1,4 @@
-package ch.bbcag.wrodit.util;
+package ch.bbcag.wrodit.util.exception;
 
 import org.springframework.http.HttpStatus;
 

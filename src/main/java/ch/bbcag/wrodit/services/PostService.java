@@ -3,7 +3,7 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
-import ch.bbcag.wrodit.util.FailedValidationException;
+import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
@@ -12,9 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PostService {
@@ -37,7 +36,7 @@ public class PostService {
   public void deletePostById(Integer id, Integer userId) {
     Post post = this.getPostById(id);
     if (!post.getUsers().getId().equals(userId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      throw new AuthorizationDeniedException("Forbidden");
     }
     postRepository.deleteById(id);
   }
@@ -51,7 +50,7 @@ public class PostService {
   public Post update(Post post, Integer id, Integer authId) {
     Post existing = this.getPostById(id);
     if (!existing.getUsers().getId().equals(authId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      throw new AuthorizationDeniedException("Forbidden");
     }
     mergePost(existing, post);
     return postRepository.save(existing);
