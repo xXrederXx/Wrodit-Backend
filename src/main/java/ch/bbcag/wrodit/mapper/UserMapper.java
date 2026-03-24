@@ -19,7 +19,7 @@ public class UserMapper {
 
   public static UserResponseDTO toUserDto(User user, boolean includeEmail) {
     return new UserResponseDTO(
-        user.getId(), user.getUsername(), includeEmail ? user.getEmail() : "");
+        user.getId(), user.getUsername(), includeEmail ? user.getEmail() : "", user.getCreatedAt());
   }
 
   public static UserValidateResponseDTO toValidateDTO(Optional<User> user) {

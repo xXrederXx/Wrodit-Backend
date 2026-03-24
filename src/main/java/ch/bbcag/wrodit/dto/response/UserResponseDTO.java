@@ -1,3 +1,6 @@
 package ch.bbcag.wrodit.dto.response;
 
-public record UserResponseDTO(Integer id, String username, String email) {}
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
+public record UserResponseDTO(Integer id, String username, String email, OffsetDateTime createdAt) {}
