@@ -21,7 +21,8 @@ public class KeySpecGenerator {
       throw new InvalidSecretKeyException("JWT secret not set");
     }
     if (secret.length() < 32) {
-      throw new InvalidSecretKeyException("JWT secret too short, current length is only " + secret.length());
+      throw new InvalidSecretKeyException(
+          "JWT secret too short, current length is only " + secret.length());
     }
     SECRET = secret;
   }

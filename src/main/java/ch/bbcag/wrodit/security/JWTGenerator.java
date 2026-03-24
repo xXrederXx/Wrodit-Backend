@@ -10,8 +10,7 @@ import com.nimbusds.jwt.SignedJWT;
 import java.util.Date;
 
 public class JWTGenerator {
-  private JWTGenerator()
-  {
+  private JWTGenerator() {
     // hide ctor
   }
 
