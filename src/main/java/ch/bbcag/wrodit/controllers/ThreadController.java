@@ -65,9 +65,9 @@ public class ThreadController {
       content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> getUserThreads(
-      Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+      Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
-    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(userId, page)));
+    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(userId.intValue(), page)));
   }
 
   @PostMapping("/")

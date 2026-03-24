@@ -88,8 +88,8 @@ public class PostController {
           @Valid
           @RequestBody
           PostCreateRequestDTO post,
-      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
-    Post responsePost = service.save(PostMapper.fromDto(post), userId);
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    Post responsePost = service.save(PostMapper.fromDto(post), userId.intValue());
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
         .body(PostMapper.toDto(responsePost));
   }
@@ -107,9 +107,9 @@ public class PostController {
           @RequestBody
           PostRequestDTO dto,
       @Parameter(description = "The post id which you want to update") @PathVariable Integer id,
-      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
-    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId)));
+    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId.intValue())));
   }
 
   @DeleteMapping("/{id}")
@@ -125,8 +125,8 @@ public class PostController {
   @ApiAuthResponses
   public ResponseEntity<?> deletePost(
       @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
-      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
-    service.deletePostById(id, userId);
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    service.deletePostById(id, userId.intValue());
     return ResponseEntity.noContent().build();
   }
 }
