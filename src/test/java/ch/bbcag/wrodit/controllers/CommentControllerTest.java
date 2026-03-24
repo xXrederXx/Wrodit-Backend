@@ -48,24 +48,22 @@ class CommentControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetComments_whenCommentExists_thenSuccess() throws Exception {
     Mockito.when(
             commentService.getPaginatedComments(
-                any(Pageable.class), any(Integer.class), any(Integer.class)))
+                any(Pageable.class), any(), any()))
         .thenReturn(mockCommentPage);
 
     mockMvc.perform(get(CommentController.PATH + "/")).andExpect(status().isOk());
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetThreads_whenNoThreadExists_thenSuccess() throws Exception {
     Mockito.when(
             commentService.getPaginatedComments(
-                any(Pageable.class), any(Integer.class), any(Integer.class)))
+                any(Pageable.class), any(), any()))
         .thenReturn(new PageImpl<>(List.of()));
 
-    mockMvc.perform(get(ThreadController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(CommentController.PATH + "/")).andExpect(status().isOk());
   }
 }
