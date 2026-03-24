@@ -60,10 +60,10 @@ class UserControllerTest {
 
   @Test
   void checkGetAllById_whenValidUser_thenIsReturned() throws Exception {
-    Mockito.when(userService.findById(any(Integer.class))).thenReturn(mockUser);
+    Mockito.when(userService.findById(any())).thenReturn(mockUser);
 
     mockMvc
-        .perform(get(UserController.PATH + "/1/all"))
+        .perform(get(UserController.PATH + "/self"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(mockUser.getId())))
         .andExpect(jsonPath("$.email", is(mockUser.getEmail())))
@@ -72,8 +72,8 @@ class UserControllerTest {
 
   @Test
   void checkGetAllById_whenNoUser_then404Returned() throws Exception {
-    Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
+    Mockito.when(userService.findById(any())).thenThrow(EntityNotFoundException.class);
 
-    mockMvc.perform(get(UserController.PATH + "/1/all")).andExpect(status().isNotFound());
+    mockMvc.perform(get(UserController.PATH + "/self")).andExpect(status().isNotFound());
   }
 }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,7 +38,7 @@ public class UserController {
     return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), false));
   }
 
-  @GetMapping("/{id}/all")
+  @GetMapping("/self")
   @Operation(summary = "Get all user data")
   @ApiResponses(
       value = {
@@ -49,13 +50,10 @@ public class UserController {
             responseCode = "404",
             description = "Person was not found",
             content = @Content),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized, wrong id or WI-Auth-Passwd",
-            content = @Content)
+        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
       })
   public ResponseEntity<?> getUserWholeById(
-      @Parameter(description = "Id of the user to get, must be you") @PathVariable Integer id) {
-    return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), true));
+      @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
+    return ResponseEntity.ok(UserMapper.toUserDto(service.findById(userId), true));
   }
 }
