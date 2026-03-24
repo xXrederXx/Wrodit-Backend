@@ -67,7 +67,8 @@ public class ThreadController {
   public ResponseEntity<?> getUserThreads(
       Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
-    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreadsByUser(userId.intValue(), page)));
+    return ResponseEntity.ok(
+        ThreadMapper.toPageDto(service.paginatedThreadsByUser(userId.intValue(), page)));
   }
 
   @PostMapping("/")

@@ -109,7 +109,8 @@ public class PostController {
       @Parameter(description = "The post id which you want to update") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
-    return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId.intValue())));
+    return ResponseEntity.ok(
+        PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId.intValue())));
   }
 
   @DeleteMapping("/{id}")
