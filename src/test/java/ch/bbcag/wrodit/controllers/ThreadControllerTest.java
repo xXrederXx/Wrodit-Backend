@@ -26,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,7 +53,7 @@ class ThreadControllerTest {
       thread.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
       threads[i] = thread;
     }
-    mockThreadPage = new PageImpl<>(Arrays.stream(threads).toList());
+    mockThreadPage = new PageImpl<>(Arrays.stream(threads).toList(), PageRequest.of(0,10), 10);
     mockThread = threads[0];
 
     mockUser = new User();
@@ -143,9 +144,8 @@ class ThreadControllerTest {
   }
 
   @Test
-  @Disabled("TODO: gitlab issue exists")
   void checkGetUserfeedThreads_whenThreadExists_thenSuccess() throws Exception {
-    Mockito.when(threadService.paginatedThreadsByUser(any(Integer.class), any(Pageable.class)))
+    Mockito.when(threadService.paginatedThreadsByUser(any(), any(Pageable.class)))
         .thenReturn(mockThreadPage);
 
     mockMvc
@@ -156,9 +156,8 @@ class ThreadControllerTest {
   }
 
   @Test
-  @Disabled("TODO: gitlab issue exists")
   void checkGetUserfeedThreads_whenNoThreadExists_thenSuccess() throws Exception {
-    Mockito.when(threadService.paginatedThreadsByUser(any(Integer.class), any(Pageable.class)))
+    Mockito.when(threadService.paginatedThreadsByUser(any(), any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of()));
 
     mockMvc
