@@ -1,3 +1,3 @@
 package ch.bbcag.wrodit.dto.response;
 
-public record JWTResponseDTO(String accessToken, String username) {}
+public record JWTResponseDTO(String accessToken, String username, Integer userId) {}

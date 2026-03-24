@@ -71,7 +71,8 @@ public class AuthController {
         @ApiResponse(
             responseCode = "200",
             description = "JWT generated successfully",
-            content = @Content(schema = @Schema(implementation = AuthResponseDTO.class)))
+            content = @Content(schema = @Schema(implementation = JWTResponseDTO.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
       })
   public ResponseEntity<?> signIn(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to sign in")
@@ -87,7 +88,8 @@ public class AuthController {
 
       if (authenticationManager.authenticate(token).isAuthenticated()) {
         return ResponseEntity.ok(
-            new JWTResponseDTO(JWTGenerator.generateJwtToken(user.getId(), username), username));
+            new JWTResponseDTO(
+                JWTGenerator.generateJwtToken(user.getId(), username), username, user.getId()));
       }
     } catch (EntityNotFoundException | BadCredentialsException ex) {
       throw new AuthorizationDeniedException(ex.getMessage());
