@@ -24,11 +24,9 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
   public static final String PATH = "/posts";
   private final PostService service;
-  private final UserService userService;
 
-  public PostController(PostService service, UserService userService) {
+  public PostController(PostService service) {
     this.service = service;
-    this.userService = userService;
   }
 
   @GetMapping("/{id}")
