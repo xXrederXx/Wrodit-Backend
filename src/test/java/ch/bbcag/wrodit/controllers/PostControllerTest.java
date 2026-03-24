@@ -2,8 +2,7 @@ package ch.bbcag.wrodit.controllers;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -119,7 +118,7 @@ class PostControllerTest {
   }
 
   @Test
-  void checkPostThreads_whenInvalidThread_thenBadRequest() throws Exception {
+  void checkPostPosts_whenInvalidPost_thenBadRequest() throws Exception {
     mockMvc
         .perform(
             post(URIHelper.join(PostController.PATH, ""))
@@ -132,5 +131,39 @@ class PostControllerTest {
                         }
                         """))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void checkPatchPost_whenValidPost_thenOk() throws Exception {
+    Mockito.when(postService.update(any(Post.class), any(), any())).thenReturn(mockPost);
+
+    mockMvc
+        .perform(
+            patch(URIHelper.join(PostController.PATH, "1"))
+                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .content(
+                    String.format(
+                        """
+                            {
+                              "title":"new title"
+                            }
+                    """)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void checkDeletePost_whenValidId_thenNoContent() throws Exception {
+    Mockito.doNothing().when(postService).deletePostById(any(), any());
+    mockMvc
+        .perform(delete(URIHelper.join(PostController.PATH, "1")))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void checkDeletePost_whenInvalidId_thenNotFound() throws Exception {
+    Mockito.doThrow(EntityNotFoundException.class).when(postService).deletePostById(any(), any());
+    mockMvc
+        .perform(delete(URIHelper.join(PostController.PATH, "1")))
+        .andExpect(status().isNotFound());
   }
 }
