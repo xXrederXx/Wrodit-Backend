@@ -1,8 +1,6 @@
 package ch.bbcag.wrodit.controllers;
 
-import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
-import ch.bbcag.wrodit.dto.response.UserValidateResponseDTO;
 import ch.bbcag.wrodit.mapper.UserMapper;
 import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,23 +57,5 @@ public class UserController {
   public ResponseEntity<?> getUserWholeById(
       @Parameter(description = "Id of the user to get, must be you") @PathVariable Integer id) {
     return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), true));
-  }
-
-  @PostMapping("/validate")
-  @Operation(summary = "Check if username and password match")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "If the data was correct",
-            content = @Content(schema = @Schema(implementation = UserValidateResponseDTO.class))),
-      })
-  public ResponseEntity<?> postValidateUser(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(
-              description = "The userdata you want to validate")
-          @RequestBody
-          UserRequestDTO dto) {
-    return ResponseEntity.ok(
-        UserMapper.toValidateDTO(service.checkAuthorization(dto.username(), dto.password())));
   }
 }
