@@ -12,6 +12,7 @@ import ch.bbcag.wrodit.TestingConstants;
 import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.ThreadService;
+import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -67,7 +68,7 @@ class ThreadControllerTest {
   void checkGetThreads_whenThreadExists_thenSuccess() throws Exception {
     Mockito.when(threadService.paginatedThreads(any(Pageable.class))).thenReturn(mockThreadPage);
 
-    mockMvc.perform(get(ThreadController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(URIHelper.join(ThreadController.PATH, ""))).andExpect(status().isOk());
   }
 
   @Test
@@ -75,7 +76,7 @@ class ThreadControllerTest {
     Mockito.when(threadService.paginatedThreads(any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of()));
 
-    mockMvc.perform(get(ThreadController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(URIHelper.join(ThreadController.PATH, ""))).andExpect(status().isOk());
   }
 
   @Test
@@ -84,7 +85,7 @@ class ThreadControllerTest {
 
     mockMvc
         .perform(
-            post(ThreadController.PATH + "/")
+            post(URIHelper.join(ThreadController.PATH, ""))
                 .contentType(TestingConstants.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
@@ -106,7 +107,7 @@ class ThreadControllerTest {
 
     mockMvc
         .perform(
-            post(ThreadController.PATH + "/")
+            post(URIHelper.join(ThreadController.PATH, ""))
                 .contentType(TestingConstants.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
@@ -125,7 +126,7 @@ class ThreadControllerTest {
     Mockito.when(threadService.findById(any(Integer.class))).thenReturn(mockThread);
 
     mockMvc
-        .perform(get(ThreadController.PATH + "/1"))
+        .perform(get(URIHelper.join(ThreadController.PATH, "1")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(mockThread.getId())))
         .andExpect(jsonPath("$.name", is(mockThread.getName())))
@@ -139,7 +140,9 @@ class ThreadControllerTest {
     Mockito.when(threadService.findById(any(Integer.class)))
         .thenThrow(EntityNotFoundException.class);
 
-    mockMvc.perform(get(ThreadController.PATH + "/1")).andExpect(status().isNotFound());
+    mockMvc
+        .perform(get(URIHelper.join(ThreadController.PATH, "1")))
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -149,7 +152,7 @@ class ThreadControllerTest {
 
     mockMvc
         .perform(
-            get(ThreadController.PATH + "/userfeed")
+            get(URIHelper.join(ThreadController.PATH, "userfeed"))
                 .with(jwt().jwt(jwt -> jwt.claim("userId", mockUser.getId()))))
         .andExpect(status().isOk());
   }
@@ -161,7 +164,7 @@ class ThreadControllerTest {
 
     mockMvc
         .perform(
-            get(ThreadController.PATH + "/userfeed")
+            get(URIHelper.join(ThreadController.PATH, "userfeed"))
                 .with(jwt().jwt(jwt -> jwt.claim("userId", mockUser.getId()))))
         .andExpect(status().isOk());
   }

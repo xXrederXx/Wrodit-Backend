@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.bbcag.wrodit.entitys.Comment;
 import ch.bbcag.wrodit.services.CommentService;
+import ch.bbcag.wrodit.util.URIHelper;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ class CommentControllerTest {
     Mockito.when(commentService.getPaginatedComments(any(Pageable.class), any(), any()))
         .thenReturn(mockCommentPage);
 
-    mockMvc.perform(get(CommentController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(URIHelper.join(CommentController.PATH, ""))).andExpect(status().isOk());
   }
 
   @Test
@@ -59,6 +60,6 @@ class CommentControllerTest {
     Mockito.when(commentService.getPaginatedComments(any(Pageable.class), any(), any()))
         .thenReturn(new PageImpl<>(List.of()));
 
-    mockMvc.perform(get(CommentController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(URIHelper.join(CommentController.PATH, ""))).andExpect(status().isOk());
   }
 }
