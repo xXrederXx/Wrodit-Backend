@@ -48,13 +48,10 @@ public class ThreadController {
 
   @GetMapping("/")
   @Operation(summary = "Get multiple Threads")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Thread page generated",
-            content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class))),
-      })
+  @ApiResponse(
+      responseCode = "200",
+      description = "Thread page generated",
+      content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> getAllThreads(Pageable page) {
     return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreads(page)));
@@ -62,13 +59,10 @@ public class ThreadController {
 
   @GetMapping("/userfeed")
   @Operation(summary = "Get all threads a user is subscribed to")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Thread page generated",
-            content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
-      })
+  @ApiResponse(
+      responseCode = "200",
+      description = "Thread page generated",
+      content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> getUserThreads(
       Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {

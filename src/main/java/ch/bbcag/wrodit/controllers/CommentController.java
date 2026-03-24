@@ -51,13 +51,10 @@ public class CommentController {
 
   @GetMapping("/")
   @Operation(summary = "Get multiple Comments")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Comment Page generated",
-            content = @Content(schema = @Schema(implementation = CommentPageResponseDTO.class))),
-      })
+  @ApiResponse(
+      responseCode = "200",
+      description = "Comment Page generated",
+      content = @Content(schema = @Schema(implementation = CommentPageResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> getPagableComments(
       Pageable page,
@@ -73,13 +70,10 @@ public class CommentController {
 
   @PostMapping("/")
   @Operation(summary = "Create a comment")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "201",
-            description = "Comment was created",
-            content = @Content(schema = @Schema(implementation = CommentResponseDTO.class)))
-      })
+  @ApiResponse(
+      responseCode = "201",
+      description = "Comment was created",
+      content = @Content(schema = @Schema(implementation = CommentResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> postComment(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -95,13 +89,10 @@ public class CommentController {
 
   @PatchMapping("/{id}")
   @Operation(summary = "Update a comment")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "comment was Updated",
-            content = @Content(schema = @Schema(implementation = CommentResponseDTO.class)))
-      })
+  @ApiResponse(
+      responseCode = "200",
+      description = "comment was Updated",
+      content = @Content(schema = @Schema(implementation = CommentResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> patchComment(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(

@@ -96,13 +96,10 @@ public class PostController {
 
   @PatchMapping("/{id}")
   @Operation(summary = "Update a post")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Post was Updated",
-            content = @Content(schema = @Schema(implementation = PostResponseDTO.class)))
-      })
+  @ApiResponse(
+      responseCode = "200",
+      description = "Post was Updated",
+      content = @Content(schema = @Schema(implementation = PostResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> patchPost(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
