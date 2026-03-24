@@ -12,7 +12,6 @@ import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.PostService;
-import ch.bbcag.wrodit.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,8 +36,6 @@ class PostControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean private PostService postService;
-
-  @MockitoBean private UserService userService;
 
   private static Post mockPost;
   private static Page<Post> mockPostPage;

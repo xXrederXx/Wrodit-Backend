@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.bbcag.wrodit.entitys.Comment;
 import ch.bbcag.wrodit.services.CommentService;
-import ch.bbcag.wrodit.services.UserService;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 class CommentControllerTest {
   @Autowired private MockMvc mockMvc;
 
-  @MockitoBean private UserService userService;
   @MockitoBean private CommentService commentService;
 
   private static Comment mockComment;

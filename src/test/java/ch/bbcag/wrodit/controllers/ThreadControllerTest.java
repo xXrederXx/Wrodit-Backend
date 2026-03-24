@@ -12,7 +12,6 @@ import ch.bbcag.wrodit.TestingConstants;
 import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.ThreadService;
-import ch.bbcag.wrodit.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,8 +36,6 @@ class ThreadControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean private ThreadService threadService;
-
-  @MockitoBean private UserService userService;
 
   private static Thread mockThread;
   private static Page<Thread> mockThreadPage;
@@ -148,9 +145,8 @@ class ThreadControllerTest {
   @Test
   @Disabled("TODO: gitlab issue exists")
   void checkGetUserfeedThreads_whenThreadExists_thenSuccess() throws Exception {
-    Mockito.when(threadService.paginatedThreadsByUser(any(User.class), any(Pageable.class)))
+    Mockito.when(threadService.paginatedThreadsByUser(any(Integer.class), any(Pageable.class)))
         .thenReturn(mockThreadPage);
-    Mockito.when(userService.findById(any(Integer.class))).thenReturn(mockUser);
 
     mockMvc
         .perform(
@@ -162,9 +158,8 @@ class ThreadControllerTest {
   @Test
   @Disabled("TODO: gitlab issue exists")
   void checkGetUserfeedThreads_whenNoThreadExists_thenSuccess() throws Exception {
-    Mockito.when(threadService.paginatedThreadsByUser(any(User.class), any(Pageable.class)))
+    Mockito.when(threadService.paginatedThreadsByUser(any(Integer.class), any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of()));
-    Mockito.when(userService.findById(any(Integer.class))).thenReturn(mockUser);
 
     mockMvc
         .perform(
