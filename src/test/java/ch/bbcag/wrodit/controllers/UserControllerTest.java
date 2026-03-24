@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.UserService;
+import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -44,7 +45,7 @@ class UserControllerTest {
     Mockito.when(userService.findById(any(Integer.class))).thenReturn(mockUser);
 
     mockMvc
-        .perform(get(UserController.PATH + "/1"))
+        .perform(get(URIHelper.join(UserController.PATH, "1")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(mockUser.getId())))
         .andExpect(jsonPath("$.username", is(mockUser.getUsername())));
@@ -55,7 +56,7 @@ class UserControllerTest {
   void checkGetById_whenNoUser_then404Returned() throws Exception {
     Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
 
-    mockMvc.perform(get(UserController.PATH + "/1")).andExpect(status().isNotFound());
+    mockMvc.perform(get(URIHelper.join(UserController.PATH, "1"))).andExpect(status().isNotFound());
   }
 
   @Test
@@ -63,7 +64,7 @@ class UserControllerTest {
     Mockito.when(userService.findById(any())).thenReturn(mockUser);
 
     mockMvc
-        .perform(get(UserController.PATH + "/self"))
+        .perform(get(URIHelper.join(UserController.PATH, "self")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(mockUser.getId())))
         .andExpect(jsonPath("$.email", is(mockUser.getEmail())))
@@ -74,6 +75,8 @@ class UserControllerTest {
   void checkGetAllById_whenNoUser_then404Returned() throws Exception {
     Mockito.when(userService.findById(any())).thenThrow(EntityNotFoundException.class);
 
-    mockMvc.perform(get(UserController.PATH + "/self")).andExpect(status().isNotFound());
+    mockMvc
+        .perform(get(URIHelper.join(UserController.PATH, "self")))
+        .andExpect(status().isNotFound());
   }
 }

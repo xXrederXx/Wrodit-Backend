@@ -12,6 +12,7 @@ import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.PostService;
+import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -61,7 +62,7 @@ class PostControllerTest {
     Mockito.when(postService.getPostById(any(Integer.class))).thenReturn(mockPost);
 
     mockMvc
-        .perform(get(PostController.PATH + "/1"))
+        .perform(get(URIHelper.join(PostController.PATH, "1")))
         .andExpect(status().isOk())
         // .andExpect(jsonPath("$.id", is(mockPost.getId()))) Uncomment once implemented
         .andExpect(jsonPath("$.title", is(mockPost.getTitle())))
@@ -74,7 +75,7 @@ class PostControllerTest {
     Mockito.when(postService.getPostById(any(Integer.class)))
         .thenThrow(EntityNotFoundException.class);
 
-    mockMvc.perform(get(PostController.PATH + "/1")).andExpect(status().isNotFound());
+    mockMvc.perform(get(URIHelper.join(PostController.PATH, "1"))).andExpect(status().isNotFound());
   }
 
   @Test
@@ -82,7 +83,7 @@ class PostControllerTest {
     Mockito.when(postService.getPaginatedPosts(any(), any(), any(Pageable.class)))
         .thenReturn(mockPostPage);
 
-    mockMvc.perform(get(PostController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(URIHelper.join(PostController.PATH, ""))).andExpect(status().isOk());
   }
 
   @Test
@@ -90,7 +91,7 @@ class PostControllerTest {
     Mockito.when(postService.getPaginatedPosts(any(), any(), any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of()));
 
-    mockMvc.perform(get(PostController.PATH + "/")).andExpect(status().isOk());
+    mockMvc.perform(get(URIHelper.join(PostController.PATH, ""))).andExpect(status().isOk());
   }
 
   @Test
@@ -99,7 +100,7 @@ class PostControllerTest {
 
     mockMvc
         .perform(
-            post(PostController.PATH + "/")
+            post(URIHelper.join(PostController.PATH, ""))
                 .contentType(TestingConstants.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
@@ -121,7 +122,7 @@ class PostControllerTest {
   void checkPostThreads_whenInvalidThread_thenBadRequest() throws Exception {
     mockMvc
         .perform(
-            post(PostController.PATH + "/")
+            post(URIHelper.join(PostController.PATH, ""))
                 .contentType(TestingConstants.CONTENT_TYPE_JSON)
                 .content(
                     """

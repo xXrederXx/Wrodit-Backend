@@ -7,6 +7,7 @@ import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.mapper.AuthMapper;
 import ch.bbcag.wrodit.security.JWTGenerator;
 import ch.bbcag.wrodit.services.UserService;
+import ch.bbcag.wrodit.util.URIHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -58,7 +59,8 @@ public class AuthController {
           AuthRequestDTO dto) {
     User auth = AuthMapper.fromDTO(dto);
     User savedAuth = service.insert(auth);
-    return ResponseEntity.created(URI.create(UserController.PATH + "/" + savedAuth.getId()))
+    return ResponseEntity.created(
+            URI.create(URIHelper.join(UserController.PATH, savedAuth.getId().toString())))
         .body(AuthMapper.toDTO(savedAuth));
   }
 
