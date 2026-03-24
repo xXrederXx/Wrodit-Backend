@@ -4,6 +4,7 @@ import static ch.bbcag.wrodit.TestingConstants.MAX_TIME_CHECK_DIFF;
 import static ch.bbcag.wrodit.TestingConstants.TIME_CHECK_OFFSET;
 
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
@@ -42,5 +43,29 @@ class ErrorResponseBuilderTest {
                 - response.getBody().timestamp().toEpochSecond(TIME_CHECK_OFFSET)
             < MAX_TIME_CHECK_DIFF,
         "Timestamp should be automatically set to current time");
+  }
+
+  @Test
+  void checkResponse_whenBuildingErrorNoStatus_thenException() {
+    Assertions.assertThrows(
+        IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().buildResponse());
+  }
+
+  @Test
+  void checkResponse_whenBuildingErrorWith200_thenException() {
+    Assertions.assertThrows(
+            IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.OK).buildResponse());
+  }
+
+  @Test
+  void checkResponse_whenBuildingErrorWith102_thenException() {
+    Assertions.assertThrows(
+            IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.PROCESSING).buildResponse());
+  }
+
+  @Test
+  void checkResponse_whenBuildingErrorWith300_thenException() {
+    Assertions.assertThrows(
+            IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.PERMANENT_REDIRECT).buildResponse());
   }
 }
