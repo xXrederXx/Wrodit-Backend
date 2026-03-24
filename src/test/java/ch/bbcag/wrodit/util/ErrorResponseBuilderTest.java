@@ -4,6 +4,8 @@ import static ch.bbcag.wrodit.TestingConstants.MAX_TIME_CHECK_DIFF;
 import static ch.bbcag.wrodit.TestingConstants.TIME_CHECK_OFFSET;
 
 import java.time.LocalDateTime;
+
+import ch.bbcag.wrodit.util.exception.IllegalStatusException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

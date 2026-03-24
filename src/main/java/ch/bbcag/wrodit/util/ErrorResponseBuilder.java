@@ -1,6 +1,8 @@
 package ch.bbcag.wrodit.util;
 
 import java.time.LocalDateTime;
+
+import ch.bbcag.wrodit.util.exception.IllegalStatusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
