@@ -12,18 +12,19 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import java.net.URI;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(AuthController.PATH)
@@ -76,16 +77,20 @@ public class AuthController {
           @Valid
           @RequestBody
           AuthRequestDTO dto) {
-    String username = dto.username();
-    User user = service.findByUsername(username);
-    Authentication token = new UsernamePasswordAuthenticationToken(username, dto.password());
 
-    if (authenticationManager.authenticate(token).isAuthenticated()) {
-      return ResponseEntity.ok(
-          new JWTResponseDTO(
-              JWTGenerator.generateJwtToken(user.getId(), username), username, user.getId()));
+    try {
+      String username = dto.username();
+      User user = service.findByUsername(username);
+
+      Authentication token = new UsernamePasswordAuthenticationToken(username, dto.password());
+
+      if (authenticationManager.authenticate(token).isAuthenticated()) {
+        return ResponseEntity.ok(
+            new JWTResponseDTO(JWTGenerator.generateJwtToken(user.getId(), username), username, user.getId()));
+      }
+    } catch (EntityNotFoundException | BadCredentialsException ex) {
+      throw new AuthorizationDeniedException(ex.getMessage());
     }
-
-    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    throw new AuthorizationDeniedException("Unauthorized");
   }
 }
