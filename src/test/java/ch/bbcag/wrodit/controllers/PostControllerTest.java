@@ -74,7 +74,6 @@ class PostControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetById_whenNoPost_then404Returned() throws Exception {
     Mockito.when(postService.getPostById(any(Integer.class)))
         .thenThrow(EntityNotFoundException.class);

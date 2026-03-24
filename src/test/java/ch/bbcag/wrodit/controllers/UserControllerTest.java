@@ -11,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,6 @@ class UserControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetById_whenNoUser_then404Returned() throws Exception {
     Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
 
@@ -73,7 +71,6 @@ class UserControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetAllById_whenNoUser_then404Returned() throws Exception {
     Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
 
