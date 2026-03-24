@@ -3,6 +3,7 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
+import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
@@ -35,9 +36,7 @@ public class PostService {
 
   public void deletePostById(Integer id, Integer userId) {
     Post post = this.getPostById(id);
-    if (!post.getUsers().getId().equals(userId)) {
-      throw new AuthorizationDeniedException("Forbidden");
-    }
+    ThrowHelper.throwAuthorizationIfNotEqual(post.getUsers().getId(), userId);
     postRepository.deleteById(id);
   }
 
@@ -49,9 +48,7 @@ public class PostService {
 
   public Post update(Post post, Integer id, Integer authId) {
     Post existing = this.getPostById(id);
-    if (!existing.getUsers().getId().equals(authId)) {
-      throw new AuthorizationDeniedException("Forbidden");
-    }
+    ThrowHelper.throwAuthorizationIfNotEqual(post.getUsers().getId(), authId);
     mergePost(existing, post);
     return postRepository.save(existing);
   }
