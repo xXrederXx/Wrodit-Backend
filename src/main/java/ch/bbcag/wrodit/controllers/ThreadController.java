@@ -41,7 +41,7 @@ public class ThreadController {
         @ApiResponse(responseCode = "404", description = "Thread was not found", content = @Content)
       })
   @ApiAuthResponses
-  public ResponseEntity<?> getById(
+  public ResponseEntity<?> getThreadById(
       @Parameter(description = "The threads id you want to get") @PathVariable Integer id) {
     return ResponseEntity.ok(ThreadMapper.toDTO(service.findById(id)));
   }
@@ -53,7 +53,7 @@ public class ThreadController {
       description = "Thread page generated",
       content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
   @ApiAuthResponses
-  public ResponseEntity<?> getAllThreads(Pageable page) {
+  public ResponseEntity<?> getPaginatedThreads(Pageable page) {
     return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreads(page)));
   }
 

@@ -52,7 +52,7 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "User was not found", content = @Content)
       })
   @Api401Response
-  public ResponseEntity<?> getUserWholeById(
+  public ResponseEntity<?> getWholeUserById(
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     return ResponseEntity.ok(UserMapper.toUserDto(service.findById(userId), true));
   }

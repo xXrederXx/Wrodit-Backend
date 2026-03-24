@@ -117,7 +117,7 @@ public class CommentController {
             content = @Content)
       })
   @ApiAuthResponses
-  public ResponseEntity<?> deletePost(
+  public ResponseEntity<?> deleteComment(
       @Parameter(description = "The comments id you want to delete") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
 
