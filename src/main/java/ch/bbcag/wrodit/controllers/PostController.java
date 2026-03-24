@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,7 @@ public class PostController {
             content = @Content)
       })
   public ResponseEntity<?> postPost(
-      @RequestBody PostCreateRequestDTO post,
+      @Valid @RequestBody PostCreateRequestDTO post,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     Post responsePost = service.save(PostMapper.fromDto(post), userId);
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
