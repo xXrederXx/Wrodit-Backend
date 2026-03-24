@@ -8,6 +8,7 @@ import ch.bbcag.wrodit.mapper.CommentMapper;
 import ch.bbcag.wrodit.services.CommentService;
 import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,17 +31,21 @@ public class CommentController {
   }
 
   @GetMapping("/{id}")
-  @Operation(summary = "Get a post")
+  @Operation(summary = "Get a comment")
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Post found",
+            description = "Comment found",
             content = @Content(schema = @Schema(implementation = CommentResponseDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
+        @ApiResponse(
+            responseCode = "404",
+            description = "Comment was not found",
+            content = @Content)
       })
   @ApiAuthResponses
-  public ResponseEntity<?> getCommentById(@PathVariable Integer id) {
+  public ResponseEntity<?> getCommentById(
+      @Parameter(description = "The id of the comment which you want") @PathVariable Integer id) {
     return ResponseEntity.ok(CommentMapper.toDto(commentService.getCommentById(id)));
   }
 
@@ -50,14 +55,18 @@ public class CommentController {
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Page generated",
+            description = "Comment Page generated",
             content = @Content(schema = @Schema(implementation = CommentPageResponseDTO.class))),
       })
   @ApiAuthResponses
   public ResponseEntity<?> getPagableComments(
       Pageable page,
-      @RequestParam(required = false) Integer post,
-      @RequestParam(required = false) Integer parent) {
+      @RequestParam(required = false)
+          @Parameter(description = "The post id which is used to filter")
+          Integer post,
+      @RequestParam(required = false)
+          @Parameter(description = "The parent id which is used to filter")
+          Integer parent) {
     return ResponseEntity.ok(
         CommentMapper.toDto(commentService.getPaginatedComments(page, post, parent)));
   }
@@ -73,7 +82,11 @@ public class CommentController {
       })
   @ApiAuthResponses
   public ResponseEntity<?> postComment(
-      @Valid @RequestBody CommentCreateDTO commentCreateDTO,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The comment you want to create")
+          @Valid
+          @RequestBody
+          CommentCreateDTO commentCreateDTO,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     CommentResponseDTO responseDTO =
         CommentMapper.toDto(commentService.save(CommentMapper.fromDto(commentCreateDTO), userId));
@@ -91,8 +104,11 @@ public class CommentController {
       })
   @ApiAuthResponses
   public ResponseEntity<?> patchComment(
-      @RequestBody CommentRequestDTO dto,
-      @PathVariable Integer id,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The attributes you would like to change")
+          @RequestBody
+          CommentRequestDTO dto,
+      @Parameter(description = "The commetn id you want to change") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
 
     return ResponseEntity.ok(
@@ -111,7 +127,7 @@ public class CommentController {
       })
   @ApiAuthResponses
   public ResponseEntity<?> deletePost(
-      @PathVariable Integer id,
+      @Parameter(description = "The comments id you want to delete") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
 
     commentService.deletePostById(id, userId);

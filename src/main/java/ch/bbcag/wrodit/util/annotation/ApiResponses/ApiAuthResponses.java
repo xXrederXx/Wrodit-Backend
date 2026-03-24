@@ -1,7 +1,5 @@
 package ch.bbcag.wrodit.util.annotation.ApiResponses;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,5 +9,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Api401Response
 @Api403Response
-public @interface ApiAuthResponses {
-}
+public @interface ApiAuthResponses {}

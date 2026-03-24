@@ -66,7 +66,7 @@ public class AuthController {
   }
 
   @PostMapping("/signin")
-  @Operation(summary = "Signin for the JWT")
+  @Operation(summary = "Sign-in for the JWT")
   @ApiResponses(
       value = {
         @ApiResponse(
