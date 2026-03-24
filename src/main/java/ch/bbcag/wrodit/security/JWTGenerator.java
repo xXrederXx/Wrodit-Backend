@@ -1,5 +1,6 @@
 package ch.bbcag.wrodit.security;
 
+import ch.bbcag.wrodit.util.exception.JwtGenerationException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -9,6 +10,11 @@ import com.nimbusds.jwt.SignedJWT;
 import java.util.Date;
 
 public class JWTGenerator {
+  private JWTGenerator()
+  {
+    // hide ctor
+  }
+
   public static String generateJwtToken(Integer userId, String username) {
     try {
       SignedJWT jwt =
@@ -16,7 +22,7 @@ public class JWTGenerator {
       jwt.sign(new MACSigner(KeySpecGenerator.getSecretKeySpec()));
       return jwt.serialize();
     } catch (JOSEException e) {
-      throw new RuntimeException(e);
+      throw new JwtGenerationException(e.getMessage());
     }
   }
 
