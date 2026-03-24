@@ -64,9 +64,9 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
+  // This function uses Driver specific Regex to extract additional information
   public ResponseEntity<?> handleDataIntegrityViolationException(
       DataIntegrityViolationException ex) {
-    logger.error("An error occurred: {}", ex.getMessage(), ex);
     Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
     Matcher matcher = pattern.matcher(ex.getMessage());
     if (matcher.find()) {
