@@ -79,31 +79,28 @@ class PostControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetPosts_whenPostExists_thenSuccess() throws Exception {
     Mockito.when(
             postService.getPaginatedPosts(
-                any(Integer.class), any(Integer.class), any(Pageable.class)))
+                any(), any(), any(Pageable.class)))
         .thenReturn(mockPostPage);
 
     mockMvc.perform(get(PostController.PATH + "/")).andExpect(status().isOk());
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetPosts_whenNoPostExists_thenSuccess() throws Exception {
     Mockito.when(
             postService.getPaginatedPosts(
-                any(Integer.class), any(Integer.class), any(Pageable.class)))
+                any(), any(), any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of()));
 
     mockMvc.perform(get(PostController.PATH + "/")).andExpect(status().isOk());
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkPostPosts_whenValidPost_thenCreated() throws Exception {
-    Mockito.when(postService.save(any(Post.class), any(Integer.class))).thenReturn(mockPost);
+    Mockito.when(postService.save(any(Post.class), any())).thenReturn(mockPost);
 
     mockMvc
         .perform(
@@ -126,9 +123,7 @@ class PostControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkPostThreads_whenInvalidThread_thenBadRequest() throws Exception {
-
     mockMvc
         .perform(
             post(PostController.PATH + "/")

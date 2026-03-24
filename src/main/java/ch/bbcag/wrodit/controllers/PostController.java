@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.net.URI;
+
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -72,7 +74,7 @@ public class PostController {
             content = @Content)
       })
   public ResponseEntity<?> postPost(
-      @RequestBody PostCreateRequestDTO post,
+      @Valid @RequestBody PostCreateRequestDTO post,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     Post responsePost = service.save(PostMapper.fromDto(post), userId);
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
