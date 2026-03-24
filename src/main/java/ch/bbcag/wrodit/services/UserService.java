@@ -38,7 +38,7 @@ public class UserService {
     }
   }
 
-  public User findById(int id) {
+  public User findById(Integer id) {
     return repo.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 
@@ -52,7 +52,7 @@ public class UserService {
     return repo.save(user);
   }
 
-  public void deleteById(int id) {
+  public void deleteById(Integer id) {
     repo.deleteById(id);
   }
 }
