@@ -2,6 +2,7 @@ package ch.bbcag.wrodit;
 
 import ch.bbcag.wrodit.util.ErrorResponseBuilder;
 import ch.bbcag.wrodit.util.FailedValidationException;
+import jakarta.persistence.EntityNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -100,11 +99,10 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex)
-  {
+  public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex) {
     return new ErrorResponseBuilder<String>()
-            .withBody("Entity not found")
-            .withStatus(HttpStatus.NOT_FOUND)
-            .buildResponse();
+        .withBody("Entity not found")
+        .withStatus(HttpStatus.NOT_FOUND)
+        .buildResponse();
   }
 }
