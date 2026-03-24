@@ -54,18 +54,24 @@ class ErrorResponseBuilderTest {
   @Test
   void checkResponse_whenBuildingErrorWith200_thenException() {
     Assertions.assertThrows(
-            IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.OK).buildResponse());
+        IllegalStatusException.class,
+        () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.OK).buildResponse());
   }
 
   @Test
   void checkResponse_whenBuildingErrorWith102_thenException() {
     Assertions.assertThrows(
-            IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.PROCESSING).buildResponse());
+        IllegalStatusException.class,
+        () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.PROCESSING).buildResponse());
   }
 
   @Test
   void checkResponse_whenBuildingErrorWith300_thenException() {
     Assertions.assertThrows(
-            IllegalStatusException.class, () -> new ErrorResponseBuilder<String>().withStatus(HttpStatus.PERMANENT_REDIRECT).buildResponse());
+        IllegalStatusException.class,
+        () ->
+            new ErrorResponseBuilder<String>()
+                .withStatus(HttpStatus.PERMANENT_REDIRECT)
+                .buildResponse());
   }
 }
