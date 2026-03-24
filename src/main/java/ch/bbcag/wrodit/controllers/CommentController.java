@@ -6,7 +6,6 @@ import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
 import ch.bbcag.wrodit.mapper.CommentMapper;
 import ch.bbcag.wrodit.services.CommentService;
-import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,11 +22,9 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
   public static final String PATH = "/comments";
   private final CommentService commentService;
-  private final UserService userService;
 
-  public CommentController(CommentService commentService, UserService userService) {
+  public CommentController(CommentService commentService) {
     this.commentService = commentService;
-    this.userService = userService;
   }
 
   @GetMapping("/{id}")
