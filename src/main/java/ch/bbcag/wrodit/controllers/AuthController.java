@@ -86,7 +86,8 @@ public class AuthController {
 
       if (authenticationManager.authenticate(token).isAuthenticated()) {
         return ResponseEntity.ok(
-            new JWTResponseDTO(JWTGenerator.generateJwtToken(user.getId(), username), username, user.getId()));
+            new JWTResponseDTO(
+                JWTGenerator.generateJwtToken(user.getId(), username), username, user.getId()));
       }
     } catch (EntityNotFoundException | BadCredentialsException ex) {
       throw new AuthorizationDeniedException(ex.getMessage());
