@@ -1,5 +1,6 @@
 package ch.bbcag.wrodit.security;
 
+import ch.bbcag.wrodit.util.exception.InvalidSecretKeyException;
 import jakarta.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.spec.SecretKeySpec;
@@ -17,10 +18,10 @@ public class KeySpecGenerator {
   @PostConstruct
   public void init() {
     if (secret == null) {
-      throw new RuntimeException("JWT secret not set");
+      throw new InvalidSecretKeyException("JWT secret not set");
     }
     if (secret.length() < 32) {
-      throw new RuntimeException("JWT secret too short, current length is only " + secret.length());
+      throw new InvalidSecretKeyException("JWT secret too short, current length is only " + secret.length());
     }
     SECRET = secret;
   }
