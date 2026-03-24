@@ -138,8 +138,7 @@ class ThreadControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
-  void checkGetById_whenNoUser_then404Returned() throws Exception {
+  void checkGetById_whenNoThread_then404Returned() throws Exception {
     Mockito.when(threadService.findById(any(Integer.class)))
         .thenThrow(EntityNotFoundException.class);
 

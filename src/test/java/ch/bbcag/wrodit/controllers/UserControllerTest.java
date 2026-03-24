@@ -53,7 +53,6 @@ class UserControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetById_whenNoUser_then404Returned() throws Exception {
     Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
 
@@ -73,7 +72,6 @@ class UserControllerTest {
   }
 
   @Test
-  @Disabled("Needs to be resolved, issue on gitlab")
   void checkGetAllById_whenNoUser_then404Returned() throws Exception {
     Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
 
