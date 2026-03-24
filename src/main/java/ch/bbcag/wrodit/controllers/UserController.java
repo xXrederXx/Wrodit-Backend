@@ -3,6 +3,8 @@ package ch.bbcag.wrodit.controllers;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
 import ch.bbcag.wrodit.mapper.UserMapper;
 import ch.bbcag.wrodit.services.UserService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.Api401Response;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,30 +31,28 @@ public class UserController {
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Person found",
+            description = "User found",
             content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Person was not found", content = @Content)
+        @ApiResponse(responseCode = "404", description = "User was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getUserById(
       @Parameter(description = "Id of the user to get") @PathVariable Integer id) {
     return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), false));
   }
 
   @GetMapping("/self")
-  @Operation(summary = "Get all user data")
+  @Operation(summary = "Get all your data")
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Person found",
+            description = "User found",
             content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Person was not found",
-            content = @Content),
-        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+        @ApiResponse(responseCode = "404", description = "User was not found", content = @Content)
       })
-  public ResponseEntity<?> getUserWholeById(
+  @Api401Response
+  public ResponseEntity<?> getWholeUserById(
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     return ResponseEntity.ok(UserMapper.toUserDto(service.findById(userId), true));
   }

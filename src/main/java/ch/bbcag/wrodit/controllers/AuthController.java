@@ -8,6 +8,7 @@ import ch.bbcag.wrodit.mapper.AuthMapper;
 import ch.bbcag.wrodit.security.JWTGenerator;
 import ch.bbcag.wrodit.services.UserService;
 import ch.bbcag.wrodit.util.URIHelper;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.Api401Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,15 +66,12 @@ public class AuthController {
   }
 
   @PostMapping("/signin")
-  @Operation(summary = "Signin for the JWT")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "JWT generated successfully",
-            content = @Content(schema = @Schema(implementation = JWTResponseDTO.class))),
-        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
-      })
+  @Operation(summary = "Sign-in for the JWT")
+  @ApiResponse(
+      responseCode = "200",
+      description = "JWT generated successfully",
+      content = @Content(schema = @Schema(implementation = JWTResponseDTO.class)))
+  @Api401Response
   public ResponseEntity<?> signIn(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to sign in")
           @Valid

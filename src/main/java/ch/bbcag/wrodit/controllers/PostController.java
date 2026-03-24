@@ -7,7 +7,9 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import ch.bbcag.wrodit.services.PostService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,7 +41,9 @@ public class PostController {
             content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
         @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
       })
-  public ResponseEntity<?> getPostById(@PathVariable Integer id) {
+  @ApiAuthResponses
+  public ResponseEntity<?> getPostById(
+      @Parameter(description = "The id of the post you want") @PathVariable Integer id) {
     return ResponseEntity.ok(PostMapper.toDto(service.getPostById(id)));
   }
 
@@ -52,10 +56,15 @@ public class PostController {
             description = "Page generated",
             content = @Content(schema = @Schema(implementation = PostPageResponseDTO.class))),
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getPaginatedPosts(
       Pageable page,
-      @RequestParam(required = false) Integer user,
-      @RequestParam(required = false) Integer thread) {
+      @Parameter(description = "The users id which is filtered with")
+          @RequestParam(required = false)
+          Integer user,
+      @Parameter(description = "The threads id which is filtered with")
+          @RequestParam(required = false)
+          Integer thread) {
     return ResponseEntity.ok(PostMapper.toPageDto(service.getPaginatedPosts(user, thread, page)));
   }
 
@@ -69,11 +78,16 @@ public class PostController {
             content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
         @ApiResponse(
             responseCode = "409",
-            description = "User could not be created, username already in use",
+            description = "Post could not be created, due to a conflict in data",
             content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> postPost(
-      @Valid @RequestBody PostCreateRequestDTO post,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The post you would like to create")
+          @Valid
+          @RequestBody
+          PostCreateRequestDTO post,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     Post responsePost = service.save(PostMapper.fromDto(post), userId);
     return ResponseEntity.created(URI.create(PATH + "/" + responsePost.getId()))
@@ -82,34 +96,35 @@ public class PostController {
 
   @PatchMapping("/{id}")
   @Operation(summary = "Update a post")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Post was Updated",
-            content = @Content(schema = @Schema(implementation = PostResponseDTO.class))),
-        @ApiResponse(
-            responseCode = "409",
-            description = "The user was unauthorized",
-            content = @Content)
-      })
+  @ApiResponse(
+      responseCode = "200",
+      description = "Post was Updated",
+      content = @Content(schema = @Schema(implementation = PostResponseDTO.class)))
+  @ApiAuthResponses
   public ResponseEntity<?> patchPost(
-      @RequestBody PostRequestDTO dto,
-      @PathVariable Integer id,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The attributes you would like to change")
+          @RequestBody
+          PostRequestDTO dto,
+      @Parameter(description = "The post id which you want to update") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
 
     return ResponseEntity.ok(PostMapper.toDto(service.update(PostMapper.fromDto(dto), id, userId)));
   }
 
   @DeleteMapping("/{id}")
-  @Operation(summary = "Delete a tag by its id")
+  @Operation(summary = "Delete a post by its id")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "204", description = "Tag was deleted successfully"),
-        @ApiResponse(responseCode = "404", description = "Tag was not found", content = @Content)
+        @ApiResponse(
+            responseCode = "204",
+            description = "Post was deleted successfully",
+            content = @Content),
+        @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> deletePost(
-      @PathVariable Integer id,
+      @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Integer userId) {
     service.deletePostById(id, userId);
     return ResponseEntity.noContent().build();
