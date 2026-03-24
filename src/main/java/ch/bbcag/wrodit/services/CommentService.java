@@ -3,7 +3,7 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entitys.Comment;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
-import ch.bbcag.wrodit.util.FailedValidationException;
+import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -59,7 +60,7 @@ public class CommentService {
     Comment existing = this.getCommentById(commentId);
 
     if (!existing.getUsers().getId().equals(authId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      throw new AuthorizationDeniedException("Forbidden");
     }
 
     mergeComment(existing, comment);
@@ -85,7 +86,7 @@ public class CommentService {
   public void deletePostById(Integer id, Integer authId) {
     Comment comment = this.getCommentById(id);
     if (!comment.getUsers().getId().equals(authId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      throw new AuthorizationDeniedException("Forbidden");
     }
     commentRepository.deleteById(id);
   }
