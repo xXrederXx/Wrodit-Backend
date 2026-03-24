@@ -1,15 +1,12 @@
 package ch.bbcag.wrodit.services;
 
 import ch.bbcag.wrodit.entitys.Thread;
-import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,13 +37,11 @@ public class ThreadService {
     return repo.save(thread);
   }
 
-  private Specification<Thread> buildSpecification(Integer userId)
-  {
+  private Specification<Thread> buildSpecification(Integer userId) {
     return (root, query, criteriaBuilder) -> {
       List<Predicate> predicates = new ArrayList<>();
 
-      if (userId != null)
-      {
+      if (userId != null) {
         predicates.add(criteriaBuilder.equal(root.get("users").get("id"), userId));
       }
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

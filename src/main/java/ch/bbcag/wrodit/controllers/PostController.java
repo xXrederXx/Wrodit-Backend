@@ -7,7 +7,6 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import ch.bbcag.wrodit.services.PostService;
-import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

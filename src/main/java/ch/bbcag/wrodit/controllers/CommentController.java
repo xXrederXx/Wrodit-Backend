@@ -6,7 +6,6 @@ import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
 import ch.bbcag.wrodit.mapper.CommentMapper;
 import ch.bbcag.wrodit.services.CommentService;
-import ch.bbcag.wrodit.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
