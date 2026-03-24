@@ -18,7 +18,6 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +79,7 @@ class PostControllerTest {
 
   @Test
   void checkGetPosts_whenPostExists_thenSuccess() throws Exception {
-    Mockito.when(
-            postService.getPaginatedPosts(
-                any(), any(), any(Pageable.class)))
+    Mockito.when(postService.getPaginatedPosts(any(), any(), any(Pageable.class)))
         .thenReturn(mockPostPage);
 
     mockMvc.perform(get(PostController.PATH + "/")).andExpect(status().isOk());
@@ -90,9 +87,7 @@ class PostControllerTest {
 
   @Test
   void checkGetPosts_whenNoPostExists_thenSuccess() throws Exception {
-    Mockito.when(
-            postService.getPaginatedPosts(
-                any(), any(), any(Pageable.class)))
+    Mockito.when(postService.getPaginatedPosts(any(), any(), any(Pageable.class)))
         .thenReturn(new PageImpl<>(List.of()));
 
     mockMvc.perform(get(PostController.PATH + "/")).andExpect(status().isOk());

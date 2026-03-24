@@ -18,7 +18,6 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,7 @@ class ThreadControllerTest {
       thread.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
       threads[i] = thread;
     }
-    mockThreadPage = new PageImpl<>(Arrays.stream(threads).toList(), PageRequest.of(0,10), 10);
+    mockThreadPage = new PageImpl<>(Arrays.stream(threads).toList(), PageRequest.of(0, 10), 10);
     mockThread = threads[0];
 
     mockUser = new User();
