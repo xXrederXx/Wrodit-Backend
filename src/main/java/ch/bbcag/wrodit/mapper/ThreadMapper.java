@@ -3,7 +3,7 @@ package ch.bbcag.wrodit.mapper;
 import ch.bbcag.wrodit.dto.request.ThreadRequestDTO;
 import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
-import ch.bbcag.wrodit.entitys.Thread;
+import ch.bbcag.wrodit.entities.Thread;
 import org.springframework.data.domain.Page;
 
 public class ThreadMapper {
@@ -14,9 +14,9 @@ public class ThreadMapper {
     return thread;
   }
 
-  public static ThreadResponseDTO toDto(Thread therad) {
+  public static ThreadResponseDTO toDto(Thread thread) {
     return new ThreadResponseDTO(
-        therad.getId(), therad.getName(), therad.getDescription(), therad.getCreatedAt());
+        thread.getId(), thread.getName(), thread.getDescription(), thread.getCreatedAt());
   }
 
   public static ThreadPageResponseDTO toDto(Page<Thread> page) {

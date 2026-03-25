@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.bbcag.wrodit.TestingUtil;
-import ch.bbcag.wrodit.entitys.Post;
+import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.services.PostService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;

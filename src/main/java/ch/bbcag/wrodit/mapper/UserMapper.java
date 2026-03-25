@@ -1,7 +1,7 @@
 package ch.bbcag.wrodit.mapper;
 
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.User;
 
 public class UserMapper {
   private UserMapper() { // hide ctor

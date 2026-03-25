@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.bbcag.wrodit.TestingUtil;
-import ch.bbcag.wrodit.entitys.Thread;
+import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;

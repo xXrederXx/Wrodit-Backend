@@ -1,4 +1,4 @@
-package ch.bbcag.wrodit.entitys;
+package ch.bbcag.wrodit.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

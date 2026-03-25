@@ -1,6 +1,6 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entitys.Post;
+import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;

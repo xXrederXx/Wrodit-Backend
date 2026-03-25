@@ -1,9 +1,9 @@
 package ch.bbcag.wrodit;
 
-import ch.bbcag.wrodit.entitys.Comment;
-import ch.bbcag.wrodit.entitys.Post;
-import ch.bbcag.wrodit.entitys.Thread;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.Comment;
+import ch.bbcag.wrodit.entities.Post;
+import ch.bbcag.wrodit.entities.Thread;
+import ch.bbcag.wrodit.entities.User;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 

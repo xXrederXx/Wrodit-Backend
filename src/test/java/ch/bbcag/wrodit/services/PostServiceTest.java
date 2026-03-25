@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import ch.bbcag.wrodit.TestingUtil;
-import ch.bbcag.wrodit.entitys.Post;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.Post;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
