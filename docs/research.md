@@ -1,57 +1,39 @@
 # Research
 
-## Gitlab-ci.yml
 
-Ich habe versucht das ci mit ChatGPT zu generieren. Ich habe mich daran stark orientiert.
+## CI/CD & Pipeline
 
-[PROMPT](./prompts/GitLab%20CI%20for%20Java%202026-03-11-08-28-36.md)
+- GitLab CI
+  - [Gitlab CI für Java](./prompts/GitLab%20CI%20for%20Java%202026-03-11-08-28-36.md)
+  - [Backend Pipeline Beschleunigen](./prompts/Optimizing%20Pipeline%20Speed%202026-03-11-08-54-09.md)
+  - [Frontend Pipeline Beschleunigen](./prompts/Speeding%20up%20npm%20ci%202026-03-13-07-27-47.md)
 
-Anschliessend habe ich auch noch versucht die Pipline zu beschleunignen. Ich habe es praktisch 1 zu 1 übernommen.
+## Spting Boot & Backend
 
-[PROMPT](./prompts/Optimizing%20Pipeline%20Speed%202026-03-11-08-54-09.md)
+- Enity & Repository Generation
+  - [Bootify](https://bootify.io/)
+- Global Exception handeling
+  - [javadzone](https://javadzone.com/spring-boot-exception-handling-best-practices/)
+- Generic Function Fix
+  - [ErrorResponseBuilder Problem](./prompts/Generic%20Type%20Shadowing%20Error%202026-03-11-14-52-31.md)
+- Spring Boot Fast Reload
+  - [Spring Docs](https://docs.spring.io/spring-boot/reference/using/devtools.html)
+- HTTP Headers
+  - [Baeldung](https://www.baeldung.com/spring-rest-http-headers)
+  - [Stack Overflow](https://stackoverflow.com/questions/3561381/custom-http-headers-naming-conventions)
+- Annotation Merging
+  - [JavaThinking](https://www.javathinking.com/blog/merge-multiple-annotations-with-parameters/#2-how-custom-annotations-work-in-java)
+  - [Annotation Composing Fix](./prompts/Java%20Annotation%20Composing%20Issue%202026-03-13-10-13-06.md)
+- Pagination
+  - [Reflectoring](https://reflectoring.io/spring-boot-paging/)
+  - [Better Pagination](./prompts/Swagger%20Page_Thread_%20Schema.md)
+- Sorting & Filtering Requests
+  - [Refactor](./prompts/Sorting%20and%20Filtering%20API.md)
 
-
-## Entity und Repository Generation
-
-Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot Entities zu verwandeln. Dazu habe ich `mysql ddl to java spring boot entity` gesucht. Ich habe anschliesend den ersten link gewählt. 
-
-[Bootify](https://bootify.io/)
-
-## Global Exeption Handeler
-
-[javadzone](https://javadzone.com/spring-boot-exception-handling-best-practices/)
-
-## Fix Generic in ErrorResponseBuilder
-
-[PROMPT](./prompts/Generic%20Type%20Shadowing%20Error%202026-03-11-14-52-31.md)
-
-## Spring Boot Fast Reload
-
-[Spring](https://docs.spring.io/spring-boot/reference/using/devtools.html)
 
 ## Vite Enviroment Vars Loading
 
 [Vite](https://vite.dev/guide/env-and-mode)
-
-## Frontend CI Optimization
-
-[PROMPT](./prompts/Speeding%20up%20npm%20ci%202026-03-13-07-27-47.md)
-
-## HTTP Headers
-
-[Baeldung](https://www.baeldung.com/spring-rest-http-headers)
-[Stack Overflow](https://stackoverflow.com/questions/3561381/custom-http-headers-naming-conventions)
-
-## Java Annotation Merging
-
-[JavaThinking](https://www.javathinking.com/blog/merge-multiple-annotations-with-parameters/#2-how-custom-annotations-work-in-java)
-
-[PROMPT](./prompts/Java%20Annotation%20Composing%20Issue%202026-03-13-10-13-06.md)
-
-## Pagination
-
-[Reflectoring](https://reflectoring.io/spring-boot-paging/)
-[PROMPT](./prompts/Swagger%20Page_Thread_%20Schema.md)
 
 ## Sorting And Filtering API Requests
 
@@ -76,35 +58,3 @@ Ich habe nach einem weg gesucht, dass SQL Diagramm direkt in Java Spring Boot En
 [junit-pionner](https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access)
 
 [PROMPT](./prompts/Maven%20to%20Gradle%20Conversion.md)
-
-[PROMPT](./prompts/Injecting%20JWT%20Secret.md)
-
-## Sum of array
-
-[Stack Overflow](https://stackoverflow.com/questions/4550662/how-do-you-find-the-sum-of-all-the-numbers-in-an-array-in-java#comment104459249_4550662)
-
-## Paralel fetching
-
-[PROMPT](./prompts/Parallel%20Fetch%20Anfragen.md)
-
-## Loader Problem
-
-[PROMPT](./prompts/Router%20Loader%20Problem.md)
-
-## Sidebar
-
-[W3s](https://www.w3schools.com/howto/howto_js_curtain_menu.asp)
-
-## React 
-
-- [Profile](https://react-icons.github.io/react-icons/search/#q=profile)
-- [Menu](https://react-icons.github.io/react-icons/search/#q=menu)
-- [Comment](https://react-icons.github.io/react-icons/search/#q=comment)
-
-## MIT License
-
-[MIT](https://opensource.org/license/MIT)
-
-## Input Styling
-
-[PROMPT](./prompts/Inputfeld%20stylen%20CSS_2026-03-12_12-30.md)
