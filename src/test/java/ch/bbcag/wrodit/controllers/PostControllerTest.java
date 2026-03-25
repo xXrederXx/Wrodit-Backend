@@ -128,12 +128,11 @@ class PostControllerTest {
             patch(URIHelper.join(PostController.PATH, "1"))
                 .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
-                    String.format(
-                        """
-                            {
-                              "title":"new title"
-                            }
-                    """)))
+                    """
+                        {
+                          "title":"new title"
+                        }
+                """))
         .andExpect(status().isOk());
   }
 

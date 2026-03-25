@@ -9,6 +9,10 @@ import ch.bbcag.wrodit.entitys.Post;
 import org.springframework.data.domain.Page;
 
 public class CommentMapper {
+  private CommentMapper() {
+    // hide ctor
+  }
+
   public static Comment fromDto(CommentCreateDTO dto) {
     Comment comment = new Comment();
     comment.setContent(dto.content());

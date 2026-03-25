@@ -1,4 +1,4 @@
-package ch.bbcag.wrodit.util;
+package ch.bbcag.wrodit.dto.response;
 
 import java.time.LocalDateTime;
 

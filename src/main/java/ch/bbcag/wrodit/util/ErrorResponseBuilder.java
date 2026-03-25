@@ -1,5 +1,6 @@
 package ch.bbcag.wrodit.util;
 
+import ch.bbcag.wrodit.dto.response.ErrorResponseDTO;
 import ch.bbcag.wrodit.util.exception.IllegalStatusException;
 import java.time.LocalDateTime;
 import org.slf4j.Logger;
