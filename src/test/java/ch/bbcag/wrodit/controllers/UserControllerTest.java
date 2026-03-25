@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.UserService;
 import ch.bbcag.wrodit.util.URIHelper;
@@ -32,12 +33,7 @@ class UserControllerTest {
 
   @BeforeAll
   static void init() {
-    mockUser = new User();
-    mockUser.setId(1);
-    mockUser.setUsername("Tester");
-    mockUser.setEmail("test@test.com");
-    mockUser.setPasswordHash("Some-Long-Hash");
-    mockUser.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
+    mockUser = TestingUtil.generateUser();
   }
 
   @Test

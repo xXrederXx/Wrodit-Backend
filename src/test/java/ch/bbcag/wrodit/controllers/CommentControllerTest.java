@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.bbcag.wrodit.TestingConstants;
+import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entitys.Comment;
 import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.services.CommentService;
@@ -41,15 +41,7 @@ class CommentControllerTest {
 
   @BeforeAll
   static void init() {
-    Comment[] comments = new Comment[10];
-    for (int i = 0; i < 10; i++) {
-      var comment = new Comment();
-      comment.setId(1);
-      comment.setContent("MOCK CONTENT");
-      comment.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
-      comment.setPosts(new Post(i));
-      comments[i] = comment;
-    }
+    Comment[] comments = TestingUtil.generateComments(10);
     mockCommentPage = new PageImpl<>(Arrays.stream(comments).toList());
     mockComment = comments[0];
   }
@@ -98,7 +90,7 @@ class CommentControllerTest {
     mockMvc
         .perform(
             post(URIHelper.join(CommentController.PATH, ""))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
                         """
@@ -117,7 +109,7 @@ class CommentControllerTest {
     mockMvc
         .perform(
             post(URIHelper.join(CommentController.PATH, ""))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     """
                                         {
@@ -134,7 +126,7 @@ class CommentControllerTest {
     mockMvc
         .perform(
             patch(URIHelper.join(CommentController.PATH, "1"))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     """
                                                 {
