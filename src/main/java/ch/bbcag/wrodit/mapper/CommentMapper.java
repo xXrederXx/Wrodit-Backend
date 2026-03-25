@@ -9,7 +9,7 @@ import ch.bbcag.wrodit.entitys.Post;
 import org.springframework.data.domain.Page;
 
 public class CommentMapper {
-  private CommentMapper(){
+  private CommentMapper() {
     // hide ctor
   }
 
