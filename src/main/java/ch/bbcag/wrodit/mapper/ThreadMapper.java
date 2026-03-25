@@ -14,9 +14,9 @@ public class ThreadMapper {
     return thread;
   }
 
-  public static ThreadResponseDTO toDto(Thread therad) {
+  public static ThreadResponseDTO toDto(Thread thread) {
     return new ThreadResponseDTO(
-        therad.getId(), therad.getName(), therad.getDescription(), therad.getCreatedAt());
+        thread.getId(), thread.getName(), thread.getDescription(), thread.getCreatedAt());
   }
 
   public static ThreadPageResponseDTO toDto(Page<Thread> page) {
