@@ -47,7 +47,7 @@ public class PostService {
 
   public Post update(Post post, Integer id, Integer authId) {
     Post existing = this.getPostById(id);
-    ThrowHelper.throwAuthorizationIfNotEqual(post.getUsers().getId(), authId);
+    ThrowHelper.throwAuthorizationIfNotEqual(existing.getUsers().getId(), authId);
     mergePost(existing, post);
     return postRepository.save(existing);
   }
