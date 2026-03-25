@@ -17,6 +17,8 @@ public class SecurityConstants {
     "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"
   };
 
-  public static final String[] CORS_ALLOWED_METHODS = {"GET", "POST", "PATCH", "DELETE", "OPTIONS"};
+  public static final String[] CORS_ALLOWED_METHODS = {
+    "GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"
+  };
   public static final String[] CORS_ALLOWED_HEADERS = {AUTHORIZATION_HEADER_NAME, "Content-Type"};
 }
