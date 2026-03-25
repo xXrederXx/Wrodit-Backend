@@ -4,8 +4,8 @@ import ch.bbcag.wrodit.dto.request.CommentCreateDTO;
 import ch.bbcag.wrodit.dto.request.CommentRequestDTO;
 import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
-import ch.bbcag.wrodit.entitys.Comment;
-import ch.bbcag.wrodit.entitys.Post;
+import ch.bbcag.wrodit.entities.Comment;
+import ch.bbcag.wrodit.entities.Post;
 import org.springframework.data.domain.Page;
 
 public class CommentMapper {

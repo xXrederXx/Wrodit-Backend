@@ -3,7 +3,7 @@ package ch.bbcag.wrodit.mapper;
 import ch.bbcag.wrodit.dto.request.ThreadRequestDTO;
 import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
-import ch.bbcag.wrodit.entitys.Thread;
+import ch.bbcag.wrodit.entities.Thread;
 import org.springframework.data.domain.Page;
 
 public class ThreadMapper {

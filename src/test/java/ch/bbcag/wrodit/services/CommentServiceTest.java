@@ -7,8 +7,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import ch.bbcag.wrodit.TestingUtil;
-import ch.bbcag.wrodit.entitys.Comment;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.Comment;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;

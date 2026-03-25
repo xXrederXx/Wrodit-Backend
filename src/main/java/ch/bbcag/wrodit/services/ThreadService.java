@@ -1,6 +1,6 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entitys.Thread;
+import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;

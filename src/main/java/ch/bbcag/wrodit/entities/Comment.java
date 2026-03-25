@@ -1,4 +1,4 @@
-package ch.bbcag.wrodit.entitys;
+package ch.bbcag.wrodit.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,15 +14,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Post {
+public class Comment {
 
   @Id
   @Column(nullable = false, updatable = false)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-
-  @Column(nullable = false)
-  private String title;
 
   @Column(nullable = false, columnDefinition = "longtext")
   private String content;
@@ -35,20 +32,24 @@ public class Post {
   private User users;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "threads_id", nullable = false)
-  private Thread threads;
+  @JoinColumn(name = "parent_comments_id")
+  private Comment parentComment;
 
-  @OneToMany(mappedBy = "posts")
-  private Set<Comment> comments = new HashSet<>();
+  @OneToMany(mappedBy = "parentComment")
+  private Set<Comment> childComments = new HashSet<>();
 
-  @OneToMany(mappedBy = "posts")
-  private Set<PostsVote> postVotes = new HashSet<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "posts_id")
+  private Post posts;
 
-  public Post(Integer id) {
+  @OneToMany(mappedBy = "comments")
+  private Set<CommentVote> commentVotes = new HashSet<>();
+
+  public Comment(Integer id) {
     this.id = id;
   }
 
-  public Post() {}
+  public Comment() {}
 
   public Integer getId() {
     return id;
@@ -56,14 +57,6 @@ public class Post {
 
   public void setId(final Integer id) {
     this.id = id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(final String title) {
-    this.title = title;
   }
 
   public String getContent() {
@@ -90,27 +83,35 @@ public class Post {
     this.users = users;
   }
 
-  public Thread getThreads() {
-    return threads;
+  public Comment getParentComment() {
+    return parentComment;
   }
 
-  public void setThreads(final Thread threads) {
-    this.threads = threads;
+  public void setParentComment(final Comment parentComments) {
+    this.parentComment = parentComments;
   }
 
-  public Set<Comment> getComments() {
-    return comments;
+  public Set<Comment> getChildComments() {
+    return childComments;
   }
 
-  public void setComments(final Set<Comment> postsComments) {
-    this.comments = postsComments;
+  public void setChildComments(final Set<Comment> parentCommentsComments) {
+    this.childComments = parentCommentsComments;
   }
 
-  public Set<PostsVote> getPostVotes() {
-    return postVotes;
+  public Post getPosts() {
+    return posts;
   }
 
-  public void setPostVotes(final Set<PostsVote> postsPostsVotes) {
-    this.postVotes = postsPostsVotes;
+  public void setPosts(final Post posts) {
+    this.posts = posts;
+  }
+
+  public Set<CommentVote> getCommentVotes() {
+    return commentVotes;
+  }
+
+  public void setCommentVotes(final Set<CommentVote> commentsCommentVotes) {
+    this.commentVotes = commentsCommentVotes;
   }
 }
