@@ -2,7 +2,7 @@ package ch.bbcag.wrodit.mapper;
 
 import ch.bbcag.wrodit.dto.request.AuthRequestDTO;
 import ch.bbcag.wrodit.dto.response.AuthResponseDTO;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.User;
 
 public class AuthMapper {
   private AuthMapper() { // hide ctor

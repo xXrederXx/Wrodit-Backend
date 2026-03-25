@@ -3,7 +3,7 @@ package ch.bbcag.wrodit.controllers;
 import ch.bbcag.wrodit.dto.request.AuthRequestDTO;
 import ch.bbcag.wrodit.dto.response.AuthResponseDTO;
 import ch.bbcag.wrodit.dto.response.JWTResponseDTO;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.mapper.AuthMapper;
 import ch.bbcag.wrodit.security.JWTGenerator;
 import ch.bbcag.wrodit.services.UserService;

@@ -1,7 +1,7 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entitys.Comment;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.Comment;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
