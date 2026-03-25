@@ -4,11 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(
-        name = "comment_vote",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"comments_id", "users_id"})
-        }
-)
+    name = "comment_vote",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"comments_id", "users_id"})})
 public class CommentVote {
 
   @Id
