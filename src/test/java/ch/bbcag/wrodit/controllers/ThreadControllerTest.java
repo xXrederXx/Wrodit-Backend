@@ -14,8 +14,6 @@ import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.ThreadService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;

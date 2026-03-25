@@ -9,12 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entitys.Comment;
-import ch.bbcag.wrodit.entitys.Post;
 import ch.bbcag.wrodit.services.CommentService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
