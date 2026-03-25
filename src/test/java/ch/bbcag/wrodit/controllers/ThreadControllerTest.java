@@ -8,14 +8,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.bbcag.wrodit.TestingConstants;
+import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entitys.Thread;
 import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.ThreadService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,24 +42,11 @@ class ThreadControllerTest {
 
   @BeforeAll
   static void init() {
-    Thread[] threads = new Thread[10];
-    for (int i = 0; i < 10; i++) {
-      var thread = new Thread();
-      thread.setId(i);
-      thread.setName("Tester" + i);
-      thread.setDescription(i + "test@test.com");
-      thread.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
-      threads[i] = thread;
-    }
+    Thread[] threads = TestingUtil.generateThreads(10);
     mockThreadPage = new PageImpl<>(Arrays.stream(threads).toList(), PageRequest.of(0, 10), 10);
     mockThread = threads[0];
 
-    mockUser = new User();
-    mockUser.setId(1);
-    mockUser.setUsername("Tester");
-    mockUser.setEmail("test@test.com");
-    mockUser.setPasswordHash("Some-Long-Hash");
-    mockUser.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
+    mockUser = TestingUtil.generateUser();
   }
 
   @Test
@@ -86,7 +71,7 @@ class ThreadControllerTest {
     mockMvc
         .perform(
             post(URIHelper.join(ThreadController.PATH, ""))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
                         """
@@ -108,7 +93,7 @@ class ThreadControllerTest {
     mockMvc
         .perform(
             post(URIHelper.join(ThreadController.PATH, ""))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
                         """

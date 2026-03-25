@@ -6,15 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.bbcag.wrodit.TestingConstants;
+import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entitys.Post;
-import ch.bbcag.wrodit.entitys.Thread;
-import ch.bbcag.wrodit.entitys.User;
 import ch.bbcag.wrodit.services.PostService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,17 +37,7 @@ class PostControllerTest {
 
   @BeforeAll
   static void init() {
-    Post[] posts = new Post[10];
-    for (int i = 0; i < 10; i++) {
-      var post = new Post();
-      post.setId(1);
-      post.setUsers(new User(1));
-      post.setContent("MOCK CONTENT");
-      post.setTitle("MOCK TITLE");
-      post.setThreads(new Thread(1));
-      post.setCreatedAt(OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, ZoneOffset.UTC));
-      posts[i] = post;
-    }
+    Post[] posts = TestingUtil.generatePosts(10);
     mockPostPage = new PageImpl<>(Arrays.stream(posts).toList());
     mockPost = posts[0];
   }
@@ -100,7 +86,7 @@ class PostControllerTest {
     mockMvc
         .perform(
             post(URIHelper.join(PostController.PATH, ""))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
                         """
@@ -122,7 +108,7 @@ class PostControllerTest {
     mockMvc
         .perform(
             post(URIHelper.join(PostController.PATH, ""))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     """
                         {
@@ -140,7 +126,7 @@ class PostControllerTest {
     mockMvc
         .perform(
             patch(URIHelper.join(PostController.PATH, "1"))
-                .contentType(TestingConstants.CONTENT_TYPE_JSON)
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
                 .content(
                     String.format(
                         """

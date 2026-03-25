@@ -1,7 +1,7 @@
 package ch.bbcag.wrodit.util;
 
-import static ch.bbcag.wrodit.TestingConstants.MAX_TIME_CHECK_DIFF;
-import static ch.bbcag.wrodit.TestingConstants.TIME_CHECK_OFFSET;
+import static ch.bbcag.wrodit.TestingUtil.MAX_TIME_CHECK_DIFF;
+import static ch.bbcag.wrodit.TestingUtil.TIME_CHECK_OFFSET;
 
 import ch.bbcag.wrodit.util.exception.IllegalStatusException;
 import java.time.LocalDateTime;
