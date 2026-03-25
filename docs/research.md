@@ -1,5 +1,6 @@
 # Research
 
+Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von ChatGPT.
 
 ## CI/CD & Pipeline
 
@@ -29,32 +30,19 @@
   - [Better Pagination](./prompts/Swagger%20Page_Thread_%20Schema.md)
 - Sorting & Filtering Requests
   - [Refactor](./prompts/Sorting%20and%20Filtering%20API.md)
+- HTTP Response Codes
+  - [Stack Overflow](https://stackoverflow.com/questions/54666244/what-should-response-of-rest-full-api-for-patch-http-method#:~:text=According%20to%20RFC%205789%20a%20successful%20response%20can,used%20for%20optimistic%20locking%20on%20the%20resources%20state%29.)
+  - [Stack Overflow](https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete)
+- JWT
+  - [Explenation & Implemation](./prompts/JWT%20Authentication%20Breakdown.md)
+- Testing Enviroment Variables
+  - [Baeldung](https://www.baeldung.com/java-unit-testing-environment-variables)
+  - [Maven Repository](https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer/2.3.0)
+  - [junit-pionner](https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access)
+  - [Maven zu Gradle konvertieren](./prompts/Maven%20to%20Gradle%20Conversion.md)
 
 
-## Vite Enviroment Vars Loading
+## Frontend
 
-[Vite](https://vite.dev/guide/env-and-mode)
-
-## Sorting And Filtering API Requests
-
-[PROMPT](./prompts/Sorting%20and%20Filtering%20API.md)
-
-## Patch Response
-
-[Stack Overflow](https://stackoverflow.com/questions/54666244/what-should-response-of-rest-full-api-for-patch-http-method#:~:text=According%20to%20RFC%205789%20a%20successful%20response%20can,used%20for%20optimistic%20locking%20on%20the%20resources%20state%29.)
-
-[Stack Overflow](https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete)
-
-## JWT Explenation and Implementattion Help
-
-[PROMPT](./prompts/JWT%20Authentication%20Breakdown.md)
-
-## Fix Enviroment variables for tests
-
-[Baeldung](https://www.baeldung.com/java-unit-testing-environment-variables)
-
-[Maven Repository](https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer/2.3.0)
-
-[junit-pionner](https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access)
-
-[PROMPT](./prompts/Maven%20to%20Gradle%20Conversion.md)
+- Enviroment Variables
+  - [Vite](https://vite.dev/guide/env-and-mode)
