@@ -104,14 +104,14 @@ means the `gradlew` script **is not executable** in your Git repository. GitLab 
 
 1. **Make `gradlew` executable locally**:
 
-```
-Bashchmod +x gradlew
+```Bash
+chmod +x gradlew
 ```
 
 1. **Commit the change**:
 
-```
-Bashgit add gradlewgit commit -m "Make gradlew executable"git push
+```Bash
+git add gradlewgit commit -m "Make gradlew executable"git push
 ```
 
 1. After this, your pipeline should be able to run `./gradlew` commands like `spotlessCheck`, `test`, and `bootJar`.
@@ -146,8 +146,8 @@ Ah, perfect — now we see a **Gradle-specific issue**, not a CI permission prob
 
 The error:
 
-```
-Task 'spotlessCheck' not found in root project 'test-back'.
+```Task
+ 'spotlessCheck' not found in root project 'test-back'.
 ```
 
 means your **project doesn’t have the Spotless plugin applied**, so Gradle doesn’t know about the `spotlessCheck` task.
