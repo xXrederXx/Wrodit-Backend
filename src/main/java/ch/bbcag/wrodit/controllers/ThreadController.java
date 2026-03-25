@@ -43,7 +43,7 @@ public class ThreadController {
   @ApiAuthResponses
   public ResponseEntity<?> getThreadById(
       @Parameter(description = "The threads id you want to get") @PathVariable Integer id) {
-    return ResponseEntity.ok(ThreadMapper.toDTO(service.findById(id)));
+    return ResponseEntity.ok(ThreadMapper.toDto(service.findById(id)));
   }
 
   @GetMapping("/")
@@ -54,7 +54,7 @@ public class ThreadController {
       content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
   @ApiAuthResponses
   public ResponseEntity<?> getPaginatedThreads(Pageable page) {
-    return ResponseEntity.ok(ThreadMapper.toPageDto(service.paginatedThreads(page)));
+    return ResponseEntity.ok(ThreadMapper.toDto(service.paginatedThreads(page)));
   }
 
   @GetMapping("/userfeed")
@@ -68,7 +68,7 @@ public class ThreadController {
       Pageable page, @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
     return ResponseEntity.ok(
-        ThreadMapper.toPageDto(
+        ThreadMapper.toDto(
             service.paginatedThreadsByUser(userId == null ? null : userId.intValue(), page)));
   }
 
@@ -92,7 +92,7 @@ public class ThreadController {
           @Valid
           @RequestBody
           ThreadRequestDTO dto) {
-    ThreadResponseDTO responseDTO = ThreadMapper.toDTO(service.save(ThreadMapper.fromDto(dto)));
+    ThreadResponseDTO responseDTO = ThreadMapper.toDto(service.save(ThreadMapper.fromDto(dto)));
     return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);
   }
 }

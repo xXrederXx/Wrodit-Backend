@@ -65,7 +65,7 @@ public class PostController {
       @Parameter(description = "The threads id which is filtered with")
           @RequestParam(required = false)
           Integer thread) {
-    return ResponseEntity.ok(PostMapper.toPageDto(service.getPaginatedPosts(user, thread, page)));
+    return ResponseEntity.ok(PostMapper.toDto(service.getPaginatedPosts(user, thread, page)));
   }
 
   @PostMapping("/")

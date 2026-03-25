@@ -24,7 +24,7 @@ public class PostMapper {
         post.getThreads().getId());
   }
 
-  public static PostPageResponseDTO toPageDto(Page<Post> page) {
+  public static PostPageResponseDTO toDto(Page<Post> page) {
     PostPageResponseDTO dto = PageMapper.toDto(page, new PostPageResponseDTO());
     dto.setContent(page.getContent().stream().map(PostMapper::toDto).toList());
     return dto;

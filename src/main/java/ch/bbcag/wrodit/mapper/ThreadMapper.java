@@ -14,14 +14,14 @@ public class ThreadMapper {
     return thread;
   }
 
-  public static ThreadResponseDTO toDTO(Thread therad) {
+  public static ThreadResponseDTO toDto(Thread therad) {
     return new ThreadResponseDTO(
         therad.getId(), therad.getName(), therad.getDescription(), therad.getCreatedAt());
   }
 
-  public static ThreadPageResponseDTO toPageDto(Page<Thread> page) {
+  public static ThreadPageResponseDTO toDto(Page<Thread> page) {
     ThreadPageResponseDTO dto = PageMapper.toDto(page, new ThreadPageResponseDTO());
-    dto.setContent(page.getContent().stream().map(ThreadMapper::toDTO).toList());
+    dto.setContent(page.getContent().stream().map(ThreadMapper::toDto).toList());
     return dto;
   }
 }

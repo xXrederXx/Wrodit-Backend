@@ -38,7 +38,7 @@ public class UserController {
   @ApiAuthResponses
   public ResponseEntity<?> getUserById(
       @Parameter(description = "Id of the user to get") @PathVariable Integer id) {
-    return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), false));
+    return ResponseEntity.ok(UserMapper.toDto(service.findById(id), false));
   }
 
   @GetMapping("/self")
@@ -55,6 +55,6 @@ public class UserController {
   public ResponseEntity<?> getWholeUserById(
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     return ResponseEntity.ok(
-        UserMapper.toUserDto(service.findById(userId == null ? null : userId.intValue()), true));
+        UserMapper.toDto(service.findById(userId == null ? null : userId.intValue()), true));
   }
 }
