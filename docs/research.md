@@ -35,14 +35,34 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
   - [Stack Overflow](https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete)
 - JWT
   - [Explenation & Implemation](./prompts/JWT%20Authentication%20Breakdown.md)
+  - [Injecting JWT](./prompts/Injecting%20JWT%20Secret.md)
 - Testing Enviroment Variables
   - [Baeldung](https://www.baeldung.com/java-unit-testing-environment-variables)
   - [Maven Repository](https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer/2.3.0)
   - [junit-pionner](https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access)
   - [Maven zu Gradle konvertieren](./prompts/Maven%20to%20Gradle%20Conversion.md)
+- Sum of Array
+  - [Stack Overflow](https://stackoverflow.com/questions/4550662/how-do-you-find-the-sum-of-all-the-numbers-in-an-array-in-java#comment104459249_4550662)
 
 
 ## Frontend
 
 - Enviroment Variables
   - [Vite](https://vite.dev/guide/env-and-mode)
+- Parallel Fetching
+  - [Mehrere Fetches Parallel](./prompts/Parallel%20Fetch%20Anfragen.md)
+- React Router Loader
+  - [Fix Bug](./prompts/Router%20Loader%20Problem.md)
+- Sidebar Template
+  - [W3s](https://www.w3schools.com/howto/howto_js_curtain_menu.asp)
+- React
+  - [Profile](https://react-icons.github.io/react-icons/search/#q=profile)
+  - [Menu](https://react-icons.github.io/react-icons/search/#q=menu)
+  - [Comment](https://react-icons.github.io/react-icons/search/#q=comment)
+- Styling Input
+  - [Input Style](./prompts/Inputfeld%20stylen%20CSS_2026-03-12_12-30.md)
+
+## Allgemein
+
+- Lizenzen
+  - [MIT](https://opensource.org/license/MIT)
