@@ -32,11 +32,11 @@ public class Thread {
   @Column(nullable = false)
   private OffsetDateTime createdAt;
 
-  @ManyToMany(mappedBy = "usersThreadThreads")
-  private Set<User> usersThreadUsers = new HashSet<>();
+  @ManyToMany(mappedBy = "threads")
+  private Set<User> users = new HashSet<>();
 
   @OneToMany(mappedBy = "threads")
-  private Set<Post> threadsPosts = new HashSet<>();
+  private Set<Post> posts = new HashSet<>();
 
   public Thread(Integer id) {
     this.id = id;
@@ -92,19 +92,19 @@ public class Thread {
     this.createdAt = createdAt;
   }
 
-  public Set<User> getUsersThreadUsers() {
-    return usersThreadUsers;
+  public Set<User> getUsers() {
+    return users;
   }
 
-  public void setUsersThreadUsers(final Set<User> usersThreadUsers) {
-    this.usersThreadUsers = usersThreadUsers;
+  public void setUsers(final Set<User> usersThreadUsers) {
+    this.users = usersThreadUsers;
   }
 
-  public Set<Post> getThreadsPosts() {
-    return threadsPosts;
+  public Set<Post> getPosts() {
+    return posts;
   }
 
-  public void setThreadsPosts(final Set<Post> threadsPosts) {
-    this.threadsPosts = threadsPosts;
+  public void setPosts(final Set<Post> threadsPosts) {
+    this.posts = threadsPosts;
   }
 }

@@ -16,7 +16,7 @@ public class CommentMapper {
   public static Comment fromDto(CommentCreateDTO dto) {
     Comment comment = new Comment();
     comment.setContent(dto.content());
-    comment.setParentComments(dto.parentId() == null ? null : new Comment(dto.parentId()));
+    comment.setParentComment(dto.parentId() == null ? null : new Comment(dto.parentId()));
     comment.setPosts(dto.postId() == null ? null : new Post(dto.postId()));
     return comment;
   }
@@ -32,7 +32,7 @@ public class CommentMapper {
         comment.getId(),
         comment.getContent(),
         comment.getCreatedAt(),
-        comment.getParentComments() == null ? null : comment.getParentComments().getId());
+        comment.getParentComment() == null ? null : comment.getParentComment().getId());
   }
 
   public static CommentPageResponseDTO toDto(Page<Comment> comments) {

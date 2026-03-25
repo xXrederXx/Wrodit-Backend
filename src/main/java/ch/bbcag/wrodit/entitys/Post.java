@@ -39,10 +39,10 @@ public class Post {
   private Thread threads;
 
   @OneToMany(mappedBy = "posts")
-  private Set<Comment> postsComments = new HashSet<>();
+  private Set<Comment> comments = new HashSet<>();
 
   @OneToMany(mappedBy = "posts")
-  private Set<PostsVote> postsPostsVotes = new HashSet<>();
+  private Set<PostsVote> postVotes = new HashSet<>();
 
   public Post(Integer id) {
     this.id = id;
@@ -98,19 +98,19 @@ public class Post {
     this.threads = threads;
   }
 
-  public Set<Comment> getPostsComments() {
-    return postsComments;
+  public Set<Comment> getComments() {
+    return comments;
   }
 
-  public void setPostsComments(final Set<Comment> postsComments) {
-    this.postsComments = postsComments;
+  public void setComments(final Set<Comment> postsComments) {
+    this.comments = postsComments;
   }
 
-  public Set<PostsVote> getPostsPostsVotes() {
-    return postsPostsVotes;
+  public Set<PostsVote> getPostVotes() {
+    return postVotes;
   }
 
-  public void setPostsPostsVotes(final Set<PostsVote> postsPostsVotes) {
-    this.postsPostsVotes = postsPostsVotes;
+  public void setPostVotes(final Set<PostsVote> postsPostsVotes) {
+    this.postVotes = postsPostsVotes;
   }
 }

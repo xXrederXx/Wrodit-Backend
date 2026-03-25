@@ -39,19 +39,19 @@ public class User {
       name = "UsersThread",
       joinColumns = @JoinColumn(name = "userId"),
       inverseJoinColumns = @JoinColumn(name = "threadId"))
-  private Set<Thread> usersThreadThreads = new HashSet<>();
+  private Set<Thread> threads = new HashSet<>();
 
   @OneToMany(mappedBy = "users")
-  private Set<Post> usersPosts = new HashSet<>();
+  private Set<Post> posts = new HashSet<>();
 
   @OneToMany(mappedBy = "users")
-  private Set<Comment> usersComments = new HashSet<>();
+  private Set<Comment> comments = new HashSet<>();
 
   @OneToMany(mappedBy = "users")
-  private Set<CommentVote> usersCommentVotes = new HashSet<>();
+  private Set<CommentVote> commentVotes = new HashSet<>();
 
   @OneToMany(mappedBy = "users")
-  private Set<PostsVote> usersPostsVotes = new HashSet<>();
+  private Set<PostsVote> postVotes = new HashSet<>();
 
   public User() {}
 
@@ -107,43 +107,43 @@ public class User {
     this.createdAt = createdAt;
   }
 
-  public Set<Thread> getUsersThreadThreads() {
-    return usersThreadThreads;
+  public Set<Thread> getThreads() {
+    return threads;
   }
 
-  public void setUsersThreadThreads(final Set<Thread> usersThreadThreads) {
-    this.usersThreadThreads = usersThreadThreads;
+  public void setThreads(final Set<Thread> usersThreadThreads) {
+    this.threads = usersThreadThreads;
   }
 
-  public Set<Post> getUsersPosts() {
-    return usersPosts;
+  public Set<Post> getPosts() {
+    return posts;
   }
 
-  public void setUsersPosts(final Set<Post> usersPosts) {
-    this.usersPosts = usersPosts;
+  public void setPosts(final Set<Post> usersPosts) {
+    this.posts = usersPosts;
   }
 
-  public Set<Comment> getUsersComments() {
-    return usersComments;
+  public Set<Comment> getComments() {
+    return comments;
   }
 
-  public void setUsersComments(final Set<Comment> usersComments) {
-    this.usersComments = usersComments;
+  public void setComments(final Set<Comment> usersComments) {
+    this.comments = usersComments;
   }
 
-  public Set<CommentVote> getUsersCommentVotes() {
-    return usersCommentVotes;
+  public Set<CommentVote> getCommentVotes() {
+    return commentVotes;
   }
 
-  public void setUsersCommentVotes(final Set<CommentVote> usersCommentVotes) {
-    this.usersCommentVotes = usersCommentVotes;
+  public void setCommentVotes(final Set<CommentVote> usersCommentVotes) {
+    this.commentVotes = usersCommentVotes;
   }
 
-  public Set<PostsVote> getUsersPostsVotes() {
-    return usersPostsVotes;
+  public Set<PostsVote> getPostVotes() {
+    return postVotes;
   }
 
-  public void setUsersPostsVotes(final Set<PostsVote> usersPostsVotes) {
-    this.usersPostsVotes = usersPostsVotes;
+  public void setPostVotes(final Set<PostsVote> usersPostsVotes) {
+    this.postVotes = usersPostsVotes;
   }
 }

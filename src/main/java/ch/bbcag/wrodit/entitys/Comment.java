@@ -33,17 +33,17 @@ public class Comment {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_comments_id")
-  private Comment parentComments;
+  private Comment parentComment;
 
-  @OneToMany(mappedBy = "parentComments")
-  private Set<Comment> parentCommentsComments = new HashSet<>();
+  @OneToMany(mappedBy = "parentComment")
+  private Set<Comment> childComments = new HashSet<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "posts_id")
   private Post posts;
 
   @OneToMany(mappedBy = "comments")
-  private Set<CommentVote> commentsCommentVotes = new HashSet<>();
+  private Set<CommentVote> commentVotes = new HashSet<>();
 
   public Comment(Integer id) {
     this.id = id;
@@ -83,20 +83,20 @@ public class Comment {
     this.users = users;
   }
 
-  public Comment getParentComments() {
-    return parentComments;
+  public Comment getParentComment() {
+    return parentComment;
   }
 
-  public void setParentComments(final Comment parentComments) {
-    this.parentComments = parentComments;
+  public void setParentComment(final Comment parentComments) {
+    this.parentComment = parentComments;
   }
 
-  public Set<Comment> getParentCommentsComments() {
-    return parentCommentsComments;
+  public Set<Comment> getChildComments() {
+    return childComments;
   }
 
-  public void setParentCommentsComments(final Set<Comment> parentCommentsComments) {
-    this.parentCommentsComments = parentCommentsComments;
+  public void setChildComments(final Set<Comment> parentCommentsComments) {
+    this.childComments = parentCommentsComments;
   }
 
   public Post getPosts() {
@@ -107,11 +107,11 @@ public class Comment {
     this.posts = posts;
   }
 
-  public Set<CommentVote> getCommentsCommentVotes() {
-    return commentsCommentVotes;
+  public Set<CommentVote> getCommentVotes() {
+    return commentVotes;
   }
 
-  public void setCommentsCommentVotes(final Set<CommentVote> commentsCommentVotes) {
-    this.commentsCommentVotes = commentsCommentVotes;
+  public void setCommentVotes(final Set<CommentVote> commentsCommentVotes) {
+    this.commentVotes = commentsCommentVotes;
   }
 }
