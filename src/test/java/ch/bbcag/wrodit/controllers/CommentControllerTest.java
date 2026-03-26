@@ -2,6 +2,7 @@ package ch.bbcag.wrodit.controllers;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Comment;
 import ch.bbcag.wrodit.services.CommentService;
+import ch.bbcag.wrodit.services.CommentVoteService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ class CommentControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean private CommentService commentService;
+  @MockitoBean private CommentVoteService commentVoteService;
 
   private static Comment mockComment;
   private static Page<Comment> mockCommentPage;
@@ -148,6 +151,79 @@ class CommentControllerTest {
         .deletePostById(any(), any());
     mockMvc
         .perform(delete(URIHelper.join(CommentController.PATH, "1")))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void checkVote_whenValidId_thenOk() throws Exception {
+    Mockito.when(commentVoteService.update(anyInt(), anyInt(), anyInt()))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+
+    mockMvc
+        .perform(
+            put(URIHelper.join(CommentController.PATH, "1/vote"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
+                            {
+                              "vote":1
+                            }
+                            """))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void checkVote_whenInvalidId_thenNotFound() throws Exception {
+    Mockito.doThrow(EntityNotFoundException.class)
+        .when(commentVoteService)
+        .update(any(), any(), any());
+
+    mockMvc
+        .perform(
+            put(URIHelper.join(CommentController.PATH, "1/vote"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
+                            {
+                              "vote":1
+                            }
+                            """))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void checkVote_whenInvalidVote_thenNotFound() throws Exception {
+    mockMvc
+        .perform(
+            put(URIHelper.join(CommentController.PATH, "1/vote"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
+                            {
+                              "vote":2
+                            }
+                            """))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void checkDeleteVote_whenValidVote_thenOk() throws Exception {
+    Mockito.doNothing().when(commentVoteService).deleteById(any(), any());
+
+    mockMvc
+        .perform(delete(URIHelper.join(CommentController.PATH, "1/vote")))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void checkDeleteVote_whenVoteNotFound_theNotFound() throws Exception {
+    Mockito.doThrow(EntityNotFoundException.class)
+        .when(commentVoteService)
+        .deleteById(any(), any());
+    ;
+
+    mockMvc
+        .perform(delete(URIHelper.join(CommentController.PATH, "1/vote")))
         .andExpect(status().isNotFound());
   }
 }

@@ -2,11 +2,14 @@ package ch.bbcag.wrodit.controllers;
 
 import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
 import ch.bbcag.wrodit.dto.request.PostRequestDTO;
+import ch.bbcag.wrodit.dto.request.VoteRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import ch.bbcag.wrodit.services.PostService;
+import ch.bbcag.wrodit.services.PostVoteService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.Api400Response;
 import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,9 +29,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
   public static final String PATH = "/posts";
   private final PostService service;
+  private final PostVoteService postVoteService;
 
-  public PostController(PostService service) {
+  public PostController(PostService service, PostVoteService postVoteService) {
     this.service = service;
+    this.postVoteService = postVoteService;
   }
 
   @GetMapping("/{id}")
@@ -131,6 +136,42 @@ public class PostController {
       @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     service.deletePostById(id, userId == null ? null : userId.intValue());
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/{id}/vote")
+  @Operation(summary = "Apply a vote on a post")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "204", description = "Update Successful", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
+      })
+  @ApiAuthResponses
+  @Api400Response
+  public ResponseEntity<?> votePost(
+      @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The vote you would like to make")
+          @Valid
+          @RequestBody
+          VoteRequestDTO dto,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    postVoteService.update(dto.vote(), id, userId == null ? null : userId.intValue());
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/{id}/vote")
+  @Operation(summary = "Delete a vote on a post")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "204", description = "Delete Successful", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Post was not found", content = @Content)
+      })
+  @ApiAuthResponses
+  public ResponseEntity<?> voteDelete(
+      @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    postVoteService.deleteById(userId == null ? null : userId.intValue(), id);
     return ResponseEntity.noContent().build();
   }
 }

@@ -5,6 +5,7 @@ import ch.bbcag.wrodit.dto.request.CommentRequestDTO;
 import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
 import ch.bbcag.wrodit.entities.Comment;
+import ch.bbcag.wrodit.entities.CommentVote;
 import ch.bbcag.wrodit.entities.Post;
 import org.springframework.data.domain.Page;
 
@@ -31,6 +32,7 @@ public class CommentMapper {
     return new CommentResponseDTO(
         comment.getId(),
         comment.getContent(),
+        comment.getCommentVotes().stream().mapToInt(CommentVote::getVote).sum(),
         comment.getCreatedAt(),
         comment.getParentComment() == null ? null : comment.getParentComment().getId());
   }
