@@ -33,3 +33,10 @@ In unserem fall, kompiliert er zuerst das Backend und startet es anschliessend. 
 ## .dockerignore
 
 Die `.dockerignore` Datei funktioniert ähnlich wie die `.gitignore` Datei, nur für docker. Es beinhaltet Ordner, welche von docker ignoriert werden können. Dies macht docker schneller.
+
+## Enviroment Variables
+
+Die Enviroment Variables können auf verschiedene weisen eingeschtellt werdem. Welche benutzt werden, ist in folgenden Dateien beschrieben:
+
+- [Production](./production.md)
+- [Staging](./staging.md)
