@@ -28,7 +28,7 @@ public class PostVoteService {
     this.userRepository = userRepository;
   }
 
-  public void update(Integer vote, Integer postId, Integer userId) {
+  public PostsVote update(Integer vote, Integer postId, Integer userId) {
     if (!postRepository.existsById(postId) || !userRepository.existsById(userId)) {
       throw new EntityNotFoundException();
     }
@@ -45,12 +45,14 @@ public class PostVoteService {
     }
     entity.setVote(vote);
 
-    postsVoteRepository.save(entity);
+    return postsVoteRepository.save(entity);
   }
 
   public void deleteById(Integer userId, Integer postId) {
     PostsVote entity =
-        postsVoteRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
+        postsVoteRepository
+            .findOne(buildSpecification(userId, postId))
+            .orElseThrow(EntityNotFoundException::new);
     ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
     postsVoteRepository.deleteById(postId);
   }
