@@ -157,38 +157,71 @@ class PostControllerTest {
 
   @Test
   void checkVote_whenValidId_thenOk() throws Exception {
-    Mockito.doNothing().when(postVoteService).update(anyInt(), anyInt(), anyInt());
+    Mockito.when(postVoteService.update(anyInt(), anyInt(), anyInt()))
+        .thenAnswer(invocation -> invocation.getArgument(0));
 
     mockMvc
-            .perform(put(URIHelper.join(PostController.PATH, "1/vote")).contentType(TestingUtil.CONTENT_TYPE_JSON)
-                    .content("""
+        .perform(
+            put(URIHelper.join(PostController.PATH, "1/vote"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
                             {
                               "vote":1
                             }
-                            """)).andExpect(status().isNoContent());
+                            """))
+        .andExpect(status().isNoContent());
   }
 
   @Test
   void checkVote_whenInvalidId_thenNotFound() throws Exception {
-    Mockito.doThrow(EntityNotFoundException.class).when(postVoteService).update(any(), any(), any());
+    Mockito.doThrow(EntityNotFoundException.class)
+        .when(postVoteService)
+        .update(any(), any(), any());
 
     mockMvc
-            .perform(put(URIHelper.join(PostController.PATH, "1/vote")).contentType(TestingUtil.CONTENT_TYPE_JSON)
-                    .content("""
+        .perform(
+            put(URIHelper.join(PostController.PATH, "1/vote"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
                             {
                               "vote":1
                             }
-                            """)).andExpect(status().isNotFound());
+                            """))
+        .andExpect(status().isNotFound());
   }
 
   @Test
   void checkVote_whenInvalidVote_thenNotFound() throws Exception {
     mockMvc
-            .perform(put(URIHelper.join(PostController.PATH, "1/vote")).contentType(TestingUtil.CONTENT_TYPE_JSON)
-                    .content("""
+        .perform(
+            put(URIHelper.join(PostController.PATH, "1/vote"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
                             {
                               "vote":2
                             }
-                            """)).andExpect(status().isBadRequest());
+                            """))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void checkDeleteVote_whenValidVote_thenOk() throws Exception {
+    Mockito.doNothing().when(postVoteService).deleteById(any(), any());
+
+    mockMvc
+        .perform(delete(URIHelper.join(PostController.PATH, "1/vote")))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void checkDeleteVote_whenVoteNotFound_theNotFound() throws Exception {
+    Mockito.doThrow(EntityNotFoundException.class).when(postVoteService).deleteById(any(), any());
+
+    mockMvc
+        .perform(delete(URIHelper.join(PostController.PATH, "1/vote")))
+        .andExpect(status().isNotFound());
   }
 }
