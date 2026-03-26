@@ -2,6 +2,7 @@ package ch.bbcag.wrodit.controllers;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.services.PostService;
+import ch.bbcag.wrodit.services.PostVoteService;
 import ch.bbcag.wrodit.util.URIHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -31,6 +33,7 @@ class PostControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean private PostService postService;
+  @MockitoBean private PostVoteService postVoteService;
 
   private static Post mockPost;
   private static Page<Post> mockPostPage;
@@ -150,5 +153,42 @@ class PostControllerTest {
     mockMvc
         .perform(delete(URIHelper.join(PostController.PATH, "1")))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void checkVote_whenValidId_thenOk() throws Exception {
+    Mockito.doNothing().when(postVoteService).update(anyInt(), anyInt(), anyInt());
+
+    mockMvc
+            .perform(put(URIHelper.join(PostController.PATH, "1/vote")).contentType(TestingUtil.CONTENT_TYPE_JSON)
+                    .content("""
+                            {
+                              "vote":1
+                            }
+                            """)).andExpect(status().isNoContent());
+  }
+
+  @Test
+  void checkVote_whenInvalidId_thenNotFound() throws Exception {
+    Mockito.doThrow(EntityNotFoundException.class).when(postVoteService).update(any(), any(), any());
+
+    mockMvc
+            .perform(put(URIHelper.join(PostController.PATH, "1/vote")).contentType(TestingUtil.CONTENT_TYPE_JSON)
+                    .content("""
+                            {
+                              "vote":1
+                            }
+                            """)).andExpect(status().isNotFound());
+  }
+
+  @Test
+  void checkVote_whenInvalidVote_thenNotFound() throws Exception {
+    mockMvc
+            .perform(put(URIHelper.join(PostController.PATH, "1/vote")).contentType(TestingUtil.CONTENT_TYPE_JSON)
+                    .content("""
+                            {
+                              "vote":2
+                            }
+                            """)).andExpect(status().isBadRequest());
   }
 }
