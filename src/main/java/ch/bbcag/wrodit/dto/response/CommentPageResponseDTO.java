@@ -3,7 +3,7 @@ package ch.bbcag.wrodit.dto.response;
 import java.util.List;
 import java.util.Objects;
 
-public class CommentPageResponseDTO extends PageableResponseDTO {
+public final class CommentPageResponseDTO extends PageableResponseDTO {
   private List<CommentResponseDTO> content;
 
   public List<CommentResponseDTO> getContent() {
