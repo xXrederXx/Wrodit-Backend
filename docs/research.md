@@ -68,3 +68,5 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
 
 - Lizenzen
   - [MIT](https://opensource.org/license/MIT)
+- Git
+  - [Reset-Merge](./prompts/Commit%20rückgängig%20machen_2026-03-26_08-26.md)
