@@ -1,20 +1,19 @@
-package ch.bbcag.wrodit.entitys;
+package ch.bbcag.wrodit.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(
+    name = "comment_vote",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"comments_id", "users_id"})})
 public class CommentVote {
 
   @Id
   @Column(nullable = false, updatable = false)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  @Column(nullable = false)
   private Integer vote;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -24,6 +23,14 @@ public class CommentVote {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "comments_id", nullable = false)
   private Comment comments;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
   public Integer getVote() {
     return vote;

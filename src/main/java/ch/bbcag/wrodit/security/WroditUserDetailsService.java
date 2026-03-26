@@ -1,6 +1,6 @@
 package ch.bbcag.wrodit.security;
 
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import java.util.Collections;
 import org.springframework.security.core.userdetails.UserDetails;

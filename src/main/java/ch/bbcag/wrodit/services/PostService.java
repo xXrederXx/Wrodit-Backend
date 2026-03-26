@@ -1,9 +1,10 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entitys.Post;
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.repos.PostRepository;
-import ch.bbcag.wrodit.util.FailedValidationException;
+import ch.bbcag.wrodit.repos.UserRepository;
+import ch.bbcag.wrodit.util.ThrowHelper;
+import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
@@ -12,47 +13,43 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PostService {
-  public PostRepository repo;
+  private final PostRepository postRepository;
+  private final UserRepository userRepository;
 
-  public PostService(PostRepository repo) {
-    this.repo = repo;
+  public PostService(PostRepository postRepository, UserRepository userRepository) {
+    this.postRepository = postRepository;
+    this.userRepository = userRepository;
   }
 
   public Post getPostById(Integer id) {
-    return repo.findById(id).orElseThrow(EntityNotFoundException::new);
+    return postRepository.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 
   public Page<Post> getPaginatedPosts(Integer userId, Integer threadId, Pageable pagable) {
-    return repo.findAll(buildSpecification(userId, threadId), pagable);
+    return postRepository.findAll(buildSpecification(userId, threadId), pagable);
   }
 
   public void deletePostById(Integer id, Integer userId) {
     Post post = this.getPostById(id);
-    if (!post.getUsers().getId().equals(userId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-    }
-    repo.deleteById(id);
+    ThrowHelper.throwAuthorizationIfNotEqual(post.getUsers().getId(), userId);
+    postRepository.deleteById(id);
   }
 
   public Post save(Post post, Integer authId) {
-    post.setUsers(new User(authId));
+    post.setUsers(userRepository.getReferenceById(authId));
     post.setCreatedAt(OffsetDateTime.now());
-    return repo.save(post);
+    return postRepository.save(post);
   }
 
   public Post update(Post post, Integer id, Integer authId) {
     Post existing = this.getPostById(id);
-    if (!existing.getUsers().getId().equals(authId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-    }
+    ThrowHelper.throwAuthorizationIfNotEqual(existing.getUsers().getId(), authId);
     mergePost(existing, post);
-    return repo.save(existing);
+    return postRepository.save(existing);
   }
 
   private Specification<Post> buildSpecification(Integer userId, Integer threadId) {
@@ -76,7 +73,7 @@ public class PostService {
 
     if (changing.getTitle() != null) {
       if (StringUtils.isNotBlank(changing.getTitle())) {
-        if (changing.getTitle().length() < 255) {
+        if (changing.getTitle().length() <= 255) {
           existing.setTitle(changing.getTitle());
         } else {
           errors.put("title", List.of("Title cant be longer than 255"));

@@ -1,5 +1,8 @@
 package ch.bbcag.wrodit.security;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,7 +25,14 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@SecurityScheme(
+    type = SecuritySchemeType.HTTP,
+    name = SecurityConstants.AUTHORIZATION_HEADER_NAME,
+    in = SecuritySchemeIn.HEADER,
+    bearerFormat = "JWT",
+    scheme = "bearer")
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
   @Bean
   public static PasswordEncoder passwordEncoder() {
@@ -62,10 +73,12 @@ public class SecurityConfig {
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("*"));
-    configuration.setAllowedMethods(List.of("*"));
-    configuration.setAllowedHeaders(List.of("*"));
+    configuration.setAllowedMethods(List.of(SecurityConstants.CORS_ALLOWED_METHODS));
+    configuration.setAllowedHeaders(List.of(SecurityConstants.CORS_ALLOWED_HEADERS));
+
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
+
     return source;
   }
 }

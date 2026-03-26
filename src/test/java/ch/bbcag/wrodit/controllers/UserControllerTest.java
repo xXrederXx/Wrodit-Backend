@@ -1,0 +1,76 @@
+package ch.bbcag.wrodit.controllers;
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import ch.bbcag.wrodit.TestingUtil;
+import ch.bbcag.wrodit.entities.User;
+import ch.bbcag.wrodit.services.UserService;
+import ch.bbcag.wrodit.util.URIHelper;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+@WebMvcTest(controllers = UserController.class)
+@AutoConfigureMockMvc(addFilters = false)
+class UserControllerTest {
+
+  @Autowired private MockMvc mockMvc;
+
+  @MockitoBean private UserService userService;
+
+  private static User mockUser;
+
+  @BeforeAll
+  static void init() {
+    mockUser = TestingUtil.generateUser();
+  }
+
+  @Test
+  void checkGetById_whenValidUser_thenIsReturned() throws Exception {
+    Mockito.when(userService.findById(any(Integer.class))).thenReturn(mockUser);
+
+    mockMvc
+        .perform(get(URIHelper.join(UserController.PATH, "1")))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", is(mockUser.getId())))
+        .andExpect(jsonPath("$.username", is(mockUser.getUsername())));
+    // .andExpect(content().string(not(containsString("\"email\"")))); Uncomment once Issue Resolves
+  }
+
+  @Test
+  void checkGetById_whenNoUser_then404Returned() throws Exception {
+    Mockito.when(userService.findById(any(Integer.class))).thenThrow(EntityNotFoundException.class);
+
+    mockMvc.perform(get(URIHelper.join(UserController.PATH, "1"))).andExpect(status().isNotFound());
+  }
+
+  @Test
+  void checkGetAllById_whenValidUser_thenIsReturned() throws Exception {
+    Mockito.when(userService.findById(any())).thenReturn(mockUser);
+
+    mockMvc
+        .perform(get(URIHelper.join(UserController.PATH, "self")))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", is(mockUser.getId())))
+        .andExpect(jsonPath("$.email", is(mockUser.getEmail())))
+        .andExpect(jsonPath("$.username", is(mockUser.getUsername())));
+  }
+
+  @Test
+  void checkGetAllById_whenNoUser_then404Returned() throws Exception {
+    Mockito.when(userService.findById(any())).thenThrow(EntityNotFoundException.class);
+
+    mockMvc
+        .perform(get(URIHelper.join(UserController.PATH, "self")))
+        .andExpect(status().isNotFound());
+  }
+}

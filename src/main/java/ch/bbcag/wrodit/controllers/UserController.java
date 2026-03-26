@@ -1,10 +1,10 @@
 package ch.bbcag.wrodit.controllers;
 
-import ch.bbcag.wrodit.dto.request.UserRequestDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
-import ch.bbcag.wrodit.dto.response.UserValidateResponseDTO;
 import ch.bbcag.wrodit.mapper.UserMapper;
 import ch.bbcag.wrodit.services.UserService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.Api401Response;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,52 +31,30 @@ public class UserController {
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Person found",
+            description = "User found",
             content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Person was not found", content = @Content)
+        @ApiResponse(responseCode = "404", description = "User was not found", content = @Content)
       })
+  @ApiAuthResponses
   public ResponseEntity<?> getUserById(
       @Parameter(description = "Id of the user to get") @PathVariable Integer id) {
-    return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), false));
+    return ResponseEntity.ok(UserMapper.toDto(service.findById(id), false));
   }
 
-  @GetMapping("/{id}/all")
-  @Operation(summary = "Get all user data")
+  @GetMapping("/self")
+  @Operation(summary = "Get all your data")
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Person found",
+            description = "User found",
             content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Person was not found",
-            content = @Content),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized, wrong id or WI-Auth-Passwd",
-            content = @Content)
+        @ApiResponse(responseCode = "404", description = "User was not found", content = @Content)
       })
-  public ResponseEntity<?> getUserWholeById(
-      @Parameter(description = "Id of the user to get, must be you") @PathVariable Integer id) {
-    return ResponseEntity.ok(UserMapper.toUserDto(service.findById(id), true));
-  }
-
-  @PostMapping("/validate")
-  @Operation(summary = "Check if username and password match")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "If the data was correct",
-            content = @Content(schema = @Schema(implementation = UserValidateResponseDTO.class))),
-      })
-  public ResponseEntity<?> postValidateUser(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(
-              description = "The userdata you want to validate")
-          @RequestBody
-          UserRequestDTO dto) {
+  @Api401Response
+  public ResponseEntity<?> getWholeUserById(
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     return ResponseEntity.ok(
-        UserMapper.toValidateDTO(service.checkAuthorization(dto.username(), dto.password())));
+        UserMapper.toDto(service.findById(userId == null ? null : userId.intValue()), true));
   }
 }

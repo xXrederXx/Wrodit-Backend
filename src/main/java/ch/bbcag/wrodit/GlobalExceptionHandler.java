@@ -1,7 +1,8 @@
 package ch.bbcag.wrodit;
 
 import ch.bbcag.wrodit.util.ErrorResponseBuilder;
-import ch.bbcag.wrodit.util.FailedValidationException;
+import ch.bbcag.wrodit.util.exception.FailedValidationException;
+import jakarta.persistence.EntityNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,15 +35,16 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(AuthorizationDeniedException.class)
-  public ResponseEntity<?> handleAuthDeniedExceptions(Exception ex) {
+  public ResponseEntity<?> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
     return new ErrorResponseBuilder<String>()
-        .withBody("Unautherized")
+        .withBody("Unauthorized")
         .withStatus(HttpStatus.UNAUTHORIZED)
         .buildResponse();
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<?> handleResourceNotFound(MethodArgumentNotValidException ex) {
+  public ResponseEntity<?> handleMethodArgumentNotValidException(
+      MethodArgumentNotValidException ex) {
     final Map<String, List<String>> errors = new HashMap<>();
     ex.getBindingResult()
         .getAllErrors()
@@ -62,8 +64,9 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-    logger.error("An error occurred: {}", ex.getMessage(), ex);
+  // This function uses Driver specific Regex to extract additional information
+  public ResponseEntity<?> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex) {
     Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
     Matcher matcher = pattern.matcher(ex.getMessage());
     if (matcher.find()) {
@@ -81,11 +84,25 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
-    return new ResponseEntity<>("Access Denied: " + ex.getMessage(), HttpStatus.FORBIDDEN);
+    return new ErrorResponseBuilder<String>()
+        .withBody("Access Denied: " + ex.getMessage())
+        .withStatus(HttpStatus.FORBIDDEN)
+        .buildResponse();
   }
 
   @ExceptionHandler(FailedValidationException.class)
-  public ResponseEntity<?> hanldleValidationExeption(FailedValidationException ex) {
-    return ResponseEntity.badRequest().body(ex.getErrors());
+  public ResponseEntity<?> handleFailedValidationException(FailedValidationException ex) {
+    return new ErrorResponseBuilder<Map<String, List<String>>>()
+        .withBody(ex.getErrors())
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .buildResponse();
+  }
+
+  @ExceptionHandler(EntityNotFoundException.class)
+  public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex) {
+    return new ErrorResponseBuilder<String>()
+        .withBody("Entity not found")
+        .withStatus(HttpStatus.NOT_FOUND)
+        .buildResponse();
   }
 }

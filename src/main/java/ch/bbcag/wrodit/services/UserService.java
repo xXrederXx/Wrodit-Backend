@@ -1,6 +1,6 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
@@ -33,12 +33,12 @@ public class UserService {
       return passwordEncoder.matches(password, user.getPasswordHash())
           ? Optional.of(user)
           : Optional.empty();
-    } catch (Exception e) {
+    } catch (EntityNotFoundException e) {
       return Optional.empty();
     }
   }
 
-  public User findById(int id) {
+  public User findById(Integer id) {
     return repo.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 
@@ -52,7 +52,7 @@ public class UserService {
     return repo.save(user);
   }
 
-  public void deleteById(int id) {
+  public void deleteById(Integer id) {
     repo.deleteById(id);
   }
 }

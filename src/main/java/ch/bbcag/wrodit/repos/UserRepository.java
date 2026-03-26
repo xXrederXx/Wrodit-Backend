@@ -1,6 +1,6 @@
 package ch.bbcag.wrodit.repos;
 
-import ch.bbcag.wrodit.entitys.User;
+import ch.bbcag.wrodit.entities.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

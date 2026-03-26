@@ -4,9 +4,9 @@ import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
 import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
-import ch.bbcag.wrodit.entitys.Post;
-import ch.bbcag.wrodit.entitys.PostsVote;
-import ch.bbcag.wrodit.entitys.Thread;
+import ch.bbcag.wrodit.entities.Post;
+import ch.bbcag.wrodit.entities.PostsVote;
+import ch.bbcag.wrodit.entities.Thread;
 import org.springframework.data.domain.Page;
 
 public class PostMapper {
@@ -18,13 +18,13 @@ public class PostMapper {
     return new PostResponseDTO(
         post.getTitle(),
         post.getContent(),
-        post.getPostsPostsVotes().stream().mapToInt(PostsVote::getVote).sum(),
+        post.getPostVotes().stream().mapToInt(PostsVote::getVote).sum(),
         post.getCreatedAt(),
         post.getUsers().getId(),
         post.getThreads().getId());
   }
 
-  public static PostPageResponseDTO toPageDto(Page<Post> page) {
+  public static PostPageResponseDTO toDto(Page<Post> page) {
     PostPageResponseDTO dto = PageMapper.toDto(page, new PostPageResponseDTO());
     dto.setContent(page.getContent().stream().map(PostMapper::toDto).toList());
     return dto;
