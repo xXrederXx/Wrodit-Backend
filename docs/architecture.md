@@ -60,3 +60,20 @@ PhpMyAdmin <-- DB Access --> StagingDB
 %% ============ DEPLOYMENT ============
 Runner -- Deploy (SSH/Webhook) --> CoolifyApi
 ```
+
+## Beispiel Kommunikation
+
+```mermaid
+sequenceDiagram
+    participant User@{"type": "actor"}
+    participant Frontend
+    participant Backend
+    participant Database@{ "type" : "database" }
+
+    User->>+Frontend: Home Page
+    Frontend->>+Backend: GET /posts
+    Backend->>+Database: SQL Query
+    Database->>-Backend: Data
+    Backend->>-Frontend: JSON Data
+    Frontend->>-User: Web Page
+```
