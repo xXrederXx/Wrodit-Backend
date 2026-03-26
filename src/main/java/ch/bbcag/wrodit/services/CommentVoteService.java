@@ -1,0 +1,74 @@
+package ch.bbcag.wrodit.services;
+
+import ch.bbcag.wrodit.entities.CommentVote;
+import ch.bbcag.wrodit.repos.CommentRepository;
+import ch.bbcag.wrodit.repos.CommentVoteRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
+import ch.bbcag.wrodit.util.ThrowHelper;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CommentVoteService {
+  private final CommentRepository commentRepository;
+  private final UserRepository userRepository;
+  private final CommentVoteRepository commentVoteRepository;
+
+  public CommentVoteService(
+      CommentRepository commentRepository,
+      UserRepository userRepository,
+      CommentVoteRepository commentVoteRepository) {
+    this.commentRepository = commentRepository;
+    this.userRepository = userRepository;
+    this.commentVoteRepository = commentVoteRepository;
+  }
+
+  public CommentVote update(Integer vote, Integer commentId, Integer userId) {
+    if (!commentRepository.existsById(commentId) || !userRepository.existsById(userId)) {
+      throw new EntityNotFoundException();
+    }
+
+    Optional<CommentVote> existing =
+        commentVoteRepository.findOne(buildSpecification(userId, commentId));
+
+    CommentVote entity;
+    if (existing.isPresent()) {
+      entity = existing.get();
+    } else {
+      entity = new CommentVote();
+      entity.setUsers(userRepository.getReferenceById(userId));
+      entity.setComments(commentRepository.getReferenceById(commentId));
+    }
+    entity.setVote(vote);
+
+    return commentVoteRepository.save(entity);
+  }
+
+  private Specification<CommentVote> buildSpecification(Integer userId, Integer commentId) {
+    return (root, query, criteriaBuilder) -> {
+      List<Predicate> predicates = new ArrayList<>();
+
+      if (userId != null) {
+        predicates.add(criteriaBuilder.equal(root.get("users").get("id"), userId));
+      }
+      if (commentId != null) {
+        predicates.add(criteriaBuilder.equal(root.get("comments").get("id"), commentId));
+      }
+      return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    };
+  }
+
+  public void deleteById(Integer userId, Integer commentId) {
+    CommentVote entity =
+        commentVoteRepository
+            .findOne(buildSpecification(userId, commentId))
+            .orElseThrow(EntityNotFoundException::new);
+    ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
+    commentVoteRepository.deleteById(entity.getId());
+  }
+}

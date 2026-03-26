@@ -54,7 +54,7 @@ public class PostVoteService {
             .findOne(buildSpecification(userId, postId))
             .orElseThrow(EntityNotFoundException::new);
     ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
-    postsVoteRepository.deleteById(postId);
+    postsVoteRepository.deleteById(entity.getId());
   }
 
   private Specification<PostsVote> buildSpecification(Integer userId, Integer postId) {

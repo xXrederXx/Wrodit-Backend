@@ -2,10 +2,13 @@ package ch.bbcag.wrodit.controllers;
 
 import ch.bbcag.wrodit.dto.request.CommentCreateDTO;
 import ch.bbcag.wrodit.dto.request.CommentRequestDTO;
+import ch.bbcag.wrodit.dto.request.VoteRequestDTO;
 import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
 import ch.bbcag.wrodit.mapper.CommentMapper;
 import ch.bbcag.wrodit.services.CommentService;
+import ch.bbcag.wrodit.services.CommentVoteService;
+import ch.bbcag.wrodit.util.annotation.ApiResponses.Api400Response;
 import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,9 +28,11 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
   public static final String PATH = "/comments";
   private final CommentService commentService;
+  private final CommentVoteService commentVoteService;
 
-  public CommentController(CommentService commentService) {
+  public CommentController(CommentService commentService, CommentVoteService commentVoteService) {
     this.commentService = commentService;
+    this.commentVoteService = commentVoteService;
   }
 
   @GetMapping("/{id}")
@@ -127,6 +132,48 @@ public class CommentController {
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
     commentService.deletePostById(id, userId == null ? null : userId.intValue());
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/{id}/vote")
+  @Operation(summary = "Apply a vote on a comment")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "204", description = "Update Successful", content = @Content),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Comment was not found",
+            content = @Content)
+      })
+  @ApiAuthResponses
+  @Api400Response
+  public ResponseEntity<?> votePost(
+      @Parameter(description = "The comment id which you want to update") @PathVariable Integer id,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "The vote you would like to make")
+          @Valid
+          @RequestBody
+          VoteRequestDTO dto,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    commentVoteService.update(dto.vote(), id, userId == null ? null : userId.intValue());
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/{id}/vote")
+  @Operation(summary = "Delete a vote on a comment")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "204", description = "Delete Successful", content = @Content),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Comment was not found",
+            content = @Content)
+      })
+  @ApiAuthResponses
+  public ResponseEntity<?> voteDelete(
+      @Parameter(description = "The comment id which you want to delete") @PathVariable Integer id,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    commentVoteService.deleteById(userId == null ? null : userId.intValue(), id);
     return ResponseEntity.noContent().build();
   }
 }
