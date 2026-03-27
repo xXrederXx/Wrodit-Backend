@@ -67,13 +67,15 @@ public class GlobalExceptionHandler {
   // This function uses Driver specific Regex to extract additional information
   public ResponseEntity<?> handleDataIntegrityViolationException(
       DataIntegrityViolationException ex) {
-    Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
-    Matcher matcher = pattern.matcher(ex.getMessage());
-    if (matcher.find()) {
-      return new ErrorResponseBuilder<String>()
-          .withBody("Duplicate Entry: " + matcher.group(1))
-          .withStatus(HttpStatus.CONFLICT)
-          .buildResponse();
+    if (ex.getMessage() != null) {
+      Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
+      Matcher matcher = pattern.matcher(ex.getMessage());
+      if (matcher.find()) {
+        return new ErrorResponseBuilder<String>()
+            .withBody("Duplicate Entry: " + matcher.group(1))
+            .withStatus(HttpStatus.CONFLICT)
+            .buildResponse();
+      }
     }
 
     return new ErrorResponseBuilder<String>()
