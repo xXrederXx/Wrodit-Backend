@@ -42,7 +42,7 @@ public class CommentService {
         predicates.add(criteriaBuilder.equal(root.get("posts").get("id"), postId));
       }
       if (parentId != null) {
-        predicates.add(criteriaBuilder.equal(root.get("parentComments").get("id"), parentId));
+        predicates.add(criteriaBuilder.equal(root.get("parentComment").get("id"), parentId));
       }
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };

@@ -16,6 +16,7 @@ public class PostMapper {
 
   public static PostResponseDTO toDto(Post post) {
     return new PostResponseDTO(
+        post.getId(),
         post.getTitle(),
         post.getContent(),
         post.getPostVotes().stream().mapToInt(PostsVote::getVote).sum(),
