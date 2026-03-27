@@ -61,8 +61,12 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
   - [Comment](https://react-icons.github.io/react-icons/search/#q=comment)
 - Styling Input
   - [Input Style](./prompts/Inputfeld%20stylen%20CSS_2026-03-12_12-30.md)
+- React params
+  - [params](./prompts/ID%20aus%20URL%20in%20React_2026-03-24_10-34.md)
 
 ## Allgemein
 
 - Lizenzen
   - [MIT](https://opensource.org/license/MIT)
+- Git
+  - [Reset-Merge](./prompts/Commit%20rückgängig%20machen_2026-03-26_08-26.md)

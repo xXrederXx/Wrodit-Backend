@@ -8,4 +8,5 @@ public record CommentResponseDTO(
     Integer votes,
     OffsetDateTime createdAt,
     Integer parentId,
-    Integer postId) {}
+    Integer postId,
+    Integer userId) {}
