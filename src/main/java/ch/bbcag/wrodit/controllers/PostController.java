@@ -5,6 +5,7 @@ import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.request.VoteRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
+import ch.bbcag.wrodit.dto.response.VoteResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import ch.bbcag.wrodit.services.PostService;
@@ -137,6 +138,19 @@ public class PostController {
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     service.deletePostById(id, userId == null ? null : userId.intValue());
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/{id}/vote")
+  @Operation(summary = "Get your vote on a post")
+  @ApiResponse(responseCode = "200", description = "Update Successful", content = @Content)
+  @ApiAuthResponses
+  @Api400Response
+  public ResponseEntity<?> getVotePost(
+      @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    return ResponseEntity.ok(
+        new VoteResponseDTO(
+            postVoteService.find(id, userId == null ? null : userId.intValue()).getVote()));
   }
 
   @PutMapping("/{id}/vote")

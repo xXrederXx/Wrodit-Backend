@@ -1,14 +1,6 @@
 package ch.bbcag.wrodit.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,16 +33,16 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "threadId"))
   private Set<Thread> threads = new HashSet<>();
 
-  @OneToMany(mappedBy = "users")
+  @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
   private Set<Post> posts = new HashSet<>();
 
-  @OneToMany(mappedBy = "users")
+  @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
   private Set<Comment> comments = new HashSet<>();
 
-  @OneToMany(mappedBy = "users")
+  @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
   private Set<CommentVote> commentVotes = new HashSet<>();
 
-  @OneToMany(mappedBy = "users")
+  @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
   private Set<PostsVote> postVotes = new HashSet<>();
 
   public User() {}
