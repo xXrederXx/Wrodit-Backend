@@ -71,4 +71,10 @@ public class CommentVoteService {
     ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
     commentVoteRepository.deleteById(entity.getId());
   }
+
+  public CommentVote find(Integer commentId, Integer userId) {
+    return commentVoteRepository
+        .findOne(buildSpecification(userId, commentId))
+        .orElseThrow(EntityNotFoundException::new);
+  }
 }

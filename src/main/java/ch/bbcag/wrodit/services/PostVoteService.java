@@ -57,6 +57,12 @@ public class PostVoteService {
     postsVoteRepository.deleteById(entity.getId());
   }
 
+  public PostsVote find(Integer postId, Integer userId) {
+    return postsVoteRepository
+        .findOne(buildSpecification(userId, postId))
+        .orElseThrow(EntityNotFoundException::new);
+  }
+
   private Specification<PostsVote> buildSpecification(Integer userId, Integer postId) {
     return (root, query, criteriaBuilder) -> {
       List<Predicate> predicates = new ArrayList<>();

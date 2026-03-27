@@ -61,8 +61,7 @@ public class UserController {
   @DeleteMapping("/")
   @Operation(summary = "Deletes your user")
   public ResponseEntity<?> deleteUser(
-          @AuthenticationPrincipal(expression = "claims['userId']") Long userId
-  ) {
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
     service.deleteById(userId == null ? null : userId.intValue());
     return ResponseEntity.noContent().build();
   }
