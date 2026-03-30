@@ -57,7 +57,7 @@ public class CommentService {
   public Comment update(Comment comment, Integer commentId, Integer authId) {
     Comment existing = this.getCommentById(commentId);
 
-    ThrowHelper.throwAuthorizationIfNotEqual(existing.getUsers().getId(), authId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(existing.getUsers().getId(), authId);
 
     mergeComment(existing, comment);
     return commentRepository.save(existing);
@@ -81,7 +81,7 @@ public class CommentService {
 
   public void deletePostById(Integer id, Integer authId) {
     Comment comment = this.getCommentById(id);
-    ThrowHelper.throwAuthorizationIfNotEqual(comment.getUsers().getId(), authId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(comment.getUsers().getId(), authId);
     commentRepository.deleteById(id);
   }
 }

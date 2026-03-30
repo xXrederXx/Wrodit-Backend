@@ -53,7 +53,7 @@ public class PostVoteService {
         postsVoteRepository
             .findOne(buildSpecification(userId, postId))
             .orElseThrow(EntityNotFoundException::new);
-    ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(entity.getUsers().getId(), userId);
     postsVoteRepository.deleteById(entity.getId());
   }
 

@@ -23,7 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 class PostServiceTest {
 
@@ -88,7 +88,7 @@ class PostServiceTest {
     when(mockPostRepo.findById(anyInt())).thenReturn(Optional.of(post));
     doNothing().when(mockPostRepo).deleteById(anyInt());
 
-    assertThrows(AuthorizationDeniedException.class, () -> postService.deletePostById(1, 2));
+    assertThrows(AccessDeniedException.class, () -> postService.deletePostById(1, 2));
   }
 
   @Test
@@ -178,7 +178,7 @@ class PostServiceTest {
     when(mockPostRepo.save(any(Post.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
     assertThrows(
-        AuthorizationDeniedException.class,
+        AccessDeniedException.class,
         () -> postService.update(change, post.getId(), user.getId() + 1));
   }
 }
