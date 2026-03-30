@@ -50,6 +50,25 @@ class CommentVoteServiceTest {
     mockVote.setComments(mockComment);
   }
 
+  // get
+  @Test
+  void checkGetById_whenValidId_thenSuccess() {
+    when(commentsVoteRepositoryMock.findOne(any(Specification.class)))
+        .thenReturn(Optional.of(mockVote));
+
+    CommentVote result = commentVoteService.find(1, 1);
+
+    assertEquals(mockVote.getVote(), result.getVote());
+  }
+
+  @Test
+  void checkGetById_whenInvalidId_thenSuccess() {
+    when(commentsVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> commentVoteService.find(1, 1));
+  }
+
+  // delete
   @Test
   void checkDeleteById_whenValid_thenSuccess() {
     CommentVote vote = new CommentVote();
@@ -80,6 +99,7 @@ class CommentVoteServiceTest {
     assertThrows(EntityNotFoundException.class, () -> commentVoteService.deleteById(1, 2));
   }
 
+  // update
   @Test
   void checkUpdate_whenExists_thenSuccess() {
     when(commentRepositoryMock.existsById(any())).thenReturn(true);
