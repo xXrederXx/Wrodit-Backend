@@ -68,7 +68,7 @@ public class CommentVoteService {
         commentVoteRepository
             .findOne(buildSpecification(userId, commentId))
             .orElseThrow(EntityNotFoundException::new);
-    ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(entity.getUsers().getId(), userId);
     commentVoteRepository.deleteById(entity.getId());
   }
 

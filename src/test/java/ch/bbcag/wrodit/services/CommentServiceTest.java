@@ -22,7 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 class CommentServiceTest {
   private CommentRepository mockRepo;
@@ -81,7 +81,7 @@ class CommentServiceTest {
     when(mockRepo.findById(anyInt())).thenReturn(Optional.of(comment));
     doNothing().when(mockRepo).deleteById(anyInt());
 
-    assertThrows(AuthorizationDeniedException.class, () -> commentService.deletePostById(1, 2));
+    assertThrows(AccessDeniedException.class, () -> commentService.deletePostById(1, 2));
   }
 
   @Test
@@ -148,7 +148,7 @@ class CommentServiceTest {
     when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
     assertThrows(
-        AuthorizationDeniedException.class,
+        AccessDeniedException.class,
         () -> commentService.update(change, comment.getId(), user.getId() + 1));
   }
 }
