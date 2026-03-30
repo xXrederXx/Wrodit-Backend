@@ -1,6 +1,7 @@
 package ch.bbcag.wrodit.controllers;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,6 +11,7 @@ import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.security.JWTGenerator;
 import ch.bbcag.wrodit.services.UserService;
 import ch.bbcag.wrodit.util.URIHelper;
+import ch.bbcag.wrodit.util.exception.JwtGenerationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -42,7 +44,7 @@ class AuthControllerTest {
 
   @Test
   void checkSignUp_whenValid_thenCreated() throws Exception {
-    Mockito.when(userService.insert(any(User.class))).thenReturn(mockUser);
+    when(userService.insert(any(User.class))).thenReturn(mockUser);
 
     mockMvc
         .perform(
@@ -61,7 +63,7 @@ class AuthControllerTest {
 
   @Test
   void checkSignUp_whenInvalid_thenBadRequest() throws Exception {
-    Mockito.when(userService.insert(any(User.class))).thenReturn(mockUser);
+    when(userService.insert(any(User.class))).thenReturn(mockUser);
 
     mockMvc
         .perform(
@@ -80,8 +82,7 @@ class AuthControllerTest {
 
   @Test
   void checkSignUp_whenConflict_thenConflict() throws Exception {
-    Mockito.when(userService.insert(any(User.class)))
-        .thenThrow(DataIntegrityViolationException.class);
+    when(userService.insert(any(User.class))).thenThrow(DataIntegrityViolationException.class);
 
     mockMvc
         .perform(
@@ -102,10 +103,10 @@ class AuthControllerTest {
   void checkSignIn_whenValid_thenOk() throws Exception {
     String fakeToken = "FAKE_JWT_TOKEN";
     Authentication authentication = Mockito.mock(Authentication.class);
-    Mockito.when(userService.findByUsername(anyString())).thenReturn(AuthControllerTest.mockUser);
-    Mockito.when(authentication.getName()).thenReturn(mockUser.getUsername());
-    Mockito.when(authentication.isAuthenticated()).thenReturn(true);
-    Mockito.when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+    when(userService.findByUsername(anyString())).thenReturn(AuthControllerTest.mockUser);
+    when(authentication.getName()).thenReturn(mockUser.getUsername());
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(authentication);
     try (MockedStatic<JWTGenerator> jwtMock = Mockito.mockStatic(JWTGenerator.class)) {
       jwtMock
@@ -131,10 +132,10 @@ class AuthControllerTest {
   void checkSignIn_whenInvalid_thenBadRequest() throws Exception {
     String fakeToken = "FAKE_JWT_TOKEN";
     Authentication authentication = Mockito.mock(Authentication.class);
-    Mockito.when(userService.findByUsername(anyString())).thenReturn(AuthControllerTest.mockUser);
-    Mockito.when(authentication.getName()).thenReturn(mockUser.getUsername());
-    Mockito.when(authentication.isAuthenticated()).thenReturn(true);
-    Mockito.when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+    when(userService.findByUsername(anyString())).thenReturn(AuthControllerTest.mockUser);
+    when(authentication.getName()).thenReturn(mockUser.getUsername());
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(authentication);
     try (MockedStatic<JWTGenerator> jwtMock = Mockito.mockStatic(JWTGenerator.class)) {
       jwtMock
@@ -160,10 +161,10 @@ class AuthControllerTest {
     String fakeToken = "FAKE_JWT_TOKEN";
     Authentication authentication = Mockito.mock(Authentication.class);
 
-    Mockito.when(userService.findByUsername(anyString())).thenReturn(mockUser);
-    Mockito.when(authentication.getName()).thenReturn(mockUser.getUsername());
-    Mockito.when(authentication.isAuthenticated()).thenReturn(false);
-    Mockito.when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+    when(userService.findByUsername(anyString())).thenReturn(mockUser);
+    when(authentication.getName()).thenReturn(mockUser.getUsername());
+    when(authentication.isAuthenticated()).thenReturn(false);
+    when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(authentication);
 
     try (MockedStatic<JWTGenerator> jwtMock = Mockito.mockStatic(JWTGenerator.class)) {
@@ -182,6 +183,33 @@ class AuthControllerTest {
                                         "password":"Admin123+"
                                                                                                             }"""))
           .andExpect(status().isBadRequest());
+    }
+  }
+
+  @Test
+  void checkSignIn_whenJwtFails_then500() throws Exception {
+    Authentication authentication = Mockito.mock(Authentication.class);
+    when(userService.findByUsername(anyString())).thenReturn(AuthControllerTest.mockUser);
+    when(authentication.getName()).thenReturn(mockUser.getUsername());
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+        .thenReturn(authentication);
+    try (MockedStatic<JWTGenerator> jwtMock = Mockito.mockStatic(JWTGenerator.class)) {
+      jwtMock
+          .when(() -> JWTGenerator.generateJwtToken(anyInt(), anyString()))
+          .thenThrow(JwtGenerationException.class);
+      mockMvc
+          .perform(
+              post("/auth/signin")
+                  .contentType("application/json")
+                  .content(
+                      """
+                                                        {
+                                                        "username":"admin",
+                                                        "email":"admin@wrodit.ch",
+                                                        "password":"Admin123+"
+                                                        }"""))
+          .andExpect(status().isInternalServerError());
     }
   }
 }
