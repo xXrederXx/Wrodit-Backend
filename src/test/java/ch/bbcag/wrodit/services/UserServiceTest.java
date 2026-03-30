@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 class UserServiceTest {
@@ -31,6 +32,7 @@ class UserServiceTest {
     mockUser = TestingUtil.generateUser();
   }
 
+  // find by id
   @Test
   void checkFindById_whenValidId_thenReturn() {
     when(mockRepo.findById(anyInt())).thenReturn(Optional.of(mockUser));
@@ -45,6 +47,7 @@ class UserServiceTest {
     Assertions.assertThrows(EntityNotFoundException.class, () -> userService.findById(1));
   }
 
+  // find by username
   @Test
   void checkFindByUsername_whenValidUsername_thenReturn() {
     when(mockRepo.findByUsername(anyString())).thenReturn(Optional.of(mockUser));
@@ -60,6 +63,7 @@ class UserServiceTest {
         EntityNotFoundException.class, () -> userService.findByUsername("user"));
   }
 
+  // insert
   @Test
   void checkInsert_whenValidUser_thenHashAndSave() {
     User user = TestingUtil.generateUser();
@@ -76,5 +80,13 @@ class UserServiceTest {
             < TestingUtil.MAX_TIME_CHECK_DIFF);
     verify(mockEncoder).encode(anyString());
     verify(mockRepo).save(user);
+  }
+
+  @Test
+  void checkInsert_whenDuplicateUser_thenHashAndSave() {
+    when(mockRepo.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
+
+    Assertions.assertThrows(
+        DataIntegrityViolationException.class, () -> userService.insert(mockUser));
   }
 }
