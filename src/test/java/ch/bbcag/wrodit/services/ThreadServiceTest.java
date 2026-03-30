@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +41,7 @@ class ThreadServiceTest {
     mockThreadPage = new PageImpl<>(Arrays.stream(TestingUtil.generateThreads(10)).toList());
   }
 
+  // find by id
   @Test
   void checkFindById_whenValidId_thenReturn() {
     when(mockRepo.findById(anyInt())).thenReturn(Optional.of(mockThread));
@@ -54,6 +56,7 @@ class ThreadServiceTest {
     assertThrows(EntityNotFoundException.class, () -> threadService.findById(1));
   }
 
+  // find paginated
   @Test
   void checkFindPaginated_whenValid_thenSuccess() {
     when(mockRepo.findAll(any(Pageable.class))).thenReturn(mockThreadPage);
@@ -69,6 +72,7 @@ class ThreadServiceTest {
     assertEquals(threadService.paginatedThreadsByUser(1, PageRequest.of(0, 10)), mockThreadPage);
   }
 
+  // save
   @Test
   void checkSave_whenValidThread_thenSuccess() {
     Thread thread = TestingUtil.generateThreads(1)[0];
@@ -81,5 +85,12 @@ class ThreadServiceTest {
         OffsetDateTime.now().toEpochSecond() - result.getCreatedAt().toEpochSecond()
             < TestingUtil.MAX_TIME_CHECK_DIFF);
     verify(mockRepo).save(thread);
+  }
+
+  @Test
+  void checkSave_whenDuplicateThread_thenSuccess() {
+    when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
+
+    assertThrows(DataIntegrityViolationException.class, () -> threadService.save(mockThread));
   }
 }
