@@ -46,6 +46,26 @@ class PostVoteServiceTest {
     mockVote.setPosts(mockPost);
   }
 
+  // get
+  @Test
+  void checkGetVote_whenValid_thenSuccess() {
+    when(postsVoteRepositoryMock.findOne(any(Specification.class)))
+        .thenReturn(Optional.of(mockVote));
+
+    PostsVote result = postVoteService.find(1, 1);
+
+    assertEquals(mockVote.getVote(), result.getVote());
+    assertEquals(mockVote.getId(), result.getId());
+  }
+
+  @Test
+  void checkGetVote_whenInvalidId_then404() {
+    when(postsVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> postVoteService.find(1, 1));
+  }
+
+  // delete
   @Test
   void checkDeleteById_whenValid_thenSuccess() {
     PostsVote vote = new PostsVote();
@@ -75,6 +95,7 @@ class PostVoteServiceTest {
     assertThrows(EntityNotFoundException.class, () -> postVoteService.deleteById(1, 2));
   }
 
+  // update
   @Test
   void checkUpdate_whenExists_thenSuccess() {
     when(postRepositoryMock.existsById(any())).thenReturn(true);
