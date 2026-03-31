@@ -5,7 +5,7 @@ import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
-import ch.bbcag.wrodit.entities.PostsVote;
+import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.entities.Thread;
 import org.springframework.data.domain.Page;
 
@@ -19,7 +19,7 @@ public class PostMapper {
         post.getId(),
         post.getTitle(),
         post.getContent(),
-        post.getPostVotes().stream().mapToInt(PostsVote::getVote).sum(),
+        post.getPostVotes().stream().mapToInt(PostVote::getVote).sum(),
         post.getCreatedAt(),
         post.getUsers().getId(),
         post.getThreads().getId());

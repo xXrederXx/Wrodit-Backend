@@ -9,7 +9,7 @@ import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
-import ch.bbcag.wrodit.entities.PostsVote;
+import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.mapper.PostMapper;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class PostMapperTest {
     assertEquals(mockPost.getContent(), dto.content());
     assertEquals(mockPost.getUsers().getId(), dto.userId());
     assertEquals(mockPost.getThreads().getId(), dto.threadId());
-    assertEquals(mockPost.getPostVotes().stream().mapToInt(PostsVote::getVote).sum(), dto.vote());
+    assertEquals(mockPost.getPostVotes().stream().mapToInt(PostVote::getVote).sum(), dto.vote());
     assertEquals(mockPost.getCreatedAt(), dto.createdAt());
   }
 

@@ -7,10 +7,10 @@ import static org.mockito.Mockito.*;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Post;
-import ch.bbcag.wrodit.entities.PostsVote;
+import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.PostRepository;
-import ch.bbcag.wrodit.repos.PostsVoteRepository;
+import ch.bbcag.wrodit.repos.PostVoteRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import org.mockito.Mockito;
 import org.springframework.data.jpa.domain.Specification;
 
 class PostVoteServiceTest {
-  private PostsVoteRepository postsVoteRepositoryMock;
+  private PostVoteRepository PostVoteRepositoryMock;
   private PostRepository postRepositoryMock;
   private UserRepository userRepositoryMock;
 
@@ -28,20 +28,20 @@ class PostVoteServiceTest {
 
   private Post mockPost;
   private User mockUser;
-  private PostsVote mockVote;
+  private PostVote mockVote;
 
   @BeforeEach
   void setup() {
-    postsVoteRepositoryMock = Mockito.mock(PostsVoteRepository.class);
+    PostVoteRepositoryMock = Mockito.mock(PostVoteRepository.class);
     postRepositoryMock = Mockito.mock(PostRepository.class);
     userRepositoryMock = Mockito.mock(UserRepository.class);
 
     postVoteService =
-        new PostVoteService(postsVoteRepositoryMock, postRepositoryMock, userRepositoryMock);
+        new PostVoteService(PostVoteRepositoryMock, postRepositoryMock, userRepositoryMock);
 
     mockPost = TestingUtil.generatePosts(1)[0];
     mockUser = TestingUtil.generateUser();
-    mockVote = new PostsVote();
+    mockVote = new PostVote();
     mockVote.setUsers(mockUser);
     mockVote.setPosts(mockPost);
   }
@@ -49,10 +49,10 @@ class PostVoteServiceTest {
   // get
   @Test
   void checkGetVote_whenValid_thenSuccess() {
-    when(postsVoteRepositoryMock.findOne(any(Specification.class)))
+    when(PostVoteRepositoryMock.findOne(any(Specification.class)))
         .thenReturn(Optional.of(mockVote));
 
-    PostsVote result = postVoteService.find(1, 1);
+    PostVote result = postVoteService.find(1, 1);
 
     assertEquals(mockVote.getVote(), result.getVote());
     assertEquals(mockVote.getId(), result.getId());
@@ -60,7 +60,7 @@ class PostVoteServiceTest {
 
   @Test
   void checkGetVote_whenInvalidId_then404() {
-    when(postsVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
+    when(PostVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> postVoteService.find(1, 1));
   }
@@ -68,29 +68,29 @@ class PostVoteServiceTest {
   // delete
   @Test
   void checkDeleteById_whenValid_thenSuccess() {
-    PostsVote vote = new PostsVote();
+    PostVote vote = new PostVote();
     vote.setUsers(mockUser);
     vote.setPosts(mockPost);
 
-    when(postsVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.of(vote));
-    doNothing().when(postsVoteRepositoryMock).deleteById(anyInt());
+    when(PostVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.of(vote));
+    doNothing().when(PostVoteRepositoryMock).deleteById(anyInt());
 
     assertDoesNotThrow(() -> postVoteService.deleteById(1, 1));
   }
 
   @Test
   void checkDeleteById_whenUnauthorized_thenThrow() {
-    when(postsVoteRepositoryMock.findOne(any(Specification.class)))
+    when(PostVoteRepositoryMock.findOne(any(Specification.class)))
         .thenReturn(Optional.of(mockVote));
-    doNothing().when(postsVoteRepositoryMock).deleteById(anyInt());
+    doNothing().when(PostVoteRepositoryMock).deleteById(anyInt());
 
     assertDoesNotThrow(() -> postVoteService.deleteById(1, 2));
   }
 
   @Test
   void checkDeleteById_whenNotFound_thenThrow() {
-    when(postsVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
-    doNothing().when(postsVoteRepositoryMock).deleteById(anyInt());
+    when(PostVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
+    doNothing().when(PostVoteRepositoryMock).deleteById(anyInt());
 
     assertThrows(EntityNotFoundException.class, () -> postVoteService.deleteById(1, 2));
   }
@@ -101,15 +101,15 @@ class PostVoteServiceTest {
     when(postRepositoryMock.existsById(any())).thenReturn(true);
     when(userRepositoryMock.existsById(any())).thenReturn(true);
 
-    when(postsVoteRepositoryMock.findOne(any(Specification.class)))
+    when(PostVoteRepositoryMock.findOne(any(Specification.class)))
         .thenReturn(Optional.of(mockVote));
-    when(postsVoteRepositoryMock.save(any(PostsVote.class)))
+    when(PostVoteRepositoryMock.save(any(PostVote.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
 
-    PostsVote result = postVoteService.update(1, mockPost.getId(), mockUser.getId());
+    PostVote result = postVoteService.update(1, mockPost.getId(), mockUser.getId());
 
     assertEquals(1, result.getVote());
-    verify(postsVoteRepositoryMock).save(any(PostsVote.class));
+    verify(PostVoteRepositoryMock).save(any(PostVote.class));
   }
 
   @Test
@@ -117,14 +117,14 @@ class PostVoteServiceTest {
     when(postRepositoryMock.existsById(any())).thenReturn(true);
     when(userRepositoryMock.existsById(any())).thenReturn(true);
 
-    when(postsVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
-    when(postsVoteRepositoryMock.save(any(PostsVote.class)))
+    when(PostVoteRepositoryMock.findOne(any(Specification.class))).thenReturn(Optional.empty());
+    when(PostVoteRepositoryMock.save(any(PostVote.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
 
-    PostsVote result = postVoteService.update(1, mockPost.getId(), mockUser.getId());
+    PostVote result = postVoteService.update(1, mockPost.getId(), mockUser.getId());
 
     assertEquals(1, result.getVote());
-    verify(postsVoteRepositoryMock).save(any(PostsVote.class));
+    verify(PostVoteRepositoryMock).save(any(PostVote.class));
   }
 
   @Test
