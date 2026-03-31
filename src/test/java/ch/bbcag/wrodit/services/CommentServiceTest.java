@@ -10,6 +10,7 @@ import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Comment;
 import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
@@ -27,6 +28,7 @@ import org.springframework.security.access.AccessDeniedException;
 
 class CommentServiceTest {
   private CommentRepository mockRepo;
+  private UserRepository mockUserRepo;
   private CommentService commentService;
 
   private Comment mockComment;
@@ -36,7 +38,8 @@ class CommentServiceTest {
   @BeforeEach
   void setup() {
     mockRepo = Mockito.mock(CommentRepository.class);
-    commentService = new CommentService(mockRepo);
+    mockUserRepo = Mockito.mock(UserRepository.class);
+    commentService = new CommentService(mockRepo, mockUserRepo);
 
     mockUser = TestingUtil.generateUser();
     mockComment = TestingUtil.generateComments(1)[0];
@@ -71,6 +74,8 @@ class CommentServiceTest {
   @Test
   void checkSave_whenValid_thenSuccess() {
     when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(mockUserRepo.existsById(any())).thenReturn(true);
+    when(mockUserRepo.getReferenceById(any())).thenReturn(mockUser);
 
     Comment result = commentService.save(mockComment, mockUser.getId());
 
@@ -80,6 +85,15 @@ class CommentServiceTest {
     assertTrue(
         OffsetDateTime.now().toEpochSecond() - mockComment.getCreatedAt().toEpochSecond()
             < TestingUtil.MAX_TIME_CHECK_DIFF);
+  }
+
+  @Test
+  void checkSave_whenInvalidUser_thenNotFound() {
+    when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(mockUserRepo.existsById(any())).thenReturn(false);
+
+    assertThrows(
+        EntityNotFoundException.class, () -> commentService.save(mockComment, mockUser.getId()));
   }
 
   // Delete By Id
