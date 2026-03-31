@@ -42,7 +42,7 @@ public class Post {
   private Set<Comment> comments = new HashSet<>();
 
   @OneToMany(mappedBy = "posts")
-  private Set<PostsVote> postVotes = new HashSet<>();
+  private Set<PostVote> postVotes = new HashSet<>();
 
   public Post(Integer id) {
     this.id = id;
@@ -106,11 +106,11 @@ public class Post {
     this.comments = postsComments;
   }
 
-  public Set<PostsVote> getPostVotes() {
+  public Set<PostVote> getPostVotes() {
     return postVotes;
   }
 
-  public void setPostVotes(final Set<PostsVote> postsPostsVotes) {
-    this.postVotes = postsPostsVotes;
+  public void setPostVotes(final Set<PostVote> postsPostVotes) {
+    this.postVotes = postsPostVotes;
   }
 }

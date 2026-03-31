@@ -43,7 +43,7 @@ public class User {
   private Set<CommentVote> commentVotes = new HashSet<>();
 
   @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-  private Set<PostsVote> postVotes = new HashSet<>();
+  private Set<PostVote> postVotes = new HashSet<>();
 
   public User() {}
 
@@ -131,11 +131,11 @@ public class User {
     this.commentVotes = usersCommentVotes;
   }
 
-  public Set<PostsVote> getPostVotes() {
+  public Set<PostVote> getPostVotes() {
     return postVotes;
   }
 
-  public void setPostVotes(final Set<PostsVote> usersPostsVotes) {
-    this.postVotes = usersPostsVotes;
+  public void setPostVotes(final Set<PostVote> usersPostVotes) {
+    this.postVotes = usersPostVotes;
   }
 }
