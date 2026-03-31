@@ -1,6 +1,7 @@
 package ch.bbcag.wrodit.controllers;
 
 import ch.bbcag.wrodit.dto.request.AuthRequestDTO;
+import ch.bbcag.wrodit.dto.request.SignInRequestDTO;
 import ch.bbcag.wrodit.dto.response.AuthResponseDTO;
 import ch.bbcag.wrodit.dto.response.JWTResponseDTO;
 import ch.bbcag.wrodit.entities.User;
@@ -76,7 +77,7 @@ public class AuthController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to sign in")
           @Valid
           @RequestBody
-          AuthRequestDTO dto) {
+          SignInRequestDTO dto) {
 
     try {
       String username = dto.username();
