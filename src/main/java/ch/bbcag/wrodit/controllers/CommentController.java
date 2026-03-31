@@ -75,7 +75,12 @@ public class CommentController {
   }
 
   @PostMapping("/")
-  @Operation(summary = "Create a comment")
+  @Operation(
+      summary = "Create a comment",
+      description =
+          "This Endpoint is used to create a Comment. When creating a comment you need to pass the parentId "
+              + "(if the comment was made on another comment), or the postId (if the comment was made on a post)."
+              + " The other should be null")
   @ApiResponse(
       responseCode = "201",
       description = "Comment was created",
@@ -108,7 +113,7 @@ public class CommentController {
               description = "The attributes you would like to change")
           @RequestBody
           CommentRequestDTO dto,
-      @Parameter(description = "The commetn id you want to change") @PathVariable Integer id,
+      @Parameter(description = "The comment id you want to change") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
     return ResponseEntity.ok(

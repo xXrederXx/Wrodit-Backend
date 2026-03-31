@@ -51,6 +51,7 @@ public class CommentService {
   }
 
   public Comment save(Comment comment, Integer userId) {
+    checkCommentForeignKeys(comment);
     if (!userRepository.existsById(userId)) {
       throw new EntityNotFoundException();
     }
@@ -80,6 +81,15 @@ public class CommentService {
     }
 
     if (!errors.isEmpty()) {
+      throw new FailedValidationException(errors);
+    }
+  }
+
+  private void checkCommentForeignKeys(Comment comment) {
+    if ((comment.getPosts() == null && comment.getParentComment() == null)
+        || (comment.getPosts() != null && comment.getParentComment() != null)) {
+      Map<String, List<String>> errors = new HashMap<>();
+      errors.put("references", List.of("Only one of the Ids (parentId, postId) must be set"));
       throw new FailedValidationException(errors);
     }
   }
