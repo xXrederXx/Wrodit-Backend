@@ -9,11 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ErrorResponseBuilder<T> {
-  private final Logger logger = LoggerFactory.getLogger(ErrorResponseBuilder.class);
+  private final Logger logger;
 
   private LocalDateTime timestamp;
   private T body;
   private HttpStatus status;
+
+  public ErrorResponseBuilder() {
+    logger = LoggerFactory.getLogger(ErrorResponseBuilder.class);
+  }
+
+  public ErrorResponseBuilder(Logger logger) {
+    this.logger = logger;
+  }
 
   public static <T> ErrorResponseBuilder<T> create() {
     return new ErrorResponseBuilder<>();

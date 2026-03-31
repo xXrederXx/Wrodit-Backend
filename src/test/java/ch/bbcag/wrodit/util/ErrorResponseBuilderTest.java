@@ -2,11 +2,13 @@ package ch.bbcag.wrodit.util;
 
 import static ch.bbcag.wrodit.TestingUtil.MAX_TIME_CHECK_DIFF;
 import static ch.bbcag.wrodit.TestingUtil.TIME_CHECK_OFFSET;
+import static org.mockito.Mockito.*;
 
 import ch.bbcag.wrodit.util.exception.IllegalStatusException;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
@@ -74,5 +76,15 @@ class ErrorResponseBuilderTest {
             new ErrorResponseBuilder<String>()
                 .withStatus(HttpStatus.PERMANENT_REDIRECT)
                 .buildResponse());
+  }
+
+  @Test
+  void checkLogger_whenBuildingNoBody_thenLogWarning() {
+    Logger mockLogger = mock(Logger.class);
+
+    ErrorResponseBuilder<String> builder = new ErrorResponseBuilder<>(mockLogger);
+    builder.withStatus(HttpStatus.BAD_REQUEST).buildResponse();
+
+    verify(mockLogger).warn(anyString());
   }
 }
