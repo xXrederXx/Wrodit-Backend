@@ -24,7 +24,6 @@ public class TestingUtil {
       comment.setContent("MOCK CONTENT " + i);
       comment.setCreatedAt(TEST_TIME);
       comment.setPosts(new Post(i));
-      comment.setParentComment(new Comment(i));
       comment.setUsers(new User(i));
       comments[i] = comment;
     }

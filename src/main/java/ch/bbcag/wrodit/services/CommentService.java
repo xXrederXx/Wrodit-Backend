@@ -61,7 +61,6 @@ public class CommentService {
   }
 
   public Comment update(Comment comment, Integer commentId, Integer authId) {
-    checkCommentForeignKeys(comment);
     Comment existing = this.getCommentById(commentId);
 
     ThrowHelper.throwAccessDeniedIfNotEqual(existing.getUsers().getId(), authId);

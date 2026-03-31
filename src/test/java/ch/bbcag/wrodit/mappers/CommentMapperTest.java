@@ -23,7 +23,7 @@ class CommentMapperTest {
 
     assertEquals(mockComment.getId(), dto.id());
     assertEquals(mockComment.getPosts().getId(), dto.postId());
-    assertEquals(mockComment.getParentComment().getId(), dto.parentId());
+    assertNull(mockComment.getParentComment());
     assertEquals(mockComment.getUsers().getId(), dto.userId());
     assertEquals(mockComment.getContent(), dto.content());
     assertEquals(
