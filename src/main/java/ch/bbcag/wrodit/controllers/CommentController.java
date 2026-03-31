@@ -78,9 +78,9 @@ public class CommentController {
   @Operation(
       summary = "Create a comment",
       description =
-          "This Endpoint is used to create a Comment. When creating a comment you need to pass the parentId " +
-                  "(if the comment was made on another comment), or the postId (if the comment was made on a post)." +
-                  " The other should be null")
+          "This Endpoint is used to create a Comment. When creating a comment you need to pass the parentId "
+              + "(if the comment was made on another comment), or the postId (if the comment was made on a post)."
+              + " The other should be null")
   @ApiResponse(
       responseCode = "201",
       description = "Comment was created",
