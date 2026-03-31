@@ -1,8 +1,8 @@
 package ch.bbcag.wrodit.services;
 
 import ch.bbcag.wrodit.entities.Comment;
-import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,9 +21,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentService {
   private final CommentRepository commentRepository;
+  private final UserRepository userRepository;
 
-  public CommentService(CommentRepository commentRepository) {
+  public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
     this.commentRepository = commentRepository;
+    this.userRepository = userRepository;
   }
 
   public Comment getCommentById(Integer id) {
@@ -49,8 +51,11 @@ public class CommentService {
   }
 
   public Comment save(Comment comment, Integer userId) {
+    if (!userRepository.existsById(userId)) {
+      throw new EntityNotFoundException();
+    }
     comment.setCreatedAt(OffsetDateTime.now());
-    comment.setUsers(new User(userId));
+    comment.setUsers(userRepository.getReferenceById(userId));
     return commentRepository.save(comment);
   }
 
