@@ -59,10 +59,24 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
   - [Profile](https://react-icons.github.io/react-icons/search/#q=profile)
   - [Menu](https://react-icons.github.io/react-icons/search/#q=menu)
   - [Comment](https://react-icons.github.io/react-icons/search/#q=comment)
+  - [FillderData](./prompts/Default%20Text%20Input%20Feld_2026-03-31_08-00%20(4).md)
+
 - Styling Input
   - [Input Style](./prompts/Inputfeld%20stylen%20CSS_2026-03-12_12-30.md)
 - React params
   - [params](./prompts/ID%20aus%20URL%20in%20React_2026-03-24_10-34.md)
+- Rendering Error
+  - [error](./prompts/TypeError%20map%20Lösung_2026-04-01_08-43.md)
+- Deleting
+  - [deleting-optimisation](./prompts/Account%20Löschen%20Optimierung_2026-04-01_08-22.md)
+- Clip Board
+  - [CopyLink](./prompts/React%20Clipboard%20Link%20Copy_2026-03-31_10-26.md)
+- Fill form with data
+  - [W3s](https://www.w3schools.com/howto/howto_css_dropdown_navbar.asp)
+- Modul Unterlagen
+  - [GitLab](https://git.bbcag.ch/inf-bl/be/2025/team-h/bmorgt/wf/quantumstararchive)
+- Design Idea
+  - [Reddit](https://www.reddit.com/)
 
 ## Allgemein
 
