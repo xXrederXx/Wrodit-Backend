@@ -83,9 +83,8 @@ class ThreadServiceTest {
   void checkSave_whenValidThread_thenSuccess() {
     Thread thread = TestingUtil.generateThreads(1)[0];
 
-    when(mockRepo.save(any(Thread.class))).thenAnswer(invocation -> invocation.getArgument(0));
-    when(mockUserRepo.existsById(any())).thenReturn(true);
-    when(mockUserRepo.getReferenceById(any())).thenReturn(mockUser);
+    when(mockUserRepo.findById(anyInt())).thenReturn(Optional.of(mockUser));
+    when(mockUserRepo.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
     Thread result = threadService.save(thread, mockUser.getId());
 
@@ -98,8 +97,8 @@ class ThreadServiceTest {
   @Test
   void checkSave_whenDuplicateThread_thenThrow() {
     when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
-    when(mockUserRepo.existsById(any())).thenReturn(true);
-    when(mockUserRepo.getReferenceById(any())).thenReturn(mockUser);
+    when(mockUserRepo.findById(anyInt())).thenReturn(Optional.of(mockUser));
+    when(mockUserRepo.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
 
     assertThrows(DataIntegrityViolationException.class, () -> threadService.save(mockThread, 1));
   }
@@ -107,7 +106,7 @@ class ThreadServiceTest {
   @Test
   void checkSave_whenInvalidUser_thenThrow() {
     when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
-    when(mockUserRepo.existsById(any())).thenReturn(false);
+    when(mockUserRepo.findById(anyInt())).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> threadService.save(mockThread, 1));
   }
