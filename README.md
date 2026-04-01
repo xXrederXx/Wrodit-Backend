@@ -1,48 +1,43 @@
-
 # Wrodit
 
-[![pipeline status](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/main/pipeline.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/main)
+[![Pipeline-Status](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/main/pipeline.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/main)
 
-[![pipeline status](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/production/pipeline.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/production)
+[![Pipeline-Status](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/production/pipeline.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/production)
 
-## Documentation
+## Dokumentation
 
-[Documentation](./docs)
+[Dokumentation](./docs)
 
-## Run Locally
+## Lokal ausführen
 
-Clone the project
-
-```bash
-  git clone https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend
-```
-
-Go to the project directory
+Projekt klonen
 
 ```bash
-  cd wrodit-backend
+git clone https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend
 ```
 
-Start the server
+In das Projektverzeichnis wechseln
 
 ```bash
-  gradlew bootRun
+cd wrodit-backend
 ```
 
-## Requirements
+Server starten
 
-- JDK 21
-  
-## Environment Variables
+```bash
+gradlew bootRun
+```
 
-To run this project, you will need to add the following environment variables.
+## Anforderungen
 
-`DB_URL`, link to your mysql database
+* JDK 21
 
-`DB_USERNAME`, username for your database user
+## Umgebungsvariablen
 
-`DB_PASSWORD`, password for your database user
+Um dieses Projekt auszuführen, müssen die folgenden Umgebungsvariablen gesetzt werden:
 
-`SPRING_JPA_DDL_AUTO`, hibernate ddl-auto mode (normally update)
-
-`JWT_SECRET`, the secret used to generate jwt's, at least 32 characters
+* `DB_URL`, Link zu deiner MySQL-Datenbank
+* `DB_USERNAME`, Benutzername für den Datenbankbenutzer
+* `DB_PASSWORD`, Passwort für den Datenbankbenutzer
+* `SPRING_JPA_DDL_AUTO`, Hibernate ddl-auto Modus (normalerweise `update`)
+* `JWT_SECRET`, Das Secret zum Generieren von JWTs, mindestens 32 Zeichen lang
