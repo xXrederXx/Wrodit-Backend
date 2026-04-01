@@ -9,7 +9,9 @@ import static org.mockito.Mockito.when;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Thread;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,18 +29,22 @@ import org.springframework.data.jpa.domain.Specification;
 
 class ThreadServiceTest {
   private ThreadRepository mockRepo;
+  private UserRepository mockUserRepo;
   private ThreadService threadService;
 
   private Thread mockThread;
+  private User mockUser;
   private Page<Thread> mockThreadPage;
 
   @BeforeEach
   void setup() {
     mockRepo = Mockito.mock(ThreadRepository.class);
-    threadService = new ThreadService(mockRepo);
+    mockUserRepo = Mockito.mock(UserRepository.class);
+    threadService = new ThreadService(mockRepo, mockUserRepo);
 
     mockThread = TestingUtil.generateThreads(1)[0];
     mockThreadPage = new PageImpl<>(Arrays.stream(TestingUtil.generateThreads(10)).toList());
+    mockUser = TestingUtil.generateUser();
   }
 
   // find by id
@@ -78,8 +84,10 @@ class ThreadServiceTest {
     Thread thread = TestingUtil.generateThreads(1)[0];
 
     when(mockRepo.save(any(Thread.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(mockUserRepo.existsById(any())).thenReturn(true);
+    when(mockUserRepo.getReferenceById(any())).thenReturn(mockUser);
 
-    Thread result = threadService.save(thread);
+    Thread result = threadService.save(thread, mockUser.getId());
 
     Assertions.assertTrue(
         OffsetDateTime.now().toEpochSecond() - result.getCreatedAt().toEpochSecond()
@@ -88,9 +96,19 @@ class ThreadServiceTest {
   }
 
   @Test
-  void checkSave_whenDuplicateThread_thenSuccess() {
+  void checkSave_whenDuplicateThread_thenThrow() {
     when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
+    when(mockUserRepo.existsById(any())).thenReturn(true);
+    when(mockUserRepo.getReferenceById(any())).thenReturn(mockUser);
 
-    assertThrows(DataIntegrityViolationException.class, () -> threadService.save(mockThread));
+    assertThrows(DataIntegrityViolationException.class, () -> threadService.save(mockThread, 1));
+  }
+
+  @Test
+  void checkSave_whenInvalidUser_thenThrow() {
+    when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
+    when(mockUserRepo.existsById(any())).thenReturn(false);
+
+    assertThrows(EntityNotFoundException.class, () -> threadService.save(mockThread, 1));
   }
 }

@@ -91,8 +91,11 @@ public class ThreadController {
               description = "The thread you would like to create")
           @Valid
           @RequestBody
-          ThreadRequestDTO dto) {
-    ThreadResponseDTO responseDTO = ThreadMapper.toDto(service.save(ThreadMapper.fromDto(dto)));
+          ThreadRequestDTO dto,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    ThreadResponseDTO responseDTO =
+        ThreadMapper.toDto(
+            service.save(ThreadMapper.fromDto(dto), userId == null ? null : userId.intValue()));
     return ResponseEntity.created(URI.create(PATH + "/" + responseDTO.id())).body(responseDTO);
   }
 }

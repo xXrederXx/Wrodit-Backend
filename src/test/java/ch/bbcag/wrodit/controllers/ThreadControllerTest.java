@@ -69,7 +69,7 @@ class ThreadControllerTest {
   // Post Thread
   @Test
   void checkPostThreads_whenValidThread_thenCreated() throws Exception {
-    Mockito.when(threadService.save(any(Thread.class))).thenReturn(mockThread);
+    Mockito.when(threadService.save(any(Thread.class), any())).thenReturn(mockThread);
 
     mockMvc
         .perform(
@@ -92,7 +92,7 @@ class ThreadControllerTest {
 
   @Test
   void checkPostThreads_whenDuplicateThread_thenConflict() throws Exception {
-    Mockito.when(threadService.save(any(Thread.class)))
+    Mockito.when(threadService.save(any(Thread.class), any()))
         .thenThrow(DataIntegrityViolationException.class);
 
     mockMvc
