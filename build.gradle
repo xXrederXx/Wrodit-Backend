@@ -70,8 +70,8 @@ jacoco {
 jacocoTestReport {
     dependsOn test // tests must run before generating report
     reports {
-        xml.required = true
+        xml.required = false
         html.required = true
-        csv.required = false
+        csv.required = true
     }
 }
