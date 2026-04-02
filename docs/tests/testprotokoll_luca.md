@@ -4,15 +4,21 @@
 
 Wrodit Webapplikation
 
-## Testart
+## Umgebung
 
-User Acceptance Testing (UAT)
+Staging
+
+## Commit
+
+1f8acf32
 
 ## Datum
 
 01.04.2026
 
 ## Tester
+
+Luca Kaufmann
 
 ---
 
@@ -223,3 +229,5 @@ pie title Ergebnisse
 - [x] System ist **nicht** abnahmebereit
 
 **Begründung:**
+
+Nicht alle Tests Erfolgreich

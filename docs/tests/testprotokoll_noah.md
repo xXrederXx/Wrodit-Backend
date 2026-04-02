@@ -220,4 +220,8 @@ pie title Ergebnisse
 - [x] System ist abnahmebereit
 - [ ] System ist **nicht** abnahmebereit
 
-**Begründung:**
+## Zusammenfassung
+
+- Bestanden: 22
+- Fehlgeschlagen: 3
+- Gesamt: 25
