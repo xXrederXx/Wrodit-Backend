@@ -40,4 +40,4 @@ Um dieses Projekt auszuführen, müssen die folgenden Umgebungsvariablen gesetzt
 * `DB_USERNAME`, Benutzername für den Datenbankbenutzer
 * `DB_PASSWORD`, Passwort für den Datenbankbenutzer
 * `SPRING_JPA_DDL_AUTO`, Hibernate ddl-auto Modus (normalerweise `update`)
-* `JWT_SECRET`, Das Secret zum Generieren von JWTs, mindestens 32 Zeichen lang
+* `JWT_SECRET`, das Secret zum Generieren von JWTs, mindestens 32 Zeichen lang
