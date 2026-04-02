@@ -44,6 +44,8 @@ unit_test:
     reports:
       junit: build/test-results/test/**/TEST-*.xml
     expire_in: 30 days
+  only:
+    - merge_requests
 
 # 4. Notify Coolify webhook for redeploy
 coolify_deploy_stageing:
