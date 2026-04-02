@@ -1,7 +1,9 @@
 package ch.bbcag.wrodit.services;
 
 import ch.bbcag.wrodit.entities.Thread;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
@@ -15,9 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ThreadService {
   private final ThreadRepository repo;
+  private final UserRepository userRepository;
 
-  public ThreadService(ThreadRepository repo) {
+  public ThreadService(ThreadRepository repo, UserRepository userRepository) {
     this.repo = repo;
+    this.userRepository = userRepository;
   }
 
   public Thread findById(Integer id) {
@@ -32,9 +36,17 @@ public class ThreadService {
     return repo.findAll(buildSpecification(userId), page);
   }
 
-  public Thread save(Thread thread) {
+  public Thread save(Thread thread, Integer userId) {
+    User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+
     thread.setCreatedAt(OffsetDateTime.now());
-    return repo.save(thread);
+
+    repo.save(thread);
+
+    user.getThreads().add(thread);
+    userRepository.save(user);
+
+    return thread;
   }
 
   private Specification<Thread> buildSpecification(Integer userId) {

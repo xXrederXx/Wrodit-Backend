@@ -35,7 +35,7 @@ public class PostService {
 
   public void deletePostById(Integer id, Integer userId) {
     Post post = this.getPostById(id);
-    ThrowHelper.throwAuthorizationIfNotEqual(post.getUsers().getId(), userId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(post.getUsers().getId(), userId);
     postRepository.deleteById(id);
   }
 
@@ -47,7 +47,7 @@ public class PostService {
 
   public Post update(Post post, Integer id, Integer authId) {
     Post existing = this.getPostById(id);
-    ThrowHelper.throwAuthorizationIfNotEqual(existing.getUsers().getId(), authId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(existing.getUsers().getId(), authId);
     mergePost(existing, post);
     return postRepository.save(existing);
   }

@@ -9,7 +9,9 @@ import static org.mockito.Mockito.when;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Thread;
+import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,20 +29,25 @@ import org.springframework.data.jpa.domain.Specification;
 
 class ThreadServiceTest {
   private ThreadRepository mockRepo;
+  private UserRepository mockUserRepo;
   private ThreadService threadService;
 
   private Thread mockThread;
+  private User mockUser;
   private Page<Thread> mockThreadPage;
 
   @BeforeEach
   void setup() {
     mockRepo = Mockito.mock(ThreadRepository.class);
-    threadService = new ThreadService(mockRepo);
+    mockUserRepo = Mockito.mock(UserRepository.class);
+    threadService = new ThreadService(mockRepo, mockUserRepo);
 
     mockThread = TestingUtil.generateThreads(1)[0];
     mockThreadPage = new PageImpl<>(Arrays.stream(TestingUtil.generateThreads(10)).toList());
+    mockUser = TestingUtil.generateUser();
   }
 
+  // find by id
   @Test
   void checkFindById_whenValidId_thenReturn() {
     when(mockRepo.findById(anyInt())).thenReturn(Optional.of(mockThread));
@@ -54,6 +62,7 @@ class ThreadServiceTest {
     assertThrows(EntityNotFoundException.class, () -> threadService.findById(1));
   }
 
+  // find paginated
   @Test
   void checkFindPaginated_whenValid_thenSuccess() {
     when(mockRepo.findAll(any(Pageable.class))).thenReturn(mockThreadPage);
@@ -69,17 +78,36 @@ class ThreadServiceTest {
     assertEquals(threadService.paginatedThreadsByUser(1, PageRequest.of(0, 10)), mockThreadPage);
   }
 
+  // save
   @Test
   void checkSave_whenValidThread_thenSuccess() {
     Thread thread = TestingUtil.generateThreads(1)[0];
 
-    when(mockRepo.save(any(Thread.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(mockUserRepo.findById(anyInt())).thenReturn(Optional.of(mockUser));
+    when(mockUserRepo.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-    Thread result = threadService.save(thread);
+    Thread result = threadService.save(thread, mockUser.getId());
 
     Assertions.assertTrue(
         OffsetDateTime.now().toEpochSecond() - result.getCreatedAt().toEpochSecond()
             < TestingUtil.MAX_TIME_CHECK_DIFF);
     verify(mockRepo).save(thread);
+  }
+
+  @Test
+  void checkSave_whenDuplicateThread_thenThrow() {
+    when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
+    when(mockUserRepo.findById(anyInt())).thenReturn(Optional.of(mockUser));
+    when(mockUserRepo.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
+
+    assertThrows(DataIntegrityViolationException.class, () -> threadService.save(mockThread, 1));
+  }
+
+  @Test
+  void checkSave_whenInvalidUser_thenThrow() {
+    when(mockRepo.save(any(Thread.class))).thenThrow(DataIntegrityViolationException.class);
+    when(mockUserRepo.findById(anyInt())).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> threadService.save(mockThread, 1));
   }
 }

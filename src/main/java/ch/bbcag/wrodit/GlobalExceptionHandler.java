@@ -3,7 +3,6 @@ package ch.bbcag.wrodit;
 import ch.bbcag.wrodit.util.ErrorResponseBuilder;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -67,13 +67,15 @@ public class GlobalExceptionHandler {
   // This function uses Driver specific Regex to extract additional information
   public ResponseEntity<?> handleDataIntegrityViolationException(
       DataIntegrityViolationException ex) {
-    Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
-    Matcher matcher = pattern.matcher(ex.getMessage());
-    if (matcher.find()) {
-      return new ErrorResponseBuilder<String>()
-          .withBody("Duplicate Entry: " + matcher.group(1))
-          .withStatus(HttpStatus.CONFLICT)
-          .buildResponse();
+    if (ex.getMessage() != null) {
+      Pattern pattern = Pattern.compile("Duplicate entry '(.*?)' for key ");
+      Matcher matcher = pattern.matcher(ex.getMessage());
+      if (matcher.find()) {
+        return new ErrorResponseBuilder<String>()
+            .withBody("Duplicate Entry: " + matcher.group(1))
+            .withStatus(HttpStatus.CONFLICT)
+            .buildResponse();
+      }
     }
 
     return new ErrorResponseBuilder<String>()

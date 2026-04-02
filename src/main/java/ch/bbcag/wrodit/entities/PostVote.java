@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(
     name = "posts_vote",
     uniqueConstraints = {@UniqueConstraint(columnNames = {"posts_id", "users_id"})})
-public class PostsVote {
+public class PostVote {
 
   @Id
   @Column(nullable = false, updatable = false)

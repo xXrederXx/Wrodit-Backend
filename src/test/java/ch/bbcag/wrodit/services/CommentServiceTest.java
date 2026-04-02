@@ -10,8 +10,10 @@ import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Comment;
 import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,24 +24,29 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 class CommentServiceTest {
   private CommentRepository mockRepo;
+  private UserRepository mockUserRepo;
   private CommentService commentService;
 
   private Comment mockComment;
+  private User mockUser;
   private Page<Comment> mockCommentPage;
 
   @BeforeEach
   void setup() {
     mockRepo = Mockito.mock(CommentRepository.class);
-    commentService = new CommentService(mockRepo);
+    mockUserRepo = Mockito.mock(UserRepository.class);
+    commentService = new CommentService(mockRepo, mockUserRepo);
 
+    mockUser = TestingUtil.generateUser();
     mockComment = TestingUtil.generateComments(1)[0];
     mockCommentPage = new PageImpl<>(Arrays.stream(TestingUtil.generateComments(10)).toList());
   }
 
+  // Find by Id
   @Test
   void checkFindById_whenValidId_thenReturn() {
     when(mockRepo.findById(anyInt())).thenReturn(Optional.of(mockComment));
@@ -54,6 +61,7 @@ class CommentServiceTest {
     assertThrows(EntityNotFoundException.class, () -> commentService.getCommentById(1));
   }
 
+  // Find Paginated
   @Test
   void checkFindPaginated_whenValid_thenSuccess() {
     when(mockRepo.findAll(any(Specification.class), any(Pageable.class)))
@@ -62,6 +70,33 @@ class CommentServiceTest {
     assertEquals(mockCommentPage, commentService.getPaginatedComments(PageRequest.of(0, 10), 1, 1));
   }
 
+  // Save
+  @Test
+  void checkSave_whenValid_thenSuccess() {
+    when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(mockUserRepo.existsById(any())).thenReturn(true);
+    when(mockUserRepo.getReferenceById(any())).thenReturn(mockUser);
+
+    Comment result = commentService.save(mockComment, mockUser.getId());
+
+    assertEquals(mockComment.getId(), result.getId());
+    assertEquals(mockComment.getContent(), result.getContent());
+    assertEquals(mockComment.getUsers().getId(), mockUser.getId());
+    assertTrue(
+        OffsetDateTime.now().toEpochSecond() - mockComment.getCreatedAt().toEpochSecond()
+            < TestingUtil.MAX_TIME_CHECK_DIFF);
+  }
+
+  @Test
+  void checkSave_whenInvalidUser_thenNotFound() {
+    when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(mockUserRepo.existsById(any())).thenReturn(false);
+
+    assertThrows(
+        EntityNotFoundException.class, () -> commentService.save(mockComment, mockUser.getId()));
+  }
+
+  // Delete By Id
   @Test
   void checkDeleteById_whenValid_thenSuccess() {
     Comment comment = new Comment(1);
@@ -74,6 +109,14 @@ class CommentServiceTest {
   }
 
   @Test
+  void checkDeleteById_whenIdNotFound_then404() {
+    when(mockRepo.findById(anyInt())).thenReturn(Optional.empty());
+    doNothing().when(mockRepo).deleteById(anyInt());
+
+    assertThrows(EntityNotFoundException.class, () -> commentService.deletePostById(1, 1));
+  }
+
+  @Test
   void checkDeleteById_whenUnauthorized_thenThrow() {
     Comment comment = new Comment(1);
     comment.setUsers(new User(1));
@@ -81,9 +124,10 @@ class CommentServiceTest {
     when(mockRepo.findById(anyInt())).thenReturn(Optional.of(comment));
     doNothing().when(mockRepo).deleteById(anyInt());
 
-    assertThrows(AuthorizationDeniedException.class, () -> commentService.deletePostById(1, 2));
+    assertThrows(AccessDeniedException.class, () -> commentService.deletePostById(1, 2));
   }
 
+  // Update
   @Test
   void checkUpdate_whenAllValidChanges_thenSuccess() {
     User user = new User(1);
@@ -99,6 +143,23 @@ class CommentServiceTest {
     Comment result = commentService.update(change, comment.getId(), user.getId());
 
     assertEquals(change.getContent(), result.getContent());
+  }
+
+  @Test
+  void checkUpdate_whenInvalidId_thenSuccess() {
+    User user = new User(1);
+    Comment comment = TestingUtil.generateComments(1)[0];
+    comment.setUsers(user);
+
+    Comment change = new Comment();
+    change.setContent("change");
+
+    when(mockRepo.findById(comment.getId())).thenReturn(Optional.empty());
+    when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+    assertThrows(
+        EntityNotFoundException.class,
+        () -> commentService.update(change, comment.getId(), user.getId()));
   }
 
   @Test
@@ -148,7 +209,7 @@ class CommentServiceTest {
     when(mockRepo.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
     assertThrows(
-        AuthorizationDeniedException.class,
+        AccessDeniedException.class,
         () -> commentService.update(change, comment.getId(), user.getId() + 1));
   }
 }

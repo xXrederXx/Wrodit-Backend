@@ -22,6 +22,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -49,6 +50,7 @@ class ThreadControllerTest {
     mockUser = TestingUtil.generateUser();
   }
 
+  // Get Threads
   @Test
   void checkGetThreads_whenThreadExists_thenSuccess() throws Exception {
     Mockito.when(threadService.paginatedThreads(any(Pageable.class))).thenReturn(mockThreadPage);
@@ -64,9 +66,10 @@ class ThreadControllerTest {
     mockMvc.perform(get(URIHelper.join(ThreadController.PATH, ""))).andExpect(status().isOk());
   }
 
+  // Post Thread
   @Test
   void checkPostThreads_whenValidThread_thenCreated() throws Exception {
-    Mockito.when(threadService.save(any(Thread.class))).thenReturn(mockThread);
+    Mockito.when(threadService.save(any(Thread.class), any())).thenReturn(mockThread);
 
     mockMvc
         .perform(
@@ -88,6 +91,27 @@ class ThreadControllerTest {
   }
 
   @Test
+  void checkPostThreads_whenDuplicateThread_thenConflict() throws Exception {
+    Mockito.when(threadService.save(any(Thread.class), any()))
+        .thenThrow(DataIntegrityViolationException.class);
+
+    mockMvc
+        .perform(
+            post(URIHelper.join(ThreadController.PATH, ""))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    String.format(
+                        """
+                                            {
+                                                "name":"%s",
+                                                "description":"%s"
+                                            }
+                                            """,
+                        mockThread.getName(), mockThread.getDescription())))
+        .andExpect(status().isConflict());
+  }
+
+  @Test
   void checkPostThreads_whenInvalidThread_thenBadRequest() throws Exception {
 
     mockMvc
@@ -106,6 +130,7 @@ class ThreadControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  // Get Thread by Id
   @Test
   void checkGetById_whenValidUser_thenIsReturned() throws Exception {
     Mockito.when(threadService.findById(any(Integer.class))).thenReturn(mockThread);
@@ -130,6 +155,7 @@ class ThreadControllerTest {
         .andExpect(status().isNotFound());
   }
 
+  // Get Userfeed
   @Test
   void checkGetUserfeedThreads_whenThreadExists_thenSuccess() throws Exception {
     Mockito.when(threadService.paginatedThreadsByUser(any(), any(Pageable.class)))

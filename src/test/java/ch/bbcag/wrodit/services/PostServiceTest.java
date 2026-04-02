@@ -23,7 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 class PostServiceTest {
 
@@ -47,6 +47,7 @@ class PostServiceTest {
     mockPostPage = new PageImpl<>(Arrays.stream(TestingUtil.generatePosts(10)).toList());
   }
 
+  // find by id
   @Test
   void checkFindById_whenValidId_thenReturn() {
     when(mockPostRepo.findById(anyInt())).thenReturn(Optional.of(mockPost));
@@ -61,6 +62,7 @@ class PostServiceTest {
     assertThrows(EntityNotFoundException.class, () -> postService.getPostById(1));
   }
 
+  // find username
   @Test
   void checkFindByUsername_whenValidUsername_thenReturn() {
     when(mockPostRepo.findAll(any(Specification.class), any(Pageable.class)))
@@ -69,6 +71,7 @@ class PostServiceTest {
     assertEquals(mockPostPage, postService.getPaginatedPosts(1, 1, PageRequest.of(0, 10)));
   }
 
+  // delete
   @Test
   void checkDeleteById_whenValid_thenSuccess() {
     Post post = new Post(1);
@@ -81,6 +84,16 @@ class PostServiceTest {
   }
 
   @Test
+  void checkDeleteById_whenInvalidId_thenThrow() {
+    Post post = new Post(1);
+    post.setUsers(new User(1));
+
+    when(mockPostRepo.findById(anyInt())).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> postService.deletePostById(1, 2));
+  }
+
+  @Test
   void checkDeleteById_whenUnauthorized_thenThrow() {
     Post post = new Post(1);
     post.setUsers(new User(1));
@@ -88,9 +101,10 @@ class PostServiceTest {
     when(mockPostRepo.findById(anyInt())).thenReturn(Optional.of(post));
     doNothing().when(mockPostRepo).deleteById(anyInt());
 
-    assertThrows(AuthorizationDeniedException.class, () -> postService.deletePostById(1, 2));
+    assertThrows(AccessDeniedException.class, () -> postService.deletePostById(1, 2));
   }
 
+  // save
   @Test
   void checkSave_whenValidPost_thenSuccess() {
     Post post = TestingUtil.generatePosts(1)[0];
@@ -108,6 +122,7 @@ class PostServiceTest {
     verify(mockPostRepo).save(post);
   }
 
+  // update
   @Test
   void checkUpdate_whenAllValidChanges_thenSuccess() {
     User user = new User(1);
@@ -125,6 +140,13 @@ class PostServiceTest {
 
     assertEquals(change.getTitle(), result.getTitle());
     assertEquals(change.getContent(), result.getContent());
+  }
+
+  @Test
+  void checkUpdate_whenInvalidId_then404() {
+    when(mockPostRepo.findById(anyInt())).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> postService.update(mockPost, 1, 1));
   }
 
   @Test
@@ -178,7 +200,7 @@ class PostServiceTest {
     when(mockPostRepo.save(any(Post.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
     assertThrows(
-        AuthorizationDeniedException.class,
+        AccessDeniedException.class,
         () -> postService.update(change, post.getId(), user.getId() + 1));
   }
 }

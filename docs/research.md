@@ -43,6 +43,8 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
   - [Maven zu Gradle konvertieren](./prompts/Maven%20to%20Gradle%20Conversion.md)
 - Sum of Array
   - [Stack Overflow](https://stackoverflow.com/questions/4550662/how-do-you-find-the-sum-of-all-the-numbers-in-an-array-in-java#comment104459249_4550662)
+- Request Validation
+  - [PATCH Validation](./prompts/Spring%20Boot%20PATCH%20Validation.md)
 
 
 ## Frontend

@@ -24,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -45,6 +46,7 @@ class PostControllerTest {
     mockPost = posts[0];
   }
 
+  // Get by Id
   @Test
   void checkGetById_whenValidPost_thenIsReturned() throws Exception {
     Mockito.when(postService.getPostById(any(Integer.class))).thenReturn(mockPost);
@@ -66,6 +68,7 @@ class PostControllerTest {
     mockMvc.perform(get(URIHelper.join(PostController.PATH, "1"))).andExpect(status().isNotFound());
   }
 
+  // Get Posts
   @Test
   void checkGetPosts_whenPostExists_thenSuccess() throws Exception {
     Mockito.when(postService.getPaginatedPosts(any(), any(), any(Pageable.class)))
@@ -82,6 +85,7 @@ class PostControllerTest {
     mockMvc.perform(get(URIHelper.join(PostController.PATH, ""))).andExpect(status().isOk());
   }
 
+  // Post Posts
   @Test
   void checkPostPosts_whenValidPost_thenCreated() throws Exception {
     Mockito.when(postService.save(any(Post.class), any())).thenReturn(mockPost);
@@ -123,6 +127,27 @@ class PostControllerTest {
   }
 
   @Test
+  void checkPostPosts_whenInvalidThreadId_thenNotFound() throws Exception {
+    Mockito.when(postService.save(any(Post.class), any())).thenThrow(EntityNotFoundException.class);
+    mockMvc
+        .perform(
+            post(URIHelper.join(PostController.PATH, ""))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    String.format(
+                        """
+                                    {
+                                        "title":"%s",
+                                        "content":"%s",
+                                        "threadId":%s
+                                    }
+                                    """,
+                        mockPost.getTitle(), mockPost.getContent(), mockPost.getThreads().getId())))
+        .andExpect(status().isNotFound());
+  }
+
+  // Patch Post
+  @Test
   void checkPatchPost_whenValidPost_thenOk() throws Exception {
     Mockito.when(postService.update(any(Post.class), any(), any())).thenReturn(mockPost);
 
@@ -140,11 +165,38 @@ class PostControllerTest {
   }
 
   @Test
+  void checkPatchPost_whenForbidden_thenFails() throws Exception {
+    Mockito.when(postService.update(any(Post.class), any(), any()))
+        .thenThrow(AccessDeniedException.class);
+
+    mockMvc
+        .perform(
+            patch(URIHelper.join(PostController.PATH, "1"))
+                .contentType(TestingUtil.CONTENT_TYPE_JSON)
+                .content(
+                    """
+                                        {
+                                          "title":"new title"
+                                        }
+                                """))
+        .andExpect(status().isForbidden());
+  }
+
+  // Delete Post
+  @Test
   void checkDeletePost_whenValidId_thenNoContent() throws Exception {
     Mockito.doNothing().when(postService).deletePostById(any(), any());
     mockMvc
         .perform(delete(URIHelper.join(PostController.PATH, "1")))
         .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void checkDeletePost_whenForbidden_thenFails() throws Exception {
+    Mockito.doThrow(AccessDeniedException.class).when(postService).deletePostById(any(), any());
+    mockMvc
+        .perform(delete(URIHelper.join(PostController.PATH, "1")))
+        .andExpect(status().isForbidden());
   }
 
   @Test
@@ -155,6 +207,7 @@ class PostControllerTest {
         .andExpect(status().isNotFound());
   }
 
+  // Put Vote
   @Test
   void checkVote_whenValidId_thenOk() throws Exception {
     Mockito.when(postVoteService.update(anyInt(), anyInt(), anyInt()))
@@ -207,6 +260,7 @@ class PostControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  // Delete Vote
   @Test
   void checkDeleteVote_whenValidVote_thenOk() throws Exception {
     Mockito.doNothing().when(postVoteService).deleteById(any(), any());

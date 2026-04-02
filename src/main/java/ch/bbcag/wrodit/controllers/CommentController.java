@@ -5,6 +5,7 @@ import ch.bbcag.wrodit.dto.request.CommentRequestDTO;
 import ch.bbcag.wrodit.dto.request.VoteRequestDTO;
 import ch.bbcag.wrodit.dto.response.CommentPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
+import ch.bbcag.wrodit.dto.response.VoteResponseDTO;
 import ch.bbcag.wrodit.mapper.CommentMapper;
 import ch.bbcag.wrodit.services.CommentService;
 import ch.bbcag.wrodit.services.CommentVoteService;
@@ -74,7 +75,12 @@ public class CommentController {
   }
 
   @PostMapping("/")
-  @Operation(summary = "Create a comment")
+  @Operation(
+      summary = "Create a comment",
+      description =
+          "This Endpoint is used to create a Comment. When creating a comment you need to pass the parentId "
+              + "(if the comment was made on another comment), or the postId (if the comment was made on a post)."
+              + " The other should be null")
   @ApiResponse(
       responseCode = "201",
       description = "Comment was created",
@@ -107,7 +113,7 @@ public class CommentController {
               description = "The attributes you would like to change")
           @RequestBody
           CommentRequestDTO dto,
-      @Parameter(description = "The commetn id you want to change") @PathVariable Integer id,
+      @Parameter(description = "The comment id you want to change") @PathVariable Integer id,
       @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
 
     return ResponseEntity.ok(
@@ -133,6 +139,19 @@ public class CommentController {
 
     commentService.deletePostById(id, userId == null ? null : userId.intValue());
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/{id}/vote")
+  @Operation(summary = "Get your vote on a post")
+  @ApiResponse(responseCode = "200", description = "Update Successful", content = @Content)
+  @ApiAuthResponses
+  @Api400Response
+  public ResponseEntity<?> getVotePost(
+      @Parameter(description = "The posts id which you want to delete") @PathVariable Integer id,
+      @AuthenticationPrincipal(expression = "claims['userId']") Long userId) {
+    return ResponseEntity.ok(
+        new VoteResponseDTO(
+            commentVoteService.find(id, userId == null ? null : userId.intValue()).getVote()));
   }
 
   @PutMapping("/{id}/vote")

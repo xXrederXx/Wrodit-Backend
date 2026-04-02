@@ -1,8 +1,8 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entities.PostsVote;
+import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.repos.PostRepository;
-import ch.bbcag.wrodit.repos.PostsVoteRepository;
+import ch.bbcag.wrodit.repos.PostVoteRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,49 +15,53 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostVoteService {
-  private final PostsVoteRepository postsVoteRepository;
+  private final PostVoteRepository PostVoteRepository;
   private final PostRepository postRepository;
   private final UserRepository userRepository;
 
   public PostVoteService(
-      PostsVoteRepository postsVoteRepository,
+      PostVoteRepository PostVoteRepository,
       PostRepository postRepository,
       UserRepository userRepository) {
-    this.postsVoteRepository = postsVoteRepository;
+    this.PostVoteRepository = PostVoteRepository;
     this.postRepository = postRepository;
     this.userRepository = userRepository;
   }
 
-  public PostsVote update(Integer vote, Integer postId, Integer userId) {
+  public PostVote update(Integer vote, Integer postId, Integer userId) {
     if (!postRepository.existsById(postId) || !userRepository.existsById(userId)) {
       throw new EntityNotFoundException();
     }
 
-    Optional<PostsVote> existing = postsVoteRepository.findOne(buildSpecification(userId, postId));
+    Optional<PostVote> existing = PostVoteRepository.findOne(buildSpecification(userId, postId));
 
-    PostsVote entity;
+    PostVote entity;
     if (existing.isPresent()) {
       entity = existing.get();
     } else {
-      entity = new PostsVote();
+      entity = new PostVote();
       entity.setPosts(postRepository.getReferenceById(postId));
       entity.setUsers(userRepository.getReferenceById(userId));
     }
     entity.setVote(vote);
 
-    return postsVoteRepository.save(entity);
+    return PostVoteRepository.save(entity);
   }
 
   public void deleteById(Integer userId, Integer postId) {
-    PostsVote entity =
-        postsVoteRepository
-            .findOne(buildSpecification(userId, postId))
+    PostVote entity =
+        PostVoteRepository.findOne(buildSpecification(userId, postId))
             .orElseThrow(EntityNotFoundException::new);
-    ThrowHelper.throwAuthorizationIfNotEqual(entity.getUsers().getId(), userId);
-    postsVoteRepository.deleteById(entity.getId());
+    ThrowHelper.throwAccessDeniedIfNotEqual(entity.getUsers().getId(), userId);
+    PostVoteRepository.deleteById(entity.getId());
   }
 
-  private Specification<PostsVote> buildSpecification(Integer userId, Integer postId) {
+  public PostVote find(Integer postId, Integer userId) {
+    return PostVoteRepository.findOne(buildSpecification(userId, postId))
+        .orElseThrow(EntityNotFoundException::new);
+  }
+
+  private Specification<PostVote> buildSpecification(Integer userId, Integer postId) {
     return (root, query, criteriaBuilder) -> {
       List<Predicate> predicates = new ArrayList<>();
 

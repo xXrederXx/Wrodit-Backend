@@ -1,8 +1,8 @@
 package ch.bbcag.wrodit.services;
 
 import ch.bbcag.wrodit.entities.Comment;
-import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.CommentRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,9 +21,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentService {
   private final CommentRepository commentRepository;
+  private final UserRepository userRepository;
 
-  public CommentService(CommentRepository commentRepository) {
+  public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
     this.commentRepository = commentRepository;
+    this.userRepository = userRepository;
   }
 
   public Comment getCommentById(Integer id) {
@@ -42,22 +44,26 @@ public class CommentService {
         predicates.add(criteriaBuilder.equal(root.get("posts").get("id"), postId));
       }
       if (parentId != null) {
-        predicates.add(criteriaBuilder.equal(root.get("parentComments").get("id"), parentId));
+        predicates.add(criteriaBuilder.equal(root.get("parentComment").get("id"), parentId));
       }
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };
   }
 
   public Comment save(Comment comment, Integer userId) {
+    checkCommentForeignKeys(comment);
+    if (!userRepository.existsById(userId)) {
+      throw new EntityNotFoundException();
+    }
     comment.setCreatedAt(OffsetDateTime.now());
-    comment.setUsers(new User(userId));
+    comment.setUsers(userRepository.getReferenceById(userId));
     return commentRepository.save(comment);
   }
 
   public Comment update(Comment comment, Integer commentId, Integer authId) {
     Comment existing = this.getCommentById(commentId);
 
-    ThrowHelper.throwAuthorizationIfNotEqual(existing.getUsers().getId(), authId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(existing.getUsers().getId(), authId);
 
     mergeComment(existing, comment);
     return commentRepository.save(existing);
@@ -79,9 +85,18 @@ public class CommentService {
     }
   }
 
+  private void checkCommentForeignKeys(Comment comment) {
+    if ((comment.getPosts() == null && comment.getParentComment() == null)
+        || (comment.getPosts() != null && comment.getParentComment() != null)) {
+      Map<String, List<String>> errors = new HashMap<>();
+      errors.put("references", List.of("Only one of the Ids (parentId, postId) must be set"));
+      throw new FailedValidationException(errors);
+    }
+  }
+
   public void deletePostById(Integer id, Integer authId) {
     Comment comment = this.getCommentById(id);
-    ThrowHelper.throwAuthorizationIfNotEqual(comment.getUsers().getId(), authId);
+    ThrowHelper.throwAccessDeniedIfNotEqual(comment.getUsers().getId(), authId);
     commentRepository.deleteById(id);
   }
 }

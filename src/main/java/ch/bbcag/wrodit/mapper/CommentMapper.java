@@ -34,7 +34,9 @@ public class CommentMapper {
         comment.getContent(),
         comment.getCommentVotes().stream().mapToInt(CommentVote::getVote).sum(),
         comment.getCreatedAt(),
-        comment.getParentComment() == null ? null : comment.getParentComment().getId());
+        comment.getParentComment() == null ? null : comment.getParentComment().getId(),
+        comment.getPosts() == null ? null : comment.getPosts().getId(),
+        comment.getUsers() == null ? null : comment.getUsers().getId());
   }
 
   public static CommentPageResponseDTO toDto(Page<Comment> comments) {
