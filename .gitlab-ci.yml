@@ -25,7 +25,6 @@ format:
 unit_test:
   stage: test
   image: gradle:8.6-jdk21-alpine
-  needs: ["format"]  # keep if you have a formatting job
   script:
     # 1. Clean and run all checks (tests + coverage verification)
     - ./gradlew --build-cache --parallel test
