@@ -49,6 +49,9 @@ dependencies {
 
     // Dev tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // rate limit
+    implementation 'com.bucket4j:bucket4j-core:8.7.0'
 }
 
 tasks.named('test') {
