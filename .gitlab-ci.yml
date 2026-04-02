@@ -28,7 +28,9 @@ unit_test:
   needs: ["format"]  # keep if you have a formatting job
   script:
     # 1. Clean and run all checks (tests + coverage verification)
-    - ./gradlew -build-cache --parallel test jacocoTestReport
+    - ./gradlew -build-cache --parallel test
+    - ./gradlew -build-cache --parallel jacocoTestReport
+    - ls -R build/reports/jacoco
 
     # 2. Parse JaCoCo CSV to print coverage to stdout for GitLab
     - >-
