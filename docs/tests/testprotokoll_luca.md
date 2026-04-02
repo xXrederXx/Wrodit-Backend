@@ -18,8 +18,8 @@ User Acceptance Testing (UAT)
 
 ```mermaid
 pie title Ergebnisse
-    "Erfüllt": 0
-    "Nicht Erfüllt": 18
+    "Erfüllt": 18
+    "Nicht Erfüllt": 4
     "Nicht Erfüllt (Optional)": 3
 ```
 
@@ -211,8 +211,8 @@ pie title Ergebnisse
 
 ## Zusammenfassung
 
-- Bestanden: \_\_\_
-- Fehlgeschlagen: \_\_\_
+- Bestanden: 18
+- Fehlgeschlagen: 7
 - Gesamt: 25
 
 ---
@@ -220,6 +220,6 @@ pie title Ergebnisse
 ## Fazit
 
 - [ ] System ist abnahmebereit
-- [ ] System ist **nicht** abnahmebereit
+- [x] System ist **nicht** abnahmebereit
 
 **Begründung:**

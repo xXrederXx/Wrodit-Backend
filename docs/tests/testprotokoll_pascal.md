@@ -20,8 +20,8 @@ Pascal Hänni
 
 ```mermaid
 pie title Ergebnisse
-    "Erfüllt": 0
-    "Nicht Erfüllt": 22
+    "Erfüllt": 20
+    "Nicht Erfüllt": 2
     "Nicht Erfüllt (Optional)": 3
 ```
 
@@ -213,8 +213,8 @@ pie title Ergebnisse
 
 ## Zusammenfassung
 
-- Bestanden: \_\_\_
-- Fehlgeschlagen: \_\_\_
+- Bestanden: 20
+- Fehlgeschlagen: 5
 - Gesamt: 25
 
 ---
@@ -222,6 +222,6 @@ pie title Ergebnisse
 ## Fazit
 
 - [ ] System ist abnahmebereit
-- [ ] System ist **nicht** abnahmebereit
+- [x] System ist **nicht** abnahmebereit
 
 **Begründung:**
