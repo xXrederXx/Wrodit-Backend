@@ -25,16 +25,25 @@ format:
 unit_test:
   stage: test
   image: gradle:8.6-jdk21-alpine
-  needs: ["format"]
+  needs: ["format"]  # keep if you have a formatting job
   script:
-    - ./gradlew --build-cache --parallel test
+    # 1. Clean and run all checks (tests + coverage verification)
+    - ./gradlew clean check jacocoTestReport
+
+    # 2. Parse JaCoCo CSV to print coverage to stdout for GitLab
+    - >-
+      awk -F"," '
+      NR>1 { instructions += $4 + $5; covered += $5 } 
+      END { if (instructions>0) printf "JaCoCo instructions covered: %.2f %%\n", 100 * covered / instructions }'
+      build/reports/jacoco/test/jacocoTestReport.csv || true
+  coverage: '/JaCoCo instructions covered: (\d+\.?\d*) %/'
   artifacts:
-    reports:
-      junit: build/test-results/test/*.xml
+    when: always
     paths:
       - build
-  only:
-    - merge_requests
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
+    expire_in: 30 days
 
 # 4. Notify Coolify webhook for redeploy
 coolify_deploy_stageing:
