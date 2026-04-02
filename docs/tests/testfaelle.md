@@ -6,8 +6,8 @@
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ID            | UAT 01                                                                                                                                                                                                                      |
 | User Story    | US 01                                                                                                                                                                                                                       |
-| Voraussetzung | Der user Ist auf der Regisrtierungsseite [http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register)                                   |
-| Ablauf        | User öffnet [Regisrtierungsseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register), gibt Daten ein, Bennutzername: testUser und Email: test@user.ch Passwort: Admin123+ undd clickt auf registrieren |
+| Voraussetzung | Der User ist auf der Registrierungsseite [http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register)                                   |
+| Ablauf        | User öffnet [Registrierungsseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register), gibt Daten ein, Benutzername: testUser und Email: test@user.ch Passwort: Admin123+ und klickt auf registrieren |
 | Erwartet      | User kann Account erstellen und wird auf die Anmeldeseite weitergeleitet                                                                                                                                                    |
 
 ## UAT 02 - Registrierung
@@ -16,8 +16,8 @@
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ID            | UAT 02                                                                                                                                                                                                                      |
 | User Story    | US 01                                                                                                                                                                                                                       |
-| Voraussetzung | Der user Ist auf der [Regisrtierungsseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register) und die US1 ist abgeschossen beziehungsweiser testUser Existiert                                         |
-| Ablauf        | User öffnet [Regisrtierungsseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register), gibt Daten ein, Bennutzername: testUser und Email: tset@user.ch Passwort: Admin123+ undd clickt auf registrieren |
+| Voraussetzung | Der User ist auf der [Registrierungsseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register) und US1 ist abgeschlossen bzw. der testUser existiert                                         |
+| Ablauf        | User öffnet [Registrierungsseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/register), gibt Daten ein, Benutzername: testUser und Email: tset@user.ch Passwort: Admin123+ und klickt auf registrieren |
 | Erwartet      | User kann kein Account erstellen und eine Fehlermeldung wird angezeigt                                                                                                                                                      |
 
 ## UAT 03 - Login
@@ -26,7 +26,7 @@
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | ID            | UAT 03                                                                                                                                |
 | User Story    | US 02                                                                                                                                 |
-| Voraussetzung | Registrierter Account(UAT1) befindet sich auf der [Anmeldeseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/login) |
+| Voraussetzung | Registrierter Account (UAT1) befindet sich auf der [Anmeldeseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/login) |
 | Ablauf        | User gibt Benutzername: testUser und Passwort: Admin123+ ein                                                                          |
 | Erwartet      | User kann sich einloggen und wird auf die Homeseite weitergeleitet                                                                    |
 
@@ -36,9 +36,9 @@
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | ID            | UAT 04                                                                                                                           |
 | User Story    | US 02                                                                                                                            |
-| Voraussetzung | Registrierter Account, befindet sich auf der [Anmeldeseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/login) |
+| Voraussetzung | Registrierter Account befindet sich auf der [Anmeldeseite](http://g8o804o8o84g84w400c8gssk.207.180.221.9.sslip.io/wrodit/login) |
 | Ablauf        | User gibt Benutzername: testUser und Passwort: Admin ein                                                                         |
-| Erwartet      | User kann sich nicht einloggen und ene Meldung wird Angezeigt Username oder Passwort falsch                                      |
+| Erwartet      | User kann sich nicht einloggen und eine Meldung wird angezeigt: "Username oder Passwort falsch"                                      |
 
 ## UAT 05 - Profilseite
 
@@ -46,9 +46,9 @@
 | ------------- | ---------------------------------------------------------------------- |
 | ID            | UAT 05                                                                 |
 | User Story    | US 09                                                                  |
-| Voraussetzung | Profil existiert UAT1/UAT3 abgeschlossen                               |
-| Ablauf        | User öffnet Profilseite im header auf dem profil Icon unter Mein Konto |
-| Erwartet      | Profilinformationen Bennutzername und E-Mail werden angezeigt          |
+| Voraussetzung | Profil existiert; UAT1/UAT3 abgeschlossen                               |
+| Ablauf        | User öffnet Profilseite im Header über das Profil-Icon unter "Mein Konto" |
+| Erwartet      | Profilinformationen: Benutzername und E-Mail werden angezeigt          |
 
 ## UAT 06 - Thread erstellen
 
@@ -57,8 +57,8 @@
 | ID            | UAT 06                                                                                                                                                                                                      |
 | User Story    | US 08                                                                                                                                                                                                       |
 | Voraussetzung | Angemeldeter User und UAT5                                                                                                                                                                                  |
-| Ablauf        | User navigiert zu seinem profil im header auf dem profil Icon unter Mein Konto und clickt dort auf Thread erstellen, User erstellt Thread mit Name: **Test thread** und Beschreibung: **test beschreibung** |
-| Erwartet      | Neuer Thread wird erstellt in seinem Profil immer mit w/Threadname gekennzeicnet                                                                                                                            |
+| Ablauf        | User navigiert zu seinem Profil im Header über das Profil-Icon unter "Mein Konto" und klickt dort auf "Thread erstellen"; User erstellt Thread mit Name: **Test thread** und Beschreibung: **test beschreibung** |
+| Erwartet      | Neuer Thread wird in seinem Profil erstellt und mit Threadname gekennzeichnet                                                                                                                            |
 
 ## UAT 07 - Thread erstellen
 
@@ -67,8 +67,8 @@
 | ID            | UAT 07                                                                                                                          |
 | User Story    | US 08                                                                                                                           |
 | Voraussetzung | Angemeldeter User und UAT5                                                                                                      |
-| Ablauf        | User navigiert zu seinem profil und clickt dort auf Thread erstellen, User gibt keine Daten ein und Clickt auf Thread erstellen |
-| Erwartet      | Neuer Thread wird nicht erstellt fehlermeldung                                                                                  |
+| Ablauf        | User navigiert zu seinem Profil und klickt dort auf "Thread erstellen", User gibt keine Daten ein und klickt auf "Thread erstellen" |
+| Erwartet      | Neuer Thread wird nicht erstellt; Fehlermeldung wird angezeigt                                                                                  |
 
 ## UAT 08 - Post erstellen
 
@@ -87,8 +87,8 @@
 | ID            | UAT 09                                                                |
 | User Story    | US 07                                                                 |
 | Voraussetzung | Eingeloggter User und vorhandener Thread                              |
-| Ablauf        | User öffnet einen Thread, versucht neuer post ohne Daten zu erstellen |
-| Erwartet      | Neuer Post wird nicht erstellt und FehlerMeldung Erscheint            |
+| Ablauf        | User öffnet einen Thread, versucht einen neuen Post ohne Daten zu erstellen |
+| Erwartet      | Neuer Post wird nicht erstellt und Fehlermeldung erscheint            |
 
 ## UAT 10 - Homeseite anzeigen
 
@@ -97,8 +97,8 @@
 | ID            | UAT 10                                                   |
 | User Story    | US 03                                                    |
 | Voraussetzung | Eingeloggter User und vorhandene Threads mit Posts       |
-| Ablauf        | User klickt auf das Home-Icon und öffnet die Homeseite   |
-| Erwartet      | Alle relevanten Posts werden auf der Homeseite angezeigt |
+| Ablauf        | User klickt auf das Home-Icon und öffnet die Home-Seite   |
+| Erwartet      | Alle relevanten Posts werden auf der Home-Seite angezeigt |
 
 ## UAT 11 - Thread Seite
 
@@ -107,7 +107,7 @@
 | ID            | UAT 11                                                         |
 | User Story    | US 05                                                          |
 | Voraussetzung | Thread existiert und enthält mindestens einen Post             |
-| Ablauf        | User öffnet einen Thread uber den link beim ensprechenden post |
+| Ablauf        | User öffnet einen Thread über den Link beim entsprechenden Post |
 | Erwartet      | Alle Posts des Threads werden korrekt angezeigt                |
 
 ## UAT 12 - Post Detailansicht
@@ -118,7 +118,7 @@
 | User Story    | US 04                                                     |
 | Voraussetzung | Post existiert                                            |
 | Ablauf        | User klickt auf einen Post                                |
-| Erwartet      | Post wird auf einer eigenen Detailseite korrekt angezeigt |
+| Erwartet      | Der Post wird auf einer eigenen Detailseite korrekt angezeigt |
 
 ## UAT 13 - Kommentieren
 
@@ -148,7 +148,7 @@
 | User Story    | US 10                                                           |
 | Voraussetzung | Posts oder Kommentare existieren                                |
 | Ablauf        | User klickt auf Like oder Dislike bei einem Post oder Kommentar |
-| Erwartet      | Bewertung wird gespeichert und korrekt angezeigt                |
+| Erwartet      | Die Bewertung wird gespeichert und korrekt angezeigt                |
 
 ## UAT 16 - Link kopieren
 
@@ -157,8 +157,8 @@
 | ID            | UAT 16                                                                    |
 | User Story    | US 11                                                                     |
 | Voraussetzung | Post existiert                                                            |
-| Ablauf        | User klickt auf den „Copy-Link“-Button bei einem Postund kopiert den link |
-| Erwartet      | Link wird in die Zwischenablage kopiert                                   |
+| Ablauf        | User klickt auf den „Copy-Link“-Button bei einem Post und kopiert den Link |
+| Erwartet      | Der Link wird in die Zwischenablage kopiert                                   |
 
 ## UAT 17 - Post löschen
 
@@ -168,7 +168,7 @@
 | User Story    | US 12                                                                |
 | Voraussetzung | Eigener Post existiert                                               |
 | Ablauf        | User klickt auf „Löschen“ bei einem eigenen Post auf der Profilseite |
-| Erwartet      | Post wird gelöscht und nicht mehr angezeigt                          |
+| Erwartet      | Der Post wird gelöscht und ist nicht mehr angezeigt                          |
 
 ## UAT 18 - Account löschen
 
@@ -178,7 +178,7 @@
 | User Story    | US 13                                                              |
 | Voraussetzung | Eingeloggter User befindet sich auf seinem Account                 |
 | Ablauf        | User klickt auf „Account löschen“ und bestätigt die Aktion         |
-| Erwartet      | Account wird gelöscht und User wird ausgeloggt bzw. weitergeleitet |
+| Erwartet      | Account wird gelöscht und der User wird ausgeloggt bzw. weitergeleitet |
 
 ## UAT 19 - Markdown schreiben
 
@@ -198,7 +198,7 @@
 | User Story    | US 15                                                                    |
 | Voraussetzung | Post mit Markdown-Inhalt existiert                                       |
 | Ablauf        | User öffnet den Post                                                     |
-| Erwartet      | Markdown wird korrekt formatiert dargestellt, hallo wirt gross angezeigt |
+| Erwartet      | Markdown wird korrekt formatiert dargestellt; "hallo" wird groß angezeigt |
 
 ## UAT 21 - Content Filter
 
@@ -207,8 +207,8 @@
 | ID            | UAT 21                                                             |
 | User Story    | US 17                                                              |
 | Voraussetzung | User erstellt einen neuen Post                                     |
-| Ablauf        | User schreibt einen Post mit Inhalt Fuck und versucht zu speichern |
-| Erwartet      | Post wird blockiert und eine Fehlermeldung angezeigt               |
+| Ablauf        | User schreibt einen Post mit inakzeptablem Inhalt und versucht zu speichern |
+| Erwartet      | Der Post wird blockiert und eine Fehlermeldung wird angezeigt               |
 
 ## UAT 22 - Inhalte bearbeiten
 

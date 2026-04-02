@@ -1,6 +1,6 @@
 # Research
 
-Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von ChatGPT.
+Die Webseiten wurden mit Google gefunden. Alle Prompt-Verläufe stammen von ChatGPT.
 
 ## CI/CD & Pipeline
 
@@ -9,11 +9,11 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
   - [Backend Pipeline Beschleunigen](./prompts/Optimizing%20Pipeline%20Speed%202026-03-11-08-54-09.md)
   - [Frontend Pipeline Beschleunigen](./prompts/Speeding%20up%20npm%20ci%202026-03-13-07-27-47.md)
 
-## Spting Boot & Backend
+## Spring Boot & Backend
 
-- Enity & Repository Generation
+ - Entity & Repository Generation
   - [Bootify](https://bootify.io/)
-- Global Exception handeling
+ - Global Exception handling
   - [javadzone](https://javadzone.com/spring-boot-exception-handling-best-practices/)
 - Generic Function Fix
   - [ErrorResponseBuilder Problem](./prompts/Generic%20Type%20Shadowing%20Error%202026-03-11-14-52-31.md)
@@ -34,9 +34,9 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
   - [Stack Overflow](https://stackoverflow.com/questions/54666244/what-should-response-of-rest-full-api-for-patch-http-method#:~:text=According%20to%20RFC%205789%20a%20successful%20response%20can,used%20for%20optimistic%20locking%20on%20the%20resources%20state%29.)
   - [Stack Overflow](https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete)
 - JWT
-  - [Explenation & Implemation](./prompts/JWT%20Authentication%20Breakdown.md)
+  - [Explanation & Implementation](./prompts/JWT%20Authentication%20Breakdown.md)
   - [Injecting JWT](./prompts/Injecting%20JWT%20Secret.md)
-- Testing Enviroment Variables
+ - Testing Environment Variables
   - [Baeldung](https://www.baeldung.com/java-unit-testing-environment-variables)
   - [Maven Repository](https://mvnrepository.com/artifact/org.junit-pioneer/junit-pioneer/2.3.0)
   - [junit-pionner](https://junit-pioneer.org/docs/environment-variables/#warnings-for-reflective-access)
@@ -49,7 +49,7 @@ Die Webseiten wurden mir Google gefunden. Alle prompt verläufe stammen von Chat
 
 ## Frontend
 
-- Enviroment Variables
+ - Environment Variables
   - [Vite](https://vite.dev/guide/env-and-mode)
 - Parallel Fetching
   - [Mehrere Fetches Parallel](./prompts/Parallel%20Fetch%20Anfragen.md)

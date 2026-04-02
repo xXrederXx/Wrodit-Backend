@@ -90,7 +90,7 @@ sequenceDiagram
 
 ### User &rarr; Frontend
 
-Der User gerift auf das Frontend mit einem Webbrowser zu. Das Frontend gibt dem User anschliessend eine Web Page zurück
+Der User greift auf das Frontend mit einem Webbrowser zu. Das Frontend gibt dem User anschliessend eine Web Page zurück
 
 | Protokoll | Port | Datenformat   |
 | --------- | ---- | ------------- |
@@ -98,7 +98,7 @@ Der User gerift auf das Frontend mit einem Webbrowser zu. Das Frontend gibt dem 
 
 ### Frontend &rarr; Backend
 
-Das Frontend macht anfragen auf das Backend um beschtimmte Daten zu bekommen oder zu Modifizieren. Dies Funktioniert über eine REST API.
+Das Frontend macht Anfragen an das Backend, um bestimmte Daten zu erhalten oder zu modifizieren. Dies funktioniert über eine REST-API.
 
 | Protokoll | Port | Datenformat |
 | --------- | ---- | ----------- |
@@ -115,7 +115,7 @@ Das Backend arbeitet direkt mit der Datenbank. Dazu benutzt es DB Credentials (U
 
 ### User &rarr; PhpMyAdmin
 
-Der User gerift auf PhpMyAdmin mit einem Webbrowser zu. PhpMyAdmin bietet anschliessend eine GUI für die Datenbankverwaltung.
+Der User greift auf PhpMyAdmin mit einem Webbrowser zu. PhpMyAdmin bietet anschließend eine GUI für die Datenbankverwaltung.
 
 | Protokoll | Port | Datenformat   |
 | --------- | ---- | ------------- |
