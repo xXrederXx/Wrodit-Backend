@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.concurrent.TimeUnit;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +40,9 @@ public class UserController {
   @ApiAuthResponses
   public ResponseEntity<?> getUserById(
       @Parameter(description = "Id of the user to get") @PathVariable Integer id) {
-    return ResponseEntity.ok(UserMapper.toDto(service.findById(id), false));
+    return ResponseEntity.ok()
+        .cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS))
+        .body(UserMapper.toDto(service.findById(id), false));
   }
 
   @GetMapping("/self")

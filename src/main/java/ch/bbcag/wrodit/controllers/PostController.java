@@ -20,7 +20,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +52,9 @@ public class PostController {
   @ApiAuthResponses
   public ResponseEntity<?> getPostById(
       @Parameter(description = "The id of the post you want") @PathVariable Integer id) {
-    return ResponseEntity.ok(PostMapper.toDto(service.getPostById(id)));
+    return ResponseEntity.ok()
+        .cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS))
+        .body(PostMapper.toDto(service.getPostById(id)));
   }
 
   @GetMapping("/")

@@ -19,7 +19,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +54,9 @@ public class CommentController {
   @ApiAuthResponses
   public ResponseEntity<?> getCommentById(
       @Parameter(description = "The id of the comment which you want") @PathVariable Integer id) {
-    return ResponseEntity.ok(CommentMapper.toDto(commentService.getCommentById(id)));
+    return ResponseEntity.ok()
+        .cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS))
+        .body(CommentMapper.toDto(commentService.getCommentById(id)));
   }
 
   @GetMapping("/")
@@ -78,9 +82,9 @@ public class CommentController {
   @Operation(
       summary = "Create a comment",
       description =
-          "This Endpoint is used to create a Comment. When creating a comment you need to pass the parentId "
-              + "(if the comment was made on another comment), or the postId (if the comment was made on a post)."
-              + " The other should be null")
+          "This Endpoint is used to create a Comment. When creating a comment you need to pass the"
+              + " parentId (if the comment was made on another comment), or the postId (if the"
+              + " comment was made on a post). The other should be null")
   @ApiResponse(
       responseCode = "201",
       description = "Comment was created",
