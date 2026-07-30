@@ -15,7 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +45,9 @@ public class ThreadController {
   @ApiAuthResponses
   public ResponseEntity<?> getThreadById(
       @Parameter(description = "The threads id you want to get") @PathVariable Integer id) {
-    return ResponseEntity.ok(ThreadMapper.toDto(service.findById(id)));
+    return ResponseEntity.ok()
+        .cacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES))
+        .body(ThreadMapper.toDto(service.findById(id)));
   }
 
   @GetMapping("/")
