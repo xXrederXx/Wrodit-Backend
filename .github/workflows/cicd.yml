@@ -51,8 +51,8 @@ jobs:
           branch: chore/update-jacoco-badges-${{ github.ref_name }}
           delete-branch: true
           add-paths: .github/badges/*.svg
-          commit-message: chore: update JaCoCo badges
-          title: chore: update JaCoCo badges (${{ github.ref_name }})
+          commit-message: "chore: update JaCoCo badges"
+          title: "chore: update JaCoCo badges (${{ github.ref_name }})"
           body: |
             Automated JaCoCo coverage badge update for `${{ github.ref_name }}`.
       - uses: actions/upload-artifact@v4
