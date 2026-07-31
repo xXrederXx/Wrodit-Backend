@@ -29,10 +29,6 @@ public class CommentVoteService {
   }
 
   public CommentVote update(Integer vote, Integer commentId, Integer userId) {
-    if (!commentRepository.existsById(commentId) || !userRepository.existsById(userId)) {
-      throw new EntityNotFoundException();
-    }
-
     Optional<CommentVote> existing =
         commentVoteRepository.findOne(buildSpecification(userId, commentId));
 
@@ -40,9 +36,7 @@ public class CommentVoteService {
     if (existing.isPresent()) {
       entity = existing.get();
     } else {
-      entity = new CommentVote();
-      entity.setUsers(userRepository.getReferenceById(userId));
-      entity.setComments(commentRepository.getReferenceById(commentId));
+      entity = createVoteEntity(userId, commentId);
     }
     entity.setVote(vote);
 
@@ -75,6 +69,17 @@ public class CommentVoteService {
   public CommentVote find(Integer commentId, Integer userId) {
     return commentVoteRepository
         .findOne(buildSpecification(userId, commentId))
-        .orElseThrow(EntityNotFoundException::new);
+        .orElseGet(() -> createVoteEntity(userId, commentId));
+  }
+
+  private CommentVote createVoteEntity(Integer userId, Integer commentId) {
+    if (!commentRepository.existsById(commentId) || !userRepository.existsById(userId)) {
+      throw new EntityNotFoundException();
+    }
+
+    CommentVote entity = new CommentVote();
+    entity.setUsers(userRepository.getReferenceById(userId));
+    entity.setComments(commentRepository.getReferenceById(commentId));
+    return entity;
   }
 }

@@ -29,19 +29,13 @@ public class PostVoteService {
   }
 
   public PostVote update(Integer vote, Integer postId, Integer userId) {
-    if (!postRepository.existsById(postId) || !userRepository.existsById(userId)) {
-      throw new EntityNotFoundException();
-    }
-
     Optional<PostVote> existing = PostVoteRepository.findOne(buildSpecification(userId, postId));
 
     PostVote entity;
     if (existing.isPresent()) {
       entity = existing.get();
     } else {
-      entity = new PostVote();
-      entity.setPosts(postRepository.getReferenceById(postId));
-      entity.setUsers(userRepository.getReferenceById(userId));
+      entity = createPostVote(postId, userId);
     }
     entity.setVote(vote);
 
@@ -58,7 +52,7 @@ public class PostVoteService {
 
   public PostVote find(Integer postId, Integer userId) {
     return PostVoteRepository.findOne(buildSpecification(userId, postId))
-        .orElseThrow(EntityNotFoundException::new);
+        .orElseGet(() -> createPostVote(postId, userId));
   }
 
   private Specification<PostVote> buildSpecification(Integer userId, Integer postId) {
@@ -73,5 +67,16 @@ public class PostVoteService {
       }
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };
+  }
+
+  private PostVote createPostVote(Integer postId, Integer userId) {
+    if (!postRepository.existsById(postId) || !userRepository.existsById(userId)) {
+      throw new EntityNotFoundException();
+    }
+
+    PostVote entity = new PostVote();
+    entity.setPosts(postRepository.getReferenceById(postId));
+    entity.setUsers(userRepository.getReferenceById(userId));
+    return entity;
   }
 }
