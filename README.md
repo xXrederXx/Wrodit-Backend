@@ -2,16 +2,15 @@
 
 **Main**
 
-[![Pipeline-Status](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/main/pipeline.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/main)
+[![Pipeline status](https://img.shields.io/github/actions/workflow/status/xXrederXx/Wrodit-Backend/cicd.yml?branch=main&label=Pipeline)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Amain)
 
-[![coverage report](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/main/coverage.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/main)
+[![Coverage report](https://raw.githubusercontent.com/xXrederXx/Wrodit-Backend/main/.github/badges/jacoco.svg)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Amain)
 
 **Production**
 
-[![Pipeline-Status](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/production/pipeline.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/production)
+[![Pipeline status](https://img.shields.io/github/actions/workflow/status/xXrederXx/Wrodit-Backend/cicd.yml?branch=production&label=Pipeline)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Aproduction)
 
-
-[![coverage report](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/badges/production/coverage.svg)](https://git.bbcag.ch/inf-bl/be/2025/team-h/bbrawn/fullstack/wrodit-backend/-/commits/production)
+[![Coverage report](https://raw.githubusercontent.com/xXrederXx/Wrodit-Backend/production/.github/badges/jacoco.svg)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Aproduction)
 
 ## Dokumentation
 
