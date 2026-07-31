@@ -1,12 +1,5 @@
 package ch.bbcag.wrodit.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
 import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.PostVoteRepository;
@@ -14,6 +7,11 @@ import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PostVoteService {
@@ -45,15 +43,16 @@ public class PostVoteService {
   }
 
   public void deleteById(Integer userId, Integer postId) {
-    PostVote entity = PostVoteRepository.findOne(buildSpecification(userId, postId))
-        .orElseThrow(EntityNotFoundException::new);
+    PostVote entity =
+        PostVoteRepository.findOne(buildSpecification(userId, postId))
+            .orElseThrow(EntityNotFoundException::new);
     ThrowHelper.throwAccessDeniedIfNotEqual(entity.getUsers().getId(), userId);
     PostVoteRepository.deleteById(entity.getId());
   }
 
   public PostVote find(Integer postId, Integer userId) {
     return PostVoteRepository.findOne(buildSpecification(userId, postId))
-        .orElseGet(()->createPostVote(postId, userId));
+        .orElseGet(() -> createPostVote(postId, userId));
   }
 
   private Specification<PostVote> buildSpecification(Integer userId, Integer postId) {
@@ -74,7 +73,7 @@ public class PostVoteService {
     if (!postRepository.existsById(postId) || !userRepository.existsById(userId)) {
       throw new EntityNotFoundException();
     }
-    
+
     PostVote entity = new PostVote();
     entity.setPosts(postRepository.getReferenceById(postId));
     entity.setUsers(userRepository.getReferenceById(userId));

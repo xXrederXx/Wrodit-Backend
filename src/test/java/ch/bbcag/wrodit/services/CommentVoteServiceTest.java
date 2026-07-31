@@ -1,19 +1,13 @@
 package ch.bbcag.wrodit.services;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.springframework.data.jpa.domain.Specification;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Comment;
@@ -23,6 +17,11 @@ import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.repos.CommentVoteRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.data.jpa.domain.Specification;
 
 class CommentVoteServiceTest {
   private CommentVoteRepository commentsVoteRepositoryMock;
