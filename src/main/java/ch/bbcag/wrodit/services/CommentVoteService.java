@@ -1,5 +1,12 @@
 package ch.bbcag.wrodit.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
 import ch.bbcag.wrodit.entities.CommentVote;
 import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.repos.CommentVoteRepository;
@@ -7,11 +14,6 @@ import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.ThrowHelper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CommentVoteService {
@@ -29,20 +31,13 @@ public class CommentVoteService {
   }
 
   public CommentVote update(Integer vote, Integer commentId, Integer userId) {
-    if (!commentRepository.existsById(commentId) || !userRepository.existsById(userId)) {
-      throw new EntityNotFoundException();
-    }
-
-    Optional<CommentVote> existing =
-        commentVoteRepository.findOne(buildSpecification(userId, commentId));
+    Optional<CommentVote> existing = commentVoteRepository.findOne(buildSpecification(userId, commentId));
 
     CommentVote entity;
     if (existing.isPresent()) {
       entity = existing.get();
     } else {
-      entity = new CommentVote();
-      entity.setUsers(userRepository.getReferenceById(userId));
-      entity.setComments(commentRepository.getReferenceById(commentId));
+      entity = createVoteEntity(userId, commentId);
     }
     entity.setVote(vote);
 
@@ -64,10 +59,9 @@ public class CommentVoteService {
   }
 
   public void deleteById(Integer userId, Integer commentId) {
-    CommentVote entity =
-        commentVoteRepository
-            .findOne(buildSpecification(userId, commentId))
-            .orElseThrow(EntityNotFoundException::new);
+    CommentVote entity = commentVoteRepository
+        .findOne(buildSpecification(userId, commentId))
+        .orElseThrow(EntityNotFoundException::new);
     ThrowHelper.throwAccessDeniedIfNotEqual(entity.getUsers().getId(), userId);
     commentVoteRepository.deleteById(entity.getId());
   }
@@ -75,6 +69,17 @@ public class CommentVoteService {
   public CommentVote find(Integer commentId, Integer userId) {
     return commentVoteRepository
         .findOne(buildSpecification(userId, commentId))
-        .orElseThrow(EntityNotFoundException::new);
+        .orElseGet(()->createVoteEntity(userId, commentId));
+  }
+
+  private CommentVote createVoteEntity(Integer userId, Integer commentId) {
+    if (!commentRepository.existsById(commentId) || !userRepository.existsById(userId)) {
+      throw new EntityNotFoundException();
+    }
+
+    CommentVote entity = new CommentVote();
+    entity.setUsers(userRepository.getReferenceById(userId));
+    entity.setComments(commentRepository.getReferenceById(commentId));
+    return entity;
   }
 }
