@@ -2,15 +2,15 @@
 
 **Main**
 
-[![Pipeline status](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml/badge.svg?branch=main)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Amain)
+[![Pipeline status](https://img.shields.io/github/actions/workflow/status/xXrederXx/Wrodit-Backend/cicd.yml?branch=main&label=Pipeline)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Amain)
 
-[![Coverage report](https://img.shields.io/badge/coverage-JaCoCo-blue)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Amain)
+[![Coverage report](https://raw.githubusercontent.com/xXrederXx/Wrodit-Backend/main/.github/badges/jacoco.svg)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Amain)
 
 **Production**
 
-[![Pipeline status](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml/badge.svg?branch=production)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Aproduction)
+[![Pipeline status](https://img.shields.io/github/actions/workflow/status/xXrederXx/Wrodit-Backend/cicd.yml?branch=production&label=Pipeline)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Aproduction)
 
-[![Coverage report](https://img.shields.io/badge/coverage-JaCoCo-blue)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Aproduction)
+[![Coverage report](https://raw.githubusercontent.com/xXrederXx/Wrodit-Backend/production/.github/badges/jacoco.svg)](https://github.com/xXrederXx/Wrodit-Backend/actions/workflows/cicd.yml?query=branch%3Aproduction)
 
 ## Dokumentation
 
