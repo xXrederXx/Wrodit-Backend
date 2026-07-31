@@ -1,6 +1,7 @@
 name: Backend
 permissions:
   contents: write
+  pull-requests: write
 on:
   pull_request:
   push:
@@ -42,16 +43,18 @@ jobs:
         run: |
           echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
           echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
-      - name: Commit JaCoCo badges
+      - name: Create JaCoCo badge pull request
         if: github.event_name == 'push'
-        run: |
-          if [[ -n "$(git status --porcelain .github/badges)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add .github/badges/*.svg
-            git commit -m "chore: update JaCoCo badges"
-            git push
-          fi
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: ${{ github.ref_name }}
+          branch: chore/update-jacoco-badges-${{ github.ref_name }}
+          delete-branch: true
+          add-paths: .github/badges/*.svg
+          commit-message: chore: update JaCoCo badges
+          title: chore: update JaCoCo badges (${{ github.ref_name }})
+          body: |
+            Automated JaCoCo coverage badge update for `${{ github.ref_name }}`.
       - uses: actions/upload-artifact@v4
         if: always()
         with:
