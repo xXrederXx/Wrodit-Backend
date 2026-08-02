@@ -1,6 +1,8 @@
 package ch.bbcag.wrodit.mappers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.dto.request.CommentCreateDTO;
@@ -24,7 +26,7 @@ class CommentMapperTest {
     assertEquals(mockComment.getId(), dto.id());
     assertEquals(mockComment.getPosts().getId(), dto.postId());
     assertNull(mockComment.getParentComment());
-    assertEquals(mockComment.getUsers().getId(), dto.userId());
+    assertEquals(mockComment.getUsers().getId(), dto.user().id());
     assertEquals(mockComment.getContent(), dto.content());
     assertEquals(
         mockComment.getCommentVotes().stream().mapToInt(CommentVote::getVote).sum(), dto.votes());

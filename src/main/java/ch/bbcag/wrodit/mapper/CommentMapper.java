@@ -36,7 +36,7 @@ public class CommentMapper {
         comment.getCreatedAt(),
         comment.getParentComment() == null ? null : comment.getParentComment().getId(),
         comment.getPosts() == null ? null : comment.getPosts().getId(),
-        comment.getUsers() == null ? null : comment.getUsers().getId());
+        UserMapper.toDto(comment.getUsers(), false));
   }
 
   public static CommentPageResponseDTO toDto(Page<Comment> comments) {
