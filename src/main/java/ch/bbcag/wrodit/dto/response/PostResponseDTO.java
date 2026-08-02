@@ -8,5 +8,5 @@ public record PostResponseDTO(
     String content,
     Integer vote,
     OffsetDateTime createdAt,
-    Integer userId,
+    UserResponseDTO user,
     Integer threadId) {}
