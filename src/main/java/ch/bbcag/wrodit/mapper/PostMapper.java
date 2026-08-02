@@ -1,7 +1,5 @@
 package ch.bbcag.wrodit.mapper;
 
-import org.springframework.data.domain.Page;
-
 import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
 import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
@@ -9,6 +7,7 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.entities.Thread;
+import org.springframework.data.domain.Page;
 
 public class PostMapper {
   private PostMapper() {

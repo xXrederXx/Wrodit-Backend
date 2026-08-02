@@ -1,12 +1,7 @@
 package ch.bbcag.wrodit.mappers;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
@@ -16,6 +11,10 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.mapper.PostMapper;
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 class PostMapperTest {
   @Test
