@@ -1,7 +1,12 @@
 package ch.bbcag.wrodit.mappers;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
@@ -11,10 +16,6 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.PostVote;
 import ch.bbcag.wrodit.mapper.PostMapper;
-import java.util.Arrays;
-import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 class PostMapperTest {
   @Test
@@ -25,7 +26,7 @@ class PostMapperTest {
     assertEquals(mockPost.getId(), dto.id());
     assertEquals(mockPost.getTitle(), dto.title());
     assertEquals(mockPost.getContent(), dto.content());
-    assertEquals(mockPost.getUsers().getId(), dto.userId());
+    assertEquals(mockPost.getUsers().getId(), dto.user().id());
     assertEquals(mockPost.getThreads().getId(), dto.threadId());
     assertEquals(mockPost.getPostVotes().stream().mapToInt(PostVote::getVote).sum(), dto.vote());
     assertEquals(mockPost.getCreatedAt(), dto.createdAt());

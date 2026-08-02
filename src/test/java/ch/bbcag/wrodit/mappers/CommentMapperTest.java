@@ -1,6 +1,13 @@
 package ch.bbcag.wrodit.mappers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.dto.request.CommentCreateDTO;
@@ -10,10 +17,6 @@ import ch.bbcag.wrodit.dto.response.CommentResponseDTO;
 import ch.bbcag.wrodit.entities.Comment;
 import ch.bbcag.wrodit.entities.CommentVote;
 import ch.bbcag.wrodit.mapper.CommentMapper;
-import java.util.Arrays;
-import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 class CommentMapperTest {
   @Test
@@ -24,7 +27,7 @@ class CommentMapperTest {
     assertEquals(mockComment.getId(), dto.id());
     assertEquals(mockComment.getPosts().getId(), dto.postId());
     assertNull(mockComment.getParentComment());
-    assertEquals(mockComment.getUsers().getId(), dto.userId());
+    assertEquals(mockComment.getUsers().getId(), dto.user().id());
     assertEquals(mockComment.getContent(), dto.content());
     assertEquals(
         mockComment.getCommentVotes().stream().mapToInt(CommentVote::getVote).sum(), dto.votes());
