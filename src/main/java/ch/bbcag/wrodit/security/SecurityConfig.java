@@ -58,6 +58,8 @@ public class SecurityConfig {
             auth ->
                 auth.requestMatchers(HttpMethod.POST, SecurityConstants.AUTH_ENDPOINTS)
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/actuator/health")
+                    .permitAll()
                     .requestMatchers(HttpMethod.GET, SecurityConstants.DOCS_ENDPOINTS)
                     .permitAll()
                     .anyRequest()
