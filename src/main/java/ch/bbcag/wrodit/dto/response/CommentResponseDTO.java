@@ -9,4 +9,4 @@ public record CommentResponseDTO(
     OffsetDateTime createdAt,
     Integer parentId,
     Integer postId,
-    Integer userId) {}
+    UserResponseDTO user) {}

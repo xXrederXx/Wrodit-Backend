@@ -25,7 +25,7 @@ class PostMapperTest {
     assertEquals(mockPost.getId(), dto.id());
     assertEquals(mockPost.getTitle(), dto.title());
     assertEquals(mockPost.getContent(), dto.content());
-    assertEquals(mockPost.getUsers().getId(), dto.userId());
+    assertEquals(mockPost.getUsers().getId(), dto.user().id());
     assertEquals(mockPost.getThreads().getId(), dto.threadId());
     assertEquals(mockPost.getPostVotes().stream().mapToInt(PostVote::getVote).sum(), dto.vote());
     assertEquals(mockPost.getCreatedAt(), dto.createdAt());

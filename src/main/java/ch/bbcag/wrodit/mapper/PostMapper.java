@@ -21,7 +21,7 @@ public class PostMapper {
         post.getContent(),
         post.getPostVotes().stream().mapToInt(PostVote::getVote).sum(),
         post.getCreatedAt(),
-        post.getUsers().getId(),
+        UserMapper.toDto(post.getUsers(), false),
         post.getThreads().getId());
   }
 
