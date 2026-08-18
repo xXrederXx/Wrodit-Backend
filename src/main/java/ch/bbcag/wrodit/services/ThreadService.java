@@ -1,5 +1,7 @@
 package ch.bbcag.wrodit.services;
 
+import ch.bbcag.wrodit.dto.response.PostResponseDTO;
+import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.ThreadRepository;
@@ -58,5 +60,21 @@ public class ThreadService {
       }
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };
+  }
+
+  public Integer getTotalPosts(Integer id) {
+     return findById(id).getPosts().size();
+  }
+
+  public Integer getTotalActiveUsers(Integer id) {
+    return (int) findById(id).getPosts().stream().map(Post::getUsers).distinct().count();
+  }
+
+  public List<User> getActiveUsers(Integer id, Integer numUsers) {
+    return findById(id).getPosts().stream().map(Post::getUsers).distinct().limit(numUsers).toList();
+  }
+
+  public Post getLastPost(Integer id) {
+    return findById(id).getPosts().stream().sorted((a, b) -> a.getCreatedAt().compareTo(b.getCreatedAt())).findFirst().orElseThrow(EntityNotFoundException::new);
   }
 }
