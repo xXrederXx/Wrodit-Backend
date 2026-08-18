@@ -66,7 +66,7 @@ public class ThreadController {
       @Parameter(description = "The threads id you want to get") @PathVariable Integer id) {
     return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES))
-        .body(ThreadMapper.toDto(service.findById(id), service.getTotalPosts(id), service.getTotalActiveUsers(id), service.getActiveUsers(id), service.getLastPost(id)));
+        .body(ThreadMapper.toDto(service.findById(id), service.getTotalPosts(id), service.getTotalActiveUsers(id), service.getActiveUsers(id, 5), service.getLastPost(id)));
   }
 
   @GetMapping("/")

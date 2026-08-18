@@ -6,6 +6,7 @@ import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadStatsResponseDTO;
 import ch.bbcag.wrodit.dto.response.UserResponseDTO;
+import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.entities.User;
 
@@ -27,10 +28,10 @@ public class ThreadMapper {
   }
 
   public static ThreadStatsResponseDTO toDto(Thread thread, Integer numberPosts, Integer numActiveUsers,
-      List<User> activeUsers, PostResponseDTO lastPost) {
+      List<User> activeUsers, Post lastPost) {
     return new ThreadStatsResponseDTO(
         thread.getId(), thread.getName(), thread.getDescription(), thread.getCreatedAt(), numberPosts, numActiveUsers,
-        activeUsers.stream().map((u) -> UserMapper.toDto(u, false)).toList(), lastPost);
+        activeUsers.stream().map(u -> UserMapper.toDto(u, false)).toList(), PostMapper.toDto(lastPost));
   }
 
   public static ThreadPageResponseDTO toDto(Page<Thread> page) {

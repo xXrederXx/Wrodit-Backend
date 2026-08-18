@@ -4,6 +4,7 @@ import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.entities.User;
+import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,12 @@ import org.springframework.stereotype.Service;
 public class ThreadService {
   private final ThreadRepository repo;
   private final UserRepository userRepository;
+  private final PostRepository postRepository;
 
-  public ThreadService(ThreadRepository repo, UserRepository userRepository) {
+  public ThreadService(ThreadRepository repo, UserRepository userRepository, PostRepository postRepository) {
     this.repo = repo;
     this.userRepository = userRepository;
+    this.postRepository = postRepository;
   }
 
   public Thread findById(Integer id) {
@@ -63,18 +67,21 @@ public class ThreadService {
   }
 
   public Integer getTotalPosts(Integer id) {
-     return findById(id).getPosts().size();
+    return Math.toIntExact(postRepository.countPostsByThreadId(id));
   }
 
   public Integer getTotalActiveUsers(Integer id) {
-    return (int) findById(id).getPosts().stream().map(Post::getUsers).distinct().count();
+    return Math.toIntExact(postRepository.countActiveUsersByThreadId(id));
   }
 
   public List<User> getActiveUsers(Integer id, Integer numUsers) {
-    return findById(id).getPosts().stream().map(Post::getUsers).distinct().limit(numUsers).toList();
+    return postRepository.findActiveUsersByThreadId(
+        id,
+        PageRequest.of(0, numUsers));
   }
 
   public Post getLastPost(Integer id) {
-    return findById(id).getPosts().stream().sorted((a, b) -> a.getCreatedAt().compareTo(b.getCreatedAt())).findFirst().orElseThrow(EntityNotFoundException::new);
+    return postRepository.findFirstByThreadsIdOrderByCreatedAtDesc(id)
+        .orElseThrow(EntityNotFoundException::new);
   }
 }
