@@ -1,8 +1,5 @@
 package ch.bbcag.wrodit.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +7,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User extends BaseEntity {
