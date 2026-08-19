@@ -1,17 +1,5 @@
 package ch.bbcag.wrodit.services;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.repos.PostRepository;
@@ -20,6 +8,16 @@ import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
@@ -27,7 +25,10 @@ public class PostService {
   private final UserRepository userRepository;
   private final CommentRepository commentRepository;
 
-  public PostService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
+  public PostService(
+      PostRepository postRepository,
+      UserRepository userRepository,
+      CommentRepository commentRepository) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;
     this.commentRepository = commentRepository;

@@ -1,6 +1,5 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.entities.User;
@@ -24,7 +23,8 @@ public class ThreadService {
   private final UserRepository userRepository;
   private final PostRepository postRepository;
 
-  public ThreadService(ThreadRepository repo, UserRepository userRepository, PostRepository postRepository) {
+  public ThreadService(
+      ThreadRepository repo, UserRepository userRepository, PostRepository postRepository) {
     this.repo = repo;
     this.userRepository = userRepository;
     this.postRepository = postRepository;
@@ -75,13 +75,12 @@ public class ThreadService {
   }
 
   public List<User> getActiveUsers(Integer id, Integer numUsers) {
-    return postRepository.findActiveUsersByThreadId(
-        id,
-        PageRequest.of(0, numUsers));
+    return postRepository.findActiveUsersByThreadId(id, PageRequest.of(0, numUsers));
   }
 
   public Post getLastPost(Integer id) {
-    return postRepository.findFirstByThreadsIdOrderByCreatedAtDesc(id)
+    return postRepository
+        .findFirstByThreadsIdOrderByCreatedAtDesc(id)
         .orElseThrow(EntityNotFoundException::new);
   }
 }

@@ -1,9 +1,5 @@
 package ch.bbcag.wrodit.entities;
 
-import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,12 +11,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(indexes = {
-    @Index(name = "idx_comment_post", columnList = "posts_id"),
-    @Index(name = "idx_comment_parent", columnList = "parent_comments_id")
-})
+@Table(
+    indexes = {
+      @Index(name = "idx_comment_post", columnList = "posts_id"),
+      @Index(name = "idx_comment_parent", columnList = "parent_comments_id")
+    })
 public class Comment {
 
   @Id
@@ -56,8 +56,7 @@ public class Comment {
     this.id = id;
   }
 
-  public Comment() {
-  }
+  public Comment() {}
 
   public Integer getId() {
     return id;
