@@ -4,7 +4,6 @@ import ch.bbcag.wrodit.entities.Comment;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.entities.User;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 public class TestingUtil {
@@ -13,8 +12,6 @@ public class TestingUtil {
       5; // This is the maximum amount off error if checking the automatic time generation in
   // seconds
   public static final ZoneOffset TIME_CHECK_OFFSET = ZoneOffset.UTC;
-  public static final OffsetDateTime TEST_TIME =
-      OffsetDateTime.of(2026, 3, 20, 9, 13, 21, 67, TIME_CHECK_OFFSET);
 
   public static Comment[] generateComments(int n) {
     Comment[] comments = new Comment[n];
@@ -22,7 +19,6 @@ public class TestingUtil {
       var comment = new Comment();
       comment.setId(i);
       comment.setContent("MOCK CONTENT " + i);
-      comment.setCreatedAt(TEST_TIME);
       comment.setPosts(new Post(i));
       comment.setUsers(new User(i));
       comments[i] = comment;
@@ -39,7 +35,6 @@ public class TestingUtil {
       post.setContent("MOCK CONTENT " + i);
       post.setTitle("MOCK TITLE " + i);
       post.setThreads(new Thread(1));
-      post.setCreatedAt(TEST_TIME);
       posts[i] = post;
     }
     return posts;
@@ -52,7 +47,6 @@ public class TestingUtil {
       thread.setId(i);
       thread.setName("Tester" + i);
       thread.setDescription(i + "test@test.com");
-      thread.setCreatedAt(TEST_TIME);
       threads[i] = thread;
     }
     return threads;
@@ -64,7 +58,6 @@ public class TestingUtil {
     mockUser.setUsername("Tester");
     mockUser.setEmail("test@test.com");
     mockUser.setPasswordHash("Some-Long-Hash");
-    mockUser.setCreatedAt(TEST_TIME);
     return mockUser;
   }
 }
