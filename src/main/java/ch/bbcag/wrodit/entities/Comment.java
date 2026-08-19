@@ -1,31 +1,20 @@
 package ch.bbcag.wrodit.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Comment {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
-  @Id
-  @Column(nullable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+@Entity
+public class Comment extends BaseEntity {
 
   @Column(nullable = false, columnDefinition = "longtext")
   private String content;
-
-  @Column(nullable = false)
-  private OffsetDateTime createdAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "users_id", nullable = false)
@@ -46,18 +35,10 @@ public class Comment {
   private Set<CommentVote> commentVotes = new HashSet<>();
 
   public Comment(Integer id) {
-    this.id = id;
+    setId(id);
   }
 
   public Comment() {}
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(final Integer id) {
-    this.id = id;
-  }
 
   public String getContent() {
     return content;
@@ -65,14 +46,6 @@ public class Comment {
 
   public void setContent(final String content) {
     this.content = content;
-  }
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(final OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
   }
 
   public User getUsers() {
