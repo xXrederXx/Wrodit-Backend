@@ -23,7 +23,7 @@ public abstract class BaseEntity {
   @Column(name = "created_at", nullable = false, updatable = false)
   private OffsetDateTime createdAt = now();
 
-  @Column(name = "updated_at", nullable = false)
+  @Column(name = "updated_at")
   private OffsetDateTime updatedAt = createdAt;
 
   @PrePersist
