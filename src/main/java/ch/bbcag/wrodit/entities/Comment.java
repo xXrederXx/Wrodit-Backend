@@ -31,9 +31,6 @@ public class Comment {
   @Column(nullable = false, columnDefinition = "longtext")
   private String content;
 
-  @Column(nullable = false)
-  private OffsetDateTime createdAt;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "users_id", nullable = false)
   private User users;
@@ -53,18 +50,10 @@ public class Comment {
   private Set<CommentVote> commentVotes = new HashSet<>();
 
   public Comment(Integer id) {
-    this.id = id;
+    setId(id);
   }
 
   public Comment() {}
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(final Integer id) {
-    this.id = id;
-  }
 
   public String getContent() {
     return content;
@@ -72,14 +61,6 @@ public class Comment {
 
   public void setContent(final String content) {
     this.content = content;
-  }
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(final OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
   }
 
   public User getUsers() {

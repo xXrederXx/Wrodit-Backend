@@ -50,7 +50,6 @@ public class PostService {
 
   public Post save(Post post, Integer authId) {
     post.setUsers(userRepository.getReferenceById(authId));
-    post.setCreatedAt(OffsetDateTime.now());
     return postRepository.save(post);
   }
 
