@@ -1,5 +1,16 @@
 package ch.bbcag.wrodit.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
 import ch.bbcag.wrodit.entities.Comment;
 import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
@@ -7,16 +18,6 @@ import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CommentService {
@@ -55,7 +56,6 @@ public class CommentService {
     if (!userRepository.existsById(userId)) {
       throw new EntityNotFoundException();
     }
-    comment.setCreatedAt(OffsetDateTime.now());
     comment.setUsers(userRepository.getReferenceById(userId));
     return commentRepository.save(comment);
   }

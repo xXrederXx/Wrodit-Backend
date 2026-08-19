@@ -7,7 +7,6 @@ import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
-import java.time.OffsetDateTime;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -41,7 +40,6 @@ public class PostService {
 
   public Post save(Post post, Integer authId) {
     post.setUsers(userRepository.getReferenceById(authId));
-    post.setCreatedAt(OffsetDateTime.now());
     return postRepository.save(post);
   }
 
