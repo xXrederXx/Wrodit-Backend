@@ -1,19 +1,26 @@
 package ch.bbcag.wrodit.entities;
 
+import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(indexes = {
+    @Index(name = "idx_comment_post", columnList = "posts_id"),
+    @Index(name = "idx_comment_parent", columnList = "parent_comments_id")
+})
 public class Comment {
 
   @Id
@@ -49,7 +56,8 @@ public class Comment {
     this.id = id;
   }
 
-  public Comment() {}
+  public Comment() {
+  }
 
   public Integer getId() {
     return id;

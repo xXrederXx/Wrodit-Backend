@@ -1,28 +1,36 @@
 package ch.bbcag.wrodit.services;
 
-import ch.bbcag.wrodit.entities.Post;
-import ch.bbcag.wrodit.repos.PostRepository;
-import ch.bbcag.wrodit.repos.UserRepository;
-import ch.bbcag.wrodit.util.ThrowHelper;
-import ch.bbcag.wrodit.util.exception.FailedValidationException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.Predicate;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import ch.bbcag.wrodit.entities.Post;
+import ch.bbcag.wrodit.repos.CommentRepository;
+import ch.bbcag.wrodit.repos.PostRepository;
+import ch.bbcag.wrodit.repos.UserRepository;
+import ch.bbcag.wrodit.util.ThrowHelper;
+import ch.bbcag.wrodit.util.exception.FailedValidationException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
+
 @Service
 public class PostService {
   private final PostRepository postRepository;
   private final UserRepository userRepository;
+  private final CommentRepository commentRepository;
 
-  public PostService(PostRepository postRepository, UserRepository userRepository) {
+  public PostService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
     this.postRepository = postRepository;
     this.userRepository = userRepository;
+    this.commentRepository = commentRepository;
   }
 
   public Post getPostById(Integer id) {
@@ -50,6 +58,10 @@ public class PostService {
     ThrowHelper.throwAccessDeniedIfNotEqual(existing.getUsers().getId(), authId);
     mergePost(existing, post);
     return postRepository.save(existing);
+  }
+
+  public Integer getNumberComments(Integer id) {
+    return Math.toIntExact(commentRepository.countCommentsByPostId(id));
   }
 
   private Specification<Post> buildSpecification(Integer userId, Integer threadId) {
