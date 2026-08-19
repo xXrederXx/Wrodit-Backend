@@ -1,17 +1,17 @@
 package ch.bbcag.wrodit.entities;
 
-import jakarta.persistence.*;
-import java.time.OffsetDateTime;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class User {
-
-  @Id
-  @Column(nullable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class User extends BaseEntity {
 
   @Column(nullable = false, unique = true)
   private String email;
@@ -23,8 +23,6 @@ public class User {
   private String passwordHash;
 
   @Column private String profileImagePath;
-
-  @Column private OffsetDateTime createdAt;
 
   @ManyToMany
   @JoinTable(
@@ -48,15 +46,7 @@ public class User {
   public User() {}
 
   public User(Integer id) {
-    this.id = id;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(final Integer id) {
-    this.id = id;
+    setId(id);
   }
 
   public String getEmail() {
@@ -89,14 +79,6 @@ public class User {
 
   public void setProfileImagePath(final String profileImagePath) {
     this.profileImagePath = profileImagePath;
-  }
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(final OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
   }
 
   public Set<Thread> getThreads() {

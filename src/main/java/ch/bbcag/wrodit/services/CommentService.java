@@ -7,7 +7,6 @@ import ch.bbcag.wrodit.util.ThrowHelper;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +54,6 @@ public class CommentService {
     if (!userRepository.existsById(userId)) {
       throw new EntityNotFoundException();
     }
-    comment.setCreatedAt(OffsetDateTime.now());
     comment.setUsers(userRepository.getReferenceById(userId));
     return commentRepository.save(comment);
   }

@@ -3,7 +3,6 @@ package ch.bbcag.wrodit.services;
 import ch.bbcag.wrodit.entities.User;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.OffsetDateTime;
 import java.util.Optional;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,7 +47,6 @@ public class UserService {
 
   public User insert(User user) {
     user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
-    user.setCreatedAt(OffsetDateTime.now());
     return repo.save(user);
   }
 

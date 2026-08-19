@@ -6,7 +6,6 @@ import ch.bbcag.wrodit.repos.ThreadRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -38,8 +37,6 @@ public class ThreadService {
 
   public Thread save(Thread thread, Integer userId) {
     User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-
-    thread.setCreatedAt(OffsetDateTime.now());
 
     repo.save(thread);
 
