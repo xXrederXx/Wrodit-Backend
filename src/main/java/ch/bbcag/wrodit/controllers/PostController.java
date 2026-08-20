@@ -3,6 +3,7 @@ package ch.bbcag.wrodit.controllers;
 import ch.bbcag.wrodit.dto.request.PostCreateRequestDTO;
 import ch.bbcag.wrodit.dto.request.PostRequestDTO;
 import ch.bbcag.wrodit.dto.request.VoteRequestDTO;
+import ch.bbcag.wrodit.dto.response.CommentCountResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.dto.response.VoteResponseDTO;
@@ -25,7 +26,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(PostController.PATH)
@@ -55,6 +65,25 @@ public class PostController {
     return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS))
         .body(PostMapper.toDto(service.getPostById(id)));
+  }
+
+  @GetMapping("/{id}/countcomments")
+  @Operation(
+      summary = "Get total comment count on post",
+      description =
+          "This operation is seperated, because it triggers a recursive calculation which could get heavy if repeated too many times")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Comments successfully counted",
+            content = @Content(schema = @Schema(implementation = CommentCountResponseDTO.class))),
+      })
+  @ApiAuthResponses
+  public ResponseEntity<?> getCommentCount(@PathVariable Integer id) {
+    return ResponseEntity.ok()
+        .cacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES))
+        .body(new CommentCountResponseDTO(id, service.getNumberComments(id)));
   }
 
   @GetMapping("/")

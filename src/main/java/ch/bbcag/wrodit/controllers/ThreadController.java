@@ -4,6 +4,7 @@ import ch.bbcag.wrodit.dto.request.ThreadRequestDTO;
 import ch.bbcag.wrodit.dto.response.PostResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadPageResponseDTO;
 import ch.bbcag.wrodit.dto.response.ThreadResponseDTO;
+import ch.bbcag.wrodit.dto.response.ThreadStatsResponseDTO;
 import ch.bbcag.wrodit.mapper.ThreadMapper;
 import ch.bbcag.wrodit.services.ThreadService;
 import ch.bbcag.wrodit.util.annotation.ApiResponses.ApiAuthResponses;
@@ -48,6 +49,30 @@ public class ThreadController {
     return ResponseEntity.ok()
         .cacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES))
         .body(ThreadMapper.toDto(service.findById(id)));
+  }
+
+  @GetMapping("/{id}/stats")
+  @Operation(summary = "Get Thread specific Stats")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Stats successfully calculated",
+            content = @Content(schema = @Schema(implementation = ThreadStatsResponseDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Thread was not found", content = @Content)
+      })
+  @ApiAuthResponses
+  public ResponseEntity<?> getThreadStatsById(
+      @Parameter(description = "The threads id you want to get") @PathVariable Integer id) {
+    return ResponseEntity.ok()
+        .cacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES))
+        .body(
+            ThreadMapper.toDto(
+                service.findById(id),
+                service.getTotalPosts(id),
+                service.getTotalActiveUsers(id),
+                service.getActiveUsers(id, 5),
+                service.getLastPost(id)));
   }
 
   @GetMapping("/")
