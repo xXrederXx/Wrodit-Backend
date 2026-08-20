@@ -19,7 +19,7 @@ public abstract class BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "created_at", nullable = false, updatable = false)
+  @Column(name = "created_at", updatable = false)
   private OffsetDateTime createdAt = now();
 
   @Column(name = "updated_at")
