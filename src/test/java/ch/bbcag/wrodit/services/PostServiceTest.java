@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Post;
 import ch.bbcag.wrodit.entities.User;
+import ch.bbcag.wrodit.repos.CommentRepository;
 import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import ch.bbcag.wrodit.util.exception.FailedValidationException;
@@ -29,6 +30,7 @@ class PostServiceTest {
 
   private PostRepository mockPostRepo;
   private UserRepository mockUserRepo;
+  private CommentRepository mockCommentRepo;
   private PostService postService;
 
   private Post mockPost;
@@ -39,7 +41,8 @@ class PostServiceTest {
   void setup() {
     mockPostRepo = Mockito.mock(PostRepository.class);
     mockUserRepo = Mockito.mock(UserRepository.class);
-    postService = new PostService(mockPostRepo, mockUserRepo);
+    mockCommentRepo = Mockito.mock(CommentRepository.class);
+    postService = new PostService(mockPostRepo, mockUserRepo, mockCommentRepo);
 
     mockPost = TestingUtil.generatePosts(1)[0];
     mockUser = TestingUtil.generateUser();

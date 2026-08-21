@@ -3,32 +3,20 @@ package ch.bbcag.wrodit.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Post {
-
-  @Id
-  @Column(nullable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class Post extends BaseEntity {
 
   @Column(nullable = false)
   private String title;
 
   @Column(nullable = false, columnDefinition = "longtext")
   private String content;
-
-  @Column(nullable = false)
-  private OffsetDateTime createdAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "users_id", nullable = false)
@@ -45,18 +33,10 @@ public class Post {
   private Set<PostVote> postVotes = new HashSet<>();
 
   public Post(Integer id) {
-    this.id = id;
+    setId(id);
   }
 
   public Post() {}
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(final Integer id) {
-    this.id = id;
-  }
 
   public String getTitle() {
     return title;
@@ -72,14 +52,6 @@ public class Post {
 
   public void setContent(final String content) {
     this.content = content;
-  }
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(final OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
   }
 
   public User getUsers() {

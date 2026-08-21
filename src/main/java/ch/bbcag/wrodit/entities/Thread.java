@@ -2,22 +2,13 @@ package ch.bbcag.wrodit.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Thread {
-
-  @Id
-  @Column(nullable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class Thread extends BaseEntity {
 
   @Column(nullable = false, unique = true, length = 150)
   private String name;
@@ -29,9 +20,6 @@ public class Thread {
 
   @Column private String iconImagePath;
 
-  @Column(nullable = false)
-  private OffsetDateTime createdAt;
-
   @ManyToMany(mappedBy = "threads")
   private Set<User> users = new HashSet<>();
 
@@ -39,18 +27,10 @@ public class Thread {
   private Set<Post> posts = new HashSet<>();
 
   public Thread(Integer id) {
-    this.id = id;
+    setId(id);
   }
 
   public Thread() {}
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(final Integer id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -82,14 +62,6 @@ public class Thread {
 
   public void setIconImagePath(final String iconImagePath) {
     this.iconImagePath = iconImagePath;
-  }
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(final OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
   }
 
   public Set<User> getUsers() {

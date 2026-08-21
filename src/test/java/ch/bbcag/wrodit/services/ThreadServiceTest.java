@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import ch.bbcag.wrodit.TestingUtil;
 import ch.bbcag.wrodit.entities.Thread;
 import ch.bbcag.wrodit.entities.User;
+import ch.bbcag.wrodit.repos.PostRepository;
 import ch.bbcag.wrodit.repos.ThreadRepository;
 import ch.bbcag.wrodit.repos.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +32,7 @@ class ThreadServiceTest {
   private ThreadRepository mockRepo;
   private UserRepository mockUserRepo;
   private ThreadService threadService;
+  private PostRepository mockPostRepo;
 
   private Thread mockThread;
   private User mockUser;
@@ -40,7 +42,9 @@ class ThreadServiceTest {
   void setup() {
     mockRepo = Mockito.mock(ThreadRepository.class);
     mockUserRepo = Mockito.mock(UserRepository.class);
-    threadService = new ThreadService(mockRepo, mockUserRepo);
+    mockPostRepo = Mockito.mock(PostRepository.class);
+
+    threadService = new ThreadService(mockRepo, mockUserRepo, mockPostRepo);
 
     mockThread = TestingUtil.generateThreads(1)[0];
     mockThreadPage = new PageImpl<>(Arrays.stream(TestingUtil.generateThreads(10)).toList());
