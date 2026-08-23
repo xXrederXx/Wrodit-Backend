@@ -21,7 +21,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(ThreadController.PATH)
@@ -82,7 +88,11 @@ public class ThreadController {
       description = "Thread page generated",
       content = @Content(schema = @Schema(implementation = ThreadPageResponseDTO.class)))
   @ApiAuthResponses
-  public ResponseEntity<?> getPaginatedThreads(Pageable page) {
+  public ResponseEntity<?> getPaginatedThreads(
+      Pageable page, @RequestParam(required = false) Integer userId) {
+    if (userId != null) {
+      return ResponseEntity.ok(ThreadMapper.toDto(service.paginatedThreadsByUser(userId, page)));
+    }
     return ResponseEntity.ok(ThreadMapper.toDto(service.paginatedThreads(page)));
   }
 
